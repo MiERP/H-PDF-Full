@@ -186,16 +186,15 @@
               id="compression-algorithm"
               class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2.5 focus:ring-indigo-500 focus:border-indigo-500"
             >
-              <option value="condense">Condense (Recommended)</option>
               <option value="photon">Photon (For Photo-Heavy PDFs)</option>
             </select>
             <div id="algorithm-info" class="mt-2 text-xs text-gray-400">
-              <p id="condense-info">
+              <p id="condense-info" class="hidden">
                 <strong>Condense</strong> uses advanced compression: removes
                 dead-weight, optimizes images, subsets fonts. Best for most
                 PDFs.
               </p>
-              <p id="photon-info" class="hidden">
+              <p id="photon-info">
                 <strong>Photon</strong> converts pages to images. Use for
                 photo-heavy/scanned PDFs.
                 <span class="text-yellow-500"

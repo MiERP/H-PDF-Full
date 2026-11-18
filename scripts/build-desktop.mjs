@@ -23,27 +23,30 @@ const desktopVersion = JSON.parse(
   readFileSync(resolve(root, 'desktop', 'package.json'), 'utf8')
 ).version;
 
-console.log('=== Building H-PDF Desktop Application ===');
+console.log('=== Building H-PDF-Lite Desktop Application ===');
+
+// Offline-only: remove internet-dependent tools and runtime fetches. The
+// engine-driven tools are excluded from the frontend and the build.
+const desktopEnv = {
+  VITE_BRAND_NAME: 'H-PDF-Lite',
+  VITE_BRAND_LOGO: 'images/h-pdf-logo.svg',
+  VITE_FOOTER_TEXT:
+    '© 2026 H-PDF-Lite · Phạm Văn Long - HAVS. Phần mềm miễn phí, nghiêm cấm mọi hành vi thương mại. Dựa trên BentoPDF (AGPL-3.0).',
+  VITE_DEFAULT_LANGUAGE: 'vi',
+  VITE_TESSERACT_AVAILABLE_LANGUAGES: 'vie,eng',
+  ...process.env,
+  VITE_OFFLINE_ONLY: 'true',
+  VITE_DESKTOP: 'true',
+  SIMPLE_MODE: 'true',
+  APP_VERSION: desktopVersion,
+};
 
 // 1. Build web assets for desktop (tools only, no compression duplicates, no SW precache)
 console.log('1. Building frontend with Vite (desktop mode)...');
 execSync('npx vite build', {
   cwd: root,
   stdio: 'inherit',
-  env: {
-    // Desktop branding defaults; override by setting these before running.
-    VITE_BRAND_NAME: 'H-PDF',
-    VITE_BRAND_LOGO: 'images/h-pdf-logo.svg',
-    VITE_FOOTER_TEXT:
-      '© 2026 H-PDF · Phạm Văn Long - HAVS. Phần mềm miễn phí, nghiêm cấm mọi hành vi thương mại. Dựa trên BentoPDF (AGPL-3.0).',
-    VITE_DEFAULT_LANGUAGE: 'vi',
-    // OCR language packs offered as downloads (desktop/app/modules-manifest.json).
-    VITE_TESSERACT_AVAILABLE_LANGUAGES: 'vie,eng',
-    ...process.env,
-    VITE_DESKTOP: 'true',
-    SIMPLE_MODE: 'true',
-    APP_VERSION: desktopVersion,
-  },
+  env: desktopEnv,
 });
 
 // 2. Compile desktop TypeScript files (Electron main, preload, protocol, modules-manager)
@@ -113,8 +116,9 @@ function copyFiltered(src, dest) {
     const s = resolve(src, entry.name);
     const d = resolve(dest, entry.name);
 
-    // Skip heavy LibreOffice binaries and SW from installer bundle
+    // Skip heavy LibreOffice binaries and SW from installer bundle.
     if (
+      entry.name === 'libreoffice-wasm' ||
       entry.name === 'soffice.wasm.gz' ||
       entry.name === 'soffice.data.gz' ||
       entry.name === 'sw.js'

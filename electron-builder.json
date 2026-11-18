@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "com.longhavs.hpdf",
-  "productName": "H-PDF",
+  "appId": "com.longhavs.hpdf.lite",
+  "productName": "H-PDF-Lite",
   "copyright": "Copyright © 2026 Phạm Văn Long - HAVS. Based on BentoPDF © BentoPDF Contributors (AGPL-3.0)",
   "directories": {
     "app": "desktop",
@@ -58,8 +58,8 @@
     "allowToChangeInstallationDirectory": true,
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
-    "shortcutName": "H-PDF",
-    "uninstallDisplayName": "H-PDF"
+    "shortcutName": "H-PDF-Lite",
+    "uninstallDisplayName": "H-PDF-Lite"
   },
   "portable": {
     "artifactName": "${productName}-${version}-Windows-x64-Portable.${ext}"

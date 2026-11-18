@@ -1,6 +1,8 @@
 const FONT_CDN =
-  import.meta.env.VITE_EMBEDPDF_FONTS_URL ||
-  'https://cdn.jsdelivr.net/npm/@embedpdf';
+  import.meta.env.VITE_OFFLINE_ONLY === 'true'
+    ? `${import.meta.env.BASE_URL}offline-fonts`
+    : import.meta.env.VITE_EMBEDPDF_FONTS_URL ||
+      'https://cdn.jsdelivr.net/npm/@embedpdf';
 
 const CHARSET = {
   ANSI: 0,

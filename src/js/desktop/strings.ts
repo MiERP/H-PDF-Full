@@ -309,7 +309,7 @@ const STRINGS = {
     updateBadge: 'Cập nhật',
     updateVersions: '{current} → {latest}',
     updateText:
-      'H-PDF {latest} đã có, với các tính năng và bản sửa lỗi mới nhất.',
+      'H-PDF-Lite {latest} đã có, với các tính năng và bản sửa lỗi mới nhất.',
     updateWhatsNew: 'Có gì mới',
     updateLater: 'Để sau',
     updateInstall: 'Cập nhật và khởi động lại',
@@ -633,7 +633,7 @@ const STRINGS = {
     updateBadge: 'Update',
     updateVersions: '{current} → {latest}',
     updateText:
-      'H-PDF {latest} is available with the latest features and bug fixes.',
+      'H-PDF-Lite {latest} is available with the latest features and bug fixes.',
     updateWhatsNew: "What's new",
     updateLater: 'Later',
     updateInstall: 'Update and restart',

@@ -21,8 +21,8 @@ interface ReleaseAsset {
 
 /** The installer's name for each Windows build: x64, and x86 for ia32. */
 const INSTALLER_NAME: Record<string, RegExp> = {
-  x64: /^H-PDF-[\w.-]+-Windows-x64-Setup\.exe$/,
-  ia32: /^H-PDF-[\w.-]+-Windows-x86-Setup\.exe$/,
+  x64: /^H-PDF-Lite-[\w.-]+-Windows-x64-Setup\.exe$/,
+  ia32: /^H-PDF-Lite-[\w.-]+-Windows-x86-Setup\.exe$/,
 };
 const HEX_64 = /^[0-9a-f]{64}$/;
 

@@ -44,7 +44,10 @@ export async function startEmbedEditor(
     target,
     worker: true,
     wasmUrl: embedPdfWasmUrl,
-    fontFallback: editorFontFallback,
+    fontFallback:
+      import.meta.env.VITE_OFFLINE_ONLY === 'true'
+        ? undefined
+        : editorFontFallback,
     // The viewer has its own translations; make it follow the app.
     i18n: editorLocale(getLanguageFromUrl()),
     export: { defaultFileName: options.fileName },

@@ -82,7 +82,7 @@ describe('pdf decrypt', () => {
     expect(mockLoadPyMuPDF).not.toHaveBeenCalled();
   });
 
-  it('falls back to PyMuPDF when CoherentPDF fails', async () => {
+  it('reports the CoherentPDF error when CoherentPDF fails', async () => {
     const cpdf = {
       setSlow: vi.fn(),
       fromMemory: vi.fn().mockImplementation(() => {
@@ -94,39 +94,16 @@ describe('pdf decrypt', () => {
       toMemory: vi.fn(),
       deletePdf: vi.fn(),
     };
-    const pymupdfDocument = {
-      needsPass: true,
-      isEncrypted: true,
-      authenticate: vi.fn().mockReturnValue(true),
-      save: vi.fn().mockReturnValue(new Uint8Array([7, 8, 9])),
-      close: vi.fn(),
-    };
 
     mockGetCpdf.mockResolvedValue(cpdf);
-    mockLoadPyMuPDF.mockResolvedValue({
-      open: vi.fn().mockResolvedValue(pymupdfDocument),
-    });
 
-    const result = await pdfDecryptModule.decryptPdfBytes(
-      new Uint8Array([9]),
-      '1234'
-    );
-
-    expect(result).toEqual({
-      bytes: new Uint8Array([7, 8, 9]),
-      engine: 'pymupdf',
-    });
-    expect(warnSpy).toHaveBeenCalledWith(
-      '[PDF Decrypt] Decryption with CoherentPDF failed. Falling back to PyMuPDF. Reason: cpdf failed'
-    );
-    expect(infoSpy).toHaveBeenCalledWith(
-      '[PDF Decrypt] Decryption succeeded with PyMuPDF'
-    );
-    expect(pymupdfDocument.authenticate).toHaveBeenCalledWith('1234');
-    expect(pymupdfDocument.close).toHaveBeenCalledTimes(1);
+    await expect(
+      pdfDecryptModule.decryptPdfBytes(new Uint8Array([9]), '1234')
+    ).rejects.toThrow('cpdf failed');
+    expect(mockLoadPyMuPDF).not.toHaveBeenCalled();
   });
 
-  it('normalizes raw CoherentPDF error strings before fallback logging', async () => {
+  it('normalizes raw CoherentPDF error strings', async () => {
     const cpdf = {
       setSlow: vi.fn(),
       fromMemory: vi.fn().mockImplementation(() => {
@@ -138,31 +115,15 @@ describe('pdf decrypt', () => {
       toMemory: vi.fn(),
       deletePdf: vi.fn(),
     };
-    const pymupdfDocument = {
-      needsPass: false,
-      isEncrypted: false,
-      authenticate: vi.fn(),
-      save: vi.fn().mockReturnValue(new Uint8Array([7, 8, 9])),
-      close: vi.fn(),
-    };
 
     mockGetCpdf.mockResolvedValue(cpdf);
-    mockLoadPyMuPDF.mockResolvedValue({
-      open: vi.fn().mockResolvedValue(pymupdfDocument),
-    });
 
-    const result = await pdfDecryptModule.decryptPdfBytes(
-      new Uint8Array([9]),
-      '1234'
-    );
-
-    expect(result.engine).toBe('pymupdf');
-    expect(warnSpy).toHaveBeenCalledWith(
-      '[PDF Decrypt] Decryption with CoherentPDF failed. Falling back to PyMuPDF. Reason: Bad or missing /P entry'
-    );
+    await expect(
+      pdfDecryptModule.decryptPdfBytes(new Uint8Array([9]), '1234')
+    ).rejects.toThrow('Bad or missing /P entry');
   });
 
-  it('aggregates engine errors when decryption fails', async () => {
+  it('reports the CoherentPDF error when decryption fails', async () => {
     const cpdf = {
       setSlow: vi.fn(),
       fromMemory: vi.fn().mockImplementation(() => {
@@ -174,28 +135,13 @@ describe('pdf decrypt', () => {
       toMemory: vi.fn(),
       deletePdf: vi.fn(),
     };
-    const pymupdfDocument = {
-      needsPass: true,
-      isEncrypted: true,
-      authenticate: vi.fn().mockReturnValue(false),
-      save: vi.fn(),
-      close: vi.fn(),
-    };
 
     mockGetCpdf.mockResolvedValue(cpdf);
-    mockLoadPyMuPDF.mockResolvedValue({
-      open: vi.fn().mockResolvedValue(pymupdfDocument),
-    });
 
     await expect(
       pdfDecryptModule.decryptPdfBytes(new Uint8Array([9]), '1234')
-    ).rejects.toThrow(
-      'CoherentPDF: cpdf failed\nPyMuPDF: Invalid PDF password.'
-    );
-    expect(warnSpy).toHaveBeenCalledWith(
-      '[PDF Decrypt] PyMuPDF decryption failed: Invalid PDF password.'
-    );
-    expect(pymupdfDocument.close).toHaveBeenCalledTimes(1);
+    ).rejects.toThrow('cpdf failed');
+    expect(mockLoadPyMuPDF).not.toHaveBeenCalled();
   });
 
   it('uses the shared decrypt helper in the workflow decrypt node', async () => {

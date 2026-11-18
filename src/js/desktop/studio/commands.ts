@@ -181,42 +181,12 @@ export const RIBBON_COMMANDS: RibbonCommand[] = [
   page('header-footer', 'edit'),
 
   // Chuyển đổi
-  {
-    id: 'to-word',
-    tab: 'convert',
-    icon: 'microsoft-word-logo',
-    label: 'studioToWord',
-    hint: 'studioToWordHint',
-    action: { kind: 'studio', tool: 'to-word' },
-    standsFor: ['pdf-to-word'],
-  },
-  {
-    id: 'to-text',
-    tab: 'convert',
-    icon: 'text-t',
-    label: 'studioToText',
-    hint: 'studioToTextHint',
-    action: { kind: 'studio', tool: 'to-text' },
-    standsFor: ['pdf-to-text'],
-  },
-  page('pdf-to-excel', 'convert', true),
   page('pdf-to-jpg', 'convert'),
   page('ocr-pdf', 'convert'),
 
   // Tối ưu & bảo mật
-  {
-    id: 'compress',
-    tab: 'secure',
-    icon: 'arrows-in',
-    label: 'studioCompress',
-    hint: 'studioCompressHint',
-    action: { kind: 'studio', tool: 'compress' },
-    standsFor: ['compress-pdf'],
-  },
   page('protect-pdf', 'secure', true),
   page('unlock-pdf', 'secure'),
-  page('digital-sign-pdf', 'secure'),
-  page('pdf-to-pdfa', 'secure', true),
   page('repair-pdf', 'secure'),
 ];
 

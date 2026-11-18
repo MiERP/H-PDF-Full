@@ -848,10 +848,70 @@ const getToolIdFromHref = (href: string): string => {
   return match?.[1] ?? href;
 };
 
-export const categories = baseCategories.map((category) => ({
-  ...category,
-  tools: category.tools.map((tool) => ({
-    ...tool,
-    id: getToolIdFromHref(tool.href),
-  })),
-}));
+// H-PDF-Lite: tools that need a downloaded engine or an online service.
+// They are removed from the registry and their pages are left out of the
+// build, so no download prompt or network call can be reached from the UI.
+const OFFLINE_BLOCKED_TOOLS = new Set([
+  // PyMuPDF engine
+  'pdf-to-word',
+  'pdf-to-excel',
+  'pdf-to-text',
+  'pdf-to-csv',
+  'pdf-to-markdown',
+  'pdf-to-svg',
+  'extract-images',
+  'extract-tables',
+  'pdf-layers',
+  'prepare-pdf-for-ai',
+  'email-to-pdf',
+  'jpg-to-pdf',
+  'image-to-pdf',
+  'txt-to-pdf',
+  'psd-to-pdf',
+  'cbz-to-pdf',
+  'mobi-to-pdf',
+  'epub-to-pdf',
+  'fb2-to-pdf',
+  'xps-to-pdf',
+  'xml-to-pdf',
+  'rasterize-pdf',
+  'deskew-pdf',
+  // Ghostscript engine
+  'pdf-to-pdfa',
+  'font-to-outline',
+  // LibreOffice engine
+  'word-to-pdf',
+  'excel-to-pdf',
+  'powerpoint-to-pdf',
+  'odt-to-pdf',
+  'ods-to-pdf',
+  'odp-to-pdf',
+  'odg-to-pdf',
+  'rtf-to-pdf',
+  'pub-to-pdf',
+  'vsd-to-pdf',
+  'wpd-to-pdf',
+  'wps-to-pdf',
+  'pages-to-pdf',
+  // Online services and remote content
+  'digital-sign-pdf',
+  'validate-signature-pdf',
+  'timestamp-pdf',
+  'markdown-to-pdf',
+  // Uses the engine-dependent tools above
+  'pdf-workflow',
+]);
+
+const OFFLINE_ONLY = import.meta.env.VITE_OFFLINE_ONLY === 'true';
+
+export const categories = baseCategories
+  .map((category) => ({
+    ...category,
+    tools: category.tools
+      .map((tool) => ({
+        ...tool,
+        id: getToolIdFromHref(tool.href),
+      }))
+      .filter((tool) => !OFFLINE_ONLY || !OFFLINE_BLOCKED_TOOLS.has(tool.id)),
+  }))
+  .filter((category) => category.tools.length > 0);

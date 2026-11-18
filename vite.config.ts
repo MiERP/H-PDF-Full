@@ -552,16 +552,81 @@ const WEB_ONLY_ENTRIES = new Set([
   'wasm-settings',
 ]);
 
+// H-PDF-Lite: pages for tools that need a downloaded engine or an online
+// service. Their source files stay in the repository, but they are not built
+// into the offline installer and cannot be reached by URL.
+const OFFLINE_ONLY_ENTRIES = new Set([
+  'pdf-workflow',
+  'pdf-to-word',
+  'pdf-to-excel',
+  'pdf-to-text',
+  'pdf-to-csv',
+  'pdf-to-markdown',
+  'pdf-to-svg',
+  'extract-images',
+  'extract-tables',
+  'pdf-layers',
+  'prepare-pdf-for-ai',
+  'email-to-pdf',
+  'jpg-to-pdf',
+  'image-to-pdf',
+  'txt-to-pdf',
+  'psd-to-pdf',
+  'cbz-to-pdf',
+  'mobi-to-pdf',
+  'epub-to-pdf',
+  'fb2-to-pdf',
+  'xps-to-pdf',
+  'xml-to-pdf',
+  'rasterize-pdf',
+  'deskew-pdf',
+  'pdf-to-pdfa',
+  'font-to-outline',
+  'word-to-pdf',
+  'excel-to-pdf',
+  'powerpoint-to-pdf',
+  'odt-to-pdf',
+  'ods-to-pdf',
+  'odp-to-pdf',
+  'odg-to-pdf',
+  'rtf-to-pdf',
+  'pub-to-pdf',
+  'vsd-to-pdf',
+  'wpd-to-pdf',
+  'wps-to-pdf',
+  'pages-to-pdf',
+  'digital-sign-pdf',
+  'validate-signature-pdf',
+  'timestamp-pdf',
+  'markdown-to-pdf',
+  'compress-pdf-to-100kb',
+  'compress-pdf-to-200kb',
+  'compress-pdf-to-500kb',
+  'compress-pdf-to-1mb',
+  'compress-pdf-to-2mb',
+  'compress-pdf-for-email',
+]);
+
 function filterDesktopEntries(
   isDesktop: boolean,
   entries: Record<string, string>
 ): Record<string, string> {
-  if (!isDesktop) return entries;
-  return Object.fromEntries(
-    Object.entries(entries).filter(
-      ([name]) => !name.startsWith('blog-') && !WEB_ONLY_ENTRIES.has(name)
-    )
-  );
+  let filtered = entries;
+  if (isDesktop) {
+    filtered = Object.fromEntries(
+      Object.entries(entries).filter(
+        ([name]) => !name.startsWith('blog-') && !WEB_ONLY_ENTRIES.has(name)
+      )
+    );
+  }
+  if (process.env.VITE_OFFLINE_ONLY === 'true') {
+    filtered = Object.fromEntries(
+      Object.entries(filtered).filter(
+        ([name]) => !OFFLINE_ONLY_ENTRIES.has(name)
+      )
+    );
+  }
+  return filtered;
 }
 
 export default defineConfig(() => {

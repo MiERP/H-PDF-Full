@@ -1,13 +1,13 @@
 {
-  "name": "h-pdf",
+  "name": "h-pdf-lite",
   "version": "1.0.0",
-  "description": "H-PDF - privacy-first offline PDF toolbox by Phạm Văn Long - HAVS, based on BentoPDF",
+  "description": "H-PDF-Lite - offline-only privacy-first PDF toolbox by Phạm Văn Long - HAVS, based on BentoPDF",
   "author": "Phạm Văn Long - HAVS",
   "license": "AGPL-3.0-only",
-  "homepage": "https://github.com/Long-HAVS/H-PDF",
+  "homepage": "https://github.com/Long-HAVS/H-PDF-Lite",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Long-HAVS/H-PDF.git"
+    "url": "https://github.com/Long-HAVS/H-PDF-Lite.git"
   },
   "private": true,
   "type": "module",

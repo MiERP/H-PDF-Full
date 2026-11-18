@@ -1,4 +1,18 @@
-export const singlePdfLoadTools = [
+const OFFLINE_ONLY = import.meta.env.VITE_OFFLINE_ONLY === 'true';
+const OFFLINE_BLOCKED_MULTI_TOOLS = new Set([
+  'pdf-to-markdown',
+  'word-to-pdf',
+  'txt-to-pdf',
+  'jpg-to-pdf',
+  'image-to-pdf',
+  'compress',
+]);
+const offlineTools = (tools: string[]): string[] =>
+  OFFLINE_ONLY
+    ? tools.filter((tool) => !OFFLINE_BLOCKED_MULTI_TOOLS.has(tool))
+    : tools;
+
+export const singlePdfLoadTools = offlineTools([
   'split',
   'organize',
   'rotate',
@@ -42,17 +56,17 @@ export const singlePdfLoadTools = [
   'sanitize-pdf',
   'remove-restrictions',
   'bookmark-pdf',
-];
+]);
 
-export const simpleTools = [
+export const simpleTools = offlineTools([
   'encrypt',
   'decrypt',
   'change-permissions',
   'pdf-to-markdown',
   'word-to-pdf',
-];
+]);
 
-export const multiFileTools = [
+export const multiFileTools = offlineTools([
   'merge',
   'pdf-to-zip',
   'jpg-to-pdf',
@@ -71,4 +85,4 @@ export const multiFileTools = [
   'extract-attachments',
   'flatten',
   'repair-pdf',
-];
+]);

@@ -16,7 +16,6 @@ import {
 } from './strings.js';
 import { homeBlurb } from './tool-blurbs.js';
 import { initTheme } from './theme.js';
-import { initUpdateBanner } from './update-check.js';
 import { initIconFamily } from './icons.js';
 import { initToolWorkspace } from './workspace.js';
 import {
@@ -495,7 +494,6 @@ export function initDesktopShell(options: ShellOptions): void {
   // Recent tools as of arriving on this page; the home page is not a tool,
   // so nothing was just added.
   renderHomeRecent(pick(recent));
-  void initUpdateBanner();
 
   initTheme();
   const opened = initOpenedFiles(

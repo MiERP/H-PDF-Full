@@ -43,6 +43,7 @@ export function resolveFontUrl(
 // Desktop: the OCR module ships this font so the text layer can be written
 // without a network connection. Other families still come from the CDN.
 const DESKTOP_OCR_FONT_FAMILY = 'Noto Sans';
+const OFFLINE_ONLY = import.meta.env.VITE_OFFLINE_ONLY === 'true';
 
 async function fetchInstalledDesktopFont(
   fontFamily: string
@@ -126,6 +127,18 @@ export async function getFontForLanguage(lang: string): Promise<ArrayBuffer> {
   }
 
   try {
+    // Lite never goes to a CDN: the bundled Noto Sans covers the offline
+    // text layer, and other scripts fall back to it rather than downloading.
+    if (OFFLINE_ONLY) {
+      const local = await fetch(
+        `/modules/ocr/${getFontAssetFileName(DESKTOP_OCR_FONT_FAMILY)}`
+      );
+      if (!local.ok) {
+        throw new Error(`Local font missing: HTTP ${local.status}`);
+      }
+      return await local.arrayBuffer();
+    }
+
     const fontUrl = resolveFontUrl(fontFamily);
 
     const fontResponse =

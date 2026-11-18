@@ -59,11 +59,11 @@ if (!gotTheLock) {
   app.quit();
 }
 
-const APP_NAME = 'H-PDF';
+const APP_NAME = 'H-PDF-Lite';
 const APP_ORIGIN = 'app://bentopdf';
-const RELEASES_PAGE = 'https://github.com/Long-HAVS/H-PDF/releases';
+const RELEASES_PAGE = 'https://github.com/Long-HAVS/H-PDF-Lite/releases';
 const LATEST_RELEASE_API =
-  'https://api.github.com/repos/Long-HAVS/H-PDF/releases/latest';
+  'https://api.github.com/repos/Long-HAVS/H-PDF-Lite/releases/latest';
 const UPDATE_CHECK_TIMEOUT_MS = 10_000;
 
 // The window that last had focus: where menu actions and files from the OS go.
@@ -495,6 +495,17 @@ ipcMain.handle(
     if (!modulesManager) {
       return { ok: false, error: 'Modules manager not initialized' };
     }
+    // H-PDF-Lite is offline-only: the installer carries every engine it
+    // uses, so a missing module is an error, never a download.
+    const notInstalled = names.filter(
+      (name) => !modulesManager?.isInstalled(name)
+    );
+    if (notInstalled.length > 0) {
+      return {
+        ok: false,
+        error: 'H-PDF-Lite does not download processing engines.',
+      };
+    }
     const win = windowOf(event);
     const onProgress = progressTo(event);
     const result = await modulesManager.ensureModules(names, onProgress, win);
@@ -819,7 +830,7 @@ ipcMain.handle(
     const installer = pendingInstaller;
     if (!installer || !canSelfUpdate()) return { ok: false, error: 'manual' };
 
-    const dir = path.join(os.tmpdir(), 'H-PDF-update');
+    const dir = path.join(os.tmpdir(), 'H-PDF-Lite-update');
     fs.rmSync(dir, { recursive: true, force: true });
     fs.mkdirSync(dir, { recursive: true });
     const file = path.join(dir, installer.name);
@@ -986,7 +997,7 @@ async function printPdfVector(
 ): Promise<PrintResult> {
   const file = path.join(
     os.tmpdir(),
-    `h-pdf-print-${crypto.randomUUID()}.pdf`
+    `h-pdf-lite-print-${crypto.randomUUID()}.pdf`
   );
   let win: BrowserWindow | null = null;
   try {

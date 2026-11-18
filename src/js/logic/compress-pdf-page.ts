@@ -15,8 +15,6 @@ import { state } from '../state.js';
 import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
 import { createIcons, icons } from 'lucide';
-import { showWasmRequiredDialog } from '../utils/wasm-provider.js';
-import { isPyMuPDFAvailable } from '../utils/pymupdf-loader.js';
 import '../utils/setup-pdf-worker.js';
 
 type CustomSettings = CondenseCustomSettings;
@@ -50,9 +48,10 @@ async function compressFile(
   request: CompressRequest,
   status: (text: string) => void
 ): Promise<CompressOutcome | null> {
-  const photon = request.algorithm === 'photon';
+  // H-PDF-Lite ships only the local Photon compressor.
+  const photon = true;
   const outcome = await compressToTarget(file, {
-    algorithm: photon ? 'photon' : 'condense',
+    algorithm: 'photon',
     level: request.level,
     targetBytes: request.targetBytes,
     customSettings: request.customSettings,
@@ -308,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ) as HTMLSelectElement;
     if (compressionLevel) compressionLevel.value = 'balanced';
 
-    if (algorithmSelect) algorithmSelect.value = 'condense';
+    if (algorithmSelect) algorithmSelect.value = 'photon';
 
     if (targetSelect) targetSelect.value = '';
     targetCustom?.classList.add('hidden');
@@ -346,8 +345,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (convertToGrayscale) convertToGrayscale.checked = false;
     if (removeThumbnails) removeThumbnails.checked = true;
 
-    if (condenseInfo) condenseInfo.classList.remove('hidden');
-    if (photonInfo) photonInfo.classList.add('hidden');
+    if (condenseInfo) condenseInfo.classList.add('hidden');
+    if (photonInfo) photonInfo.classList.remove('hidden');
 
     updateUI();
   };
@@ -408,14 +407,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Check WASM availability for Condense mode
-      const algorithm = (
-        document.getElementById('compression-algorithm') as HTMLSelectElement
-      ).value;
-      if (algorithm === 'condense' && !isPyMuPDFAvailable()) {
-        showWasmRequiredDialog('pymupdf');
-        return;
-      }
+      // H-PDF-Lite: always use the local Photon compressor.
+      const algorithm = 'photon';
 
       const targetBytes = readTargetBytes();
       const request: CompressRequest = {
