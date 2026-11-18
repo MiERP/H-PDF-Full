@@ -173,7 +173,7 @@ export function showUpdateDialog(result: ShownResult): void {
   logo.alt = '';
   const titles = el('div', 'min-w-0 flex-1');
   const titleRow = el('div', 'flex flex-wrap items-center gap-2');
-  const title = el('h2', 'desktop-update-title', 'H-PDF');
+  const title = el('h2', 'desktop-update-title', 'H-PDF-Full');
   title.id = 'desktop-update-title';
   titleRow.append(
     title,

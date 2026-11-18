@@ -23,7 +23,14 @@ const desktopVersion = JSON.parse(
   readFileSync(resolve(root, 'desktop', 'package.json'), 'utf8')
 ).version;
 
-console.log('=== Building H-PDF Desktop Application ===');
+console.log('=== Building H-PDF-Full Desktop Application ===');
+
+// The Full build carries every engine. Fetch any that are not in the tree
+// yet before Vite and electron-builder run.
+execSync('node scripts/bundle-desktop-engines.mjs', {
+  cwd: root,
+  stdio: 'inherit',
+});
 
 // 1. Build web assets for desktop (tools only, no compression duplicates, no SW precache)
 console.log('1. Building frontend with Vite (desktop mode)...');
@@ -32,10 +39,10 @@ execSync('npx vite build', {
   stdio: 'inherit',
   env: {
     // Desktop branding defaults; override by setting these before running.
-    VITE_BRAND_NAME: 'H-PDF',
+    VITE_BRAND_NAME: 'H-PDF-Full',
     VITE_BRAND_LOGO: 'images/h-pdf-logo.svg',
     VITE_FOOTER_TEXT:
-      '© 2026 H-PDF · Phạm Văn Long - HAVS. Phần mềm miễn phí, nghiêm cấm mọi hành vi thương mại. Dựa trên BentoPDF (AGPL-3.0).',
+      '© 2026 H-PDF-Full · Phạm Văn Long - HAVS. Phần mềm miễn phí, nghiêm cấm mọi hành vi thương mại. Dựa trên BentoPDF (AGPL-3.0).',
     VITE_DEFAULT_LANGUAGE: 'vi',
     // OCR language packs offered as downloads (desktop/app/modules-manifest.json).
     VITE_TESSERACT_AVAILABLE_LANGUAGES: 'vie,eng',

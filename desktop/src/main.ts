@@ -59,11 +59,11 @@ if (!gotTheLock) {
   app.quit();
 }
 
-const APP_NAME = 'H-PDF';
+const APP_NAME = 'H-PDF-Full';
 const APP_ORIGIN = 'app://bentopdf';
-const RELEASES_PAGE = 'https://github.com/Long-HAVS/H-PDF/releases';
+const RELEASES_PAGE = 'https://github.com/Long-HAVS/H-PDF-Full/releases';
 const LATEST_RELEASE_API =
-  'https://api.github.com/repos/Long-HAVS/H-PDF/releases/latest';
+  'https://api.github.com/repos/Long-HAVS/H-PDF-Full/releases/latest';
 const UPDATE_CHECK_TIMEOUT_MS = 10_000;
 
 // The window that last had focus: where menu actions and files from the OS go.
@@ -819,7 +819,7 @@ ipcMain.handle(
     const installer = pendingInstaller;
     if (!installer || !canSelfUpdate()) return { ok: false, error: 'manual' };
 
-    const dir = path.join(os.tmpdir(), 'H-PDF-update');
+    const dir = path.join(os.tmpdir(), 'H-PDF-Full-update');
     fs.rmSync(dir, { recursive: true, force: true });
     fs.mkdirSync(dir, { recursive: true });
     const file = path.join(dir, installer.name);
@@ -986,7 +986,7 @@ async function printPdfVector(
 ): Promise<PrintResult> {
   const file = path.join(
     os.tmpdir(),
-    `h-pdf-print-${crypto.randomUUID()}.pdf`
+    `h-pdf-full-print-${crypto.randomUUID()}.pdf`
   );
   let win: BrowserWindow | null = null;
   try {

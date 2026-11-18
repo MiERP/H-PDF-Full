@@ -64,6 +64,12 @@ desktop/dist-web/
 desktop/dist/
 # Copied from public/ by scripts/build-desktop.mjs
 desktop/bundled-modules/cpdf/dist/
+# Engines fetched by scripts/bundle-desktop-engines.mjs for the Full build
+desktop/bundled-modules/cpdf/*
+!desktop/bundled-modules/cpdf/LICENSE.md
+desktop/bundled-modules/pymupdf/
+desktop/bundled-modules/ghostscript/
+desktop/bundled-modules/libreoffice/
 # Isolated worktrees
 .worktrees/
 # Bundled OCR files are fetched and hash-checked by the desktop build;
