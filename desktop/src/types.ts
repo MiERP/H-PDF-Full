@@ -1,0 +1,175 @@
+export type DesktopModuleName =
+  | 'pymupdf'
+  | 'ghostscript'
+  | 'libreoffice'
+  | 'cpdf'
+  | 'ocr'
+  | 'ocr-vie'
+  | 'ocr-eng';
+
+export interface ModuleManifestFileItem {
+  path: string;
+  url: string;
+  sha256?: string;
+  size?: number;
+}
+
+export interface ModuleManifestItem {
+  version: string;
+  bundled?: boolean;
+  mount: string;
+  probe: string;
+  label: Record<string, string>;
+  source: string;
+  kind: 'npm-tarball' | 'files';
+  url?: string;
+  integrity?: string; // e.g. sha512-...
+  files?: ModuleManifestFileItem[];
+  size?: number;
+}
+
+export interface ModulesManifest {
+  modules: Record<string, ModuleManifestItem>;
+}
+
+export interface ModuleProgress {
+  name: string;
+  label: string;
+  received: number;
+  total: number;
+}
+
+export interface FolderInstallResult {
+  /** False when the user closed the folder picker. */
+  picked: boolean;
+  installed: DesktopModuleName[];
+  failed: Array<{ name: DesktopModuleName; error: string }>;
+}
+
+export interface EnsureResult {
+  ok: boolean;
+  cancelled?: boolean;
+  error?: string;
+}
+
+export interface ModuleStatus {
+  name: DesktopModuleName;
+  label: Record<string, string>;
+  version: string;
+  source: string;
+  size: number;
+  installed: boolean;
+  /** Shipped inside the installer; cannot be removed. */
+  bundled: boolean;
+}
+
+export interface OpenedFile {
+  path: string;
+  name: string;
+  /** Recent files only: when it was last opened, in ms since the epoch. */
+  openedAt?: number;
+}
+
+export interface PrinterInfo {
+  name: string;
+  displayName: string;
+  isDefault: boolean;
+}
+
+export const PRINT_PAPER_SIZES = ['A3', 'A4', 'A5', 'Letter', 'Legal'] as const;
+export type PrintPaperSize = (typeof PRINT_PAPER_SIZES)[number];
+
+export const PRINT_DUPLEX_MODES = ['simplex', 'longEdge', 'shortEdge'] as const;
+export type PrintDuplexMode = (typeof PRINT_DUPLEX_MODES)[number];
+
+export interface PrintRequest {
+  deviceName: string;
+  copies: number;
+  paperSize: PrintPaperSize;
+  landscape: boolean;
+  duplexMode: PrintDuplexMode;
+  color: boolean;
+  /** Keep content inside the printer's printable area. */
+  printableArea: boolean;
+  /**
+   * The PDF itself. When given, it is printed through Chromium's PDF viewer,
+   * which keeps text and lines as vectors, instead of the window.
+   */
+  pdf?: Uint8Array;
+}
+
+export interface PrintResult {
+  success: boolean;
+  error?: string;
+}
+
+/** Result of asking GitHub for the latest release. */
+export type UpdateCheckResult =
+  | {
+      ok: true;
+      current: string;
+      latest: string;
+      newer: boolean;
+      url: string;
+      /** The app can download and run the new installer itself. */
+      canInstall?: boolean;
+    }
+  | { ok: false; current: string; error: 'network' | 'no-release' };
+
+/** "Update and restart": false when it could not, and why. */
+export type InstallUpdateResult =
+  | { ok: true }
+  | { ok: false; error: 'manual' | 'download' | 'verify' | 'launch' };
+
+export interface UpdateProgress {
+  received: number;
+  total: number;
+}
+
+/** A file the app just finished saving through a download. */
+export interface SavedDownload {
+  path: string;
+  name: string;
+  /** A PDF, which the viewer can show. */
+  isPdf: boolean;
+  /** A document type that is safe to hand to its default program. */
+  canOpen: boolean;
+  /** It replaced the file the tool was working on. */
+  overwritten?: boolean;
+  /** Replacing that file failed (locked by another program); saved next to it. */
+  overwriteFailed?: boolean;
+}
+
+/** Where a tool's next PDF download goes (see SET_SAVE_TARGET). */
+export type SaveMode = 'overwrite' | 'saveAs';
+
+export const IPC_CHANNELS = {
+  GET_MODULES_STATUS: 'bento:get-modules-status',
+  REMOVE_MODULE: 'bento:remove-module',
+  FILE_OPENED: 'bento:file-opened',
+  FIND_TOOL: 'bento:find-tool',
+  TAKE_OPENED_FILE: 'bento:take-opened-file',
+  READ_OPENED_FILE: 'bento:read-opened-file',
+  ENSURE_MODULES: 'bento:ensure-modules',
+  MODULE_PROGRESS: 'bento:module-progress',
+  CANCEL_MODULE_DOWNLOADS: 'bento:cancel-module-downloads',
+  GET_PLATFORM: 'bento:get-platform',
+  OPEN_EXTERNAL: 'bento:open-external',
+  SHOW_SAVE_DIALOG: 'bento:show-save-dialog',
+  LIST_PRINTERS: 'bento:list-printers',
+  PRINT: 'bento:print',
+  SET_LANGUAGE: 'bento:set-language',
+  REGISTER_PICKED_FILE: 'bento:register-picked-file',
+  OPEN_IN_NEW_WINDOW: 'bento:open-in-new-window',
+  CHECK_UPDATE: 'bento:check-update',
+  INSTALL_UPDATE: 'bento:install-update',
+  UPDATE_PROGRESS: 'bento:update-progress',
+  DOWNLOAD_SAVED: 'bento:download-saved',
+  SHOW_SAVED_IN_FOLDER: 'bento:show-saved-in-folder',
+  OPEN_SAVED_FILE: 'bento:open-saved-file',
+  NOTE_RECENT_FILE: 'bento:note-recent-file',
+  LIST_RECENT_FILES: 'bento:list-recent-files',
+  CLEAR_RECENT_FILES: 'bento:clear-recent-files',
+  SET_SAVE_TARGET: 'bento:set-save-target',
+  INSTALL_MODULES_FROM_FOLDER: 'bento:install-modules-from-folder',
+} as const;

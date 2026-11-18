@@ -1,0 +1,91 @@
+{
+  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+  "appId": "com.longhavs.hpdf",
+  "productName": "H-PDF",
+  "copyright": "Copyright © 2026 Phạm Văn Long - HAVS. Based on BentoPDF © BentoPDF Contributors (AGPL-3.0)",
+  "directories": {
+    "app": "desktop",
+    "output": "release",
+    "buildResources": "build-resources"
+  },
+  "files": ["dist/**/*", "dist-web/**/*", "app/**/*", "bundled-modules/**/*"],
+  "extraResources": [
+    {
+      "from": "LICENSE",
+      "to": "LICENSE.txt"
+    },
+    {
+      "from": "desktop/bundled-modules/cpdf/LICENSE.md",
+      "to": "licenses/coherentpdf-LICENSE.md"
+    },
+    {
+      "from": "desktop/bundled-modules/ocr",
+      "to": "licenses/ocr",
+      "filter": ["LICENSE*"]
+    },
+    {
+      "from": "desktop/bundled-modules/ocr-vie/LICENSE-tessdata_best.txt",
+      "to": "licenses/ocr/LICENSE-tessdata_best.txt"
+    }
+  ],
+  "npmRebuild": false,
+  "nodeGypRebuild": false,
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "build-resources/icon.png",
+    "fileAssociations": [
+      {
+        "ext": "pdf",
+        "name": "PDF Document",
+        "role": "Editor"
+      }
+    ]
+  },
+  "nsis": {
+    "artifactName": "${productName}-${version}-Windows-x64-Setup.${ext}",
+    "oneClick": false,
+    "perMachine": false,
+    "allowElevation": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "H-PDF",
+    "uninstallDisplayName": "H-PDF"
+  },
+  "portable": {
+    "artifactName": "${productName}-${version}-Windows-x64-Portable.${ext}"
+  },
+  "mac": {
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["universal", "x64", "arm64"]
+      }
+    ],
+    "icon": "build-resources/icon.png",
+    "category": "public.app-category.productivity"
+  },
+  "linux": {
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": ["x64"]
+      },
+      {
+        "target": "deb",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "build-resources/icon.png",
+    "category": "Office;Utility;"
+  }
+}

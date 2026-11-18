@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <meta
+      name="title"
+      content="Split PDF Online Free - Extract Pages from a PDF | BentoPDF"
+    />
+    <meta
+      name="description"
+      content="Extract a range of pages into a new PDF. Free, no uploads, no signup. Runs entirely in your browser."
+    />
+    <meta
+      name="keywords"
+      content="split pdf, divide pdf, extract pages, separate pdf"
+    />
+    <meta name="author" content="BentoPDF" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.bentopdf.com/split-pdf" />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.bentopdf.com/split-pdf" />
+    <meta
+      property="og:title"
+      content="Split PDF Online Free - Extract Pages from a PDF | BentoPDF"
+    />
+    <meta
+      property="og:description"
+      content="Extract a range of pages into a new PDF. Free, no uploads, no signup. Runs entirely in your browser."
+    />
+    <meta
+      property="og:image"
+      content="https://www.bentopdf.com/images/og-split-pdf.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="BentoPDF" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://www.bentopdf.com/split-pdf" />
+    <meta
+      name="twitter:title"
+      content="Split PDF Online Free - Extract Pages from a PDF | BentoPDF"
+    />
+    <meta
+      name="twitter:description"
+      content="Extract a range of pages into a new PDF. Free, no uploads, no signup. Runs entirely in your browser."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.bentopdf.com/images/twitter-split-pdf.png"
+    />
+    <meta name="twitter:site" content="@BentoPDF" />
+
+    <!-- Mobile Web App -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Split PDF" />
+
+    <title>Split PDF Online Free - Extract Pages from a PDF | BentoPDF</title>
+
+    <link href="/src/css/styles.css" rel="stylesheet" />
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="/images/favicon-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="/images/favicon-512x512.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/apple-touch-icon.png"
+    />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  </head>
+
+  <body class="antialiased bg-gray-900">
+    {{> navbar }}
+
+    <div
+      id="uploader"
+      class="min-h-screen flex flex-col items-center justify-start py-12 p-4 bg-gray-900"
+    >
+      <div
+        id="tool-uploader"
+        class="bg-gray-800 rounded-xl shadow-xl px-4 py-8 md:p-8 max-w-2xl w-full text-gray-200 border border-gray-700"
+      >
+        <button
+          id="back-to-tools"
+          class="flex items-center gap-2 text-indigo-300 hover:text-indigo-400 mb-6 font-semibold"
+        >
+          <i data-lucide="arrow-left" class="cursor-pointer"></i>
+          <span class="cursor-pointer" data-i18n="tools.backToTools">
+            Back to Tools
+          </span>
+        </button>
+
+        <h1
+          class="text-2xl font-bold text-white mb-2"
+          data-i18n="tools:splitPdf.name"
+        >
+          Split PDF
+        </h1>
+        <p class="text-gray-400 mb-6" data-i18n="tools:splitPdf.subtitle">
+          Extract a range of pages into a new PDF.
+        </p>
+
+        <!-- Drop Zone for Main PDF Upload -->
+        <div
+          id="drop-zone"
+          class="relative flex flex-col items-center justify-center w-full h-48 md:h-64 border-2 border-dashed border-gray-600 rounded-xl cursor-pointer bg-gray-900 hover:bg-gray-700 transition-colors duration-300"
+        >
+          <div class="flex flex-col items-center justify-center pt-5 pb-6">
+            <i class="ph ph-upload-simple text-4xl mb-3 text-gray-400"></i>
+            <p class="mb-2 text-sm text-gray-400">
+              <span class="font-semibold" data-i18n="upload.clickToSelect"
+                >Click to select a file</span
+              >
+              <span data-i18n="upload.orDragAndDrop">or drag and drop</span>
+            </p>
+            <p class="text-xs text-gray-500" data-i18n="upload.hints.singlePdf">
+              A single PDF file
+            </p>
+            <p class="text-xs text-gray-500" data-i18n="upload.filesNeverLeave">
+              Your files never leave your device.
+            </p>
+          </div>
+          <input
+            id="file-input"
+            type="file"
+            class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+            accept="application/pdf"
+          />
+        </div>
+
+        <div id="file-display-area" class="mt-4 space-y-2"></div>
+
+        <div id="split-options" class="hidden mt-6 ocr-options">
+          <section class="ocr-section">
+            <h3 class="ocr-section-title" data-i18n="tools:splitPdf.howTitle">
+              How to split
+            </h3>
+            <select id="split-mode" class="hidden" aria-hidden="true">
+              <option value="range">By page range</option>
+              <option value="n-times">Every N pages</option>
+              <option value="all">Every page apart</option>
+              <option value="even-odd">Odd / even pages</option>
+              <option value="bookmarks">By bookmarks</option>
+              <option value="visual">Pick visually</option>
+            </select>
+            <div class="split-modes" role="radiogroup">
+              <label class="split-mode-card">
+                <input
+                  type="radio"
+                  name="split-mode-card"
+                  value="range"
+                  checked
+                />
+                <i class="ph ph-brackets-square"></i>
+                <span
+                  class="split-mode-title"
+                  data-i18n="tools:splitPdf.modeRange"
+                  >By page range</span
+                >
+                <span
+                  class="split-mode-desc"
+                  data-i18n="tools:splitPdf.modeRangeDesc"
+                  >One file per range, e.g. 1-3, 4-8</span
+                >
+              </label>
+              <label class="split-mode-card">
+                <input type="radio" name="split-mode-card" value="n-times" />
+                <i class="ph ph-stack"></i>
+                <span
+                  class="split-mode-title"
+                  data-i18n="tools:splitPdf.modeEvery"
+                  >Every N pages</span
+                >
+                <span
+                  class="split-mode-desc"
+                  data-i18n="tools:splitPdf.modeEveryDesc"
+                  >12 pages, N = 5: 3 files</span
+                >
+              </label>
+              <label class="split-mode-card">
+                <input type="radio" name="split-mode-card" value="all" />
+                <i class="ph ph-files"></i>
+                <span
+                  class="split-mode-title"
+                  data-i18n="tools:splitPdf.modeAll"
+                  >Every page apart</span
+                >
+                <span
+                  class="split-mode-desc"
+                  data-i18n="tools:splitPdf.modeAllDesc"
+                  >One file per page</span
+                >
+              </label>
+              <label class="split-mode-card">
+                <input type="radio" name="split-mode-card" value="even-odd" />
+                <i class="ph ph-columns"></i>
+                <span
+                  class="split-mode-title"
+                  data-i18n="tools:splitPdf.modeOddEven"
+                  >Odd / even pages</span
+                >
+                <span
+                  class="split-mode-desc"
+                  data-i18n="tools:splitPdf.modeOddEvenDesc"
+                  >Odd or even pages into one file</span
+                >
+              </label>
+              <label class="split-mode-card">
+                <input type="radio" name="split-mode-card" value="bookmarks" />
+                <i class="ph ph-bookmark-simple"></i>
+                <span
+                  class="split-mode-title"
+                  data-i18n="tools:splitPdf.modeBookmarks"
+                  >By bookmarks</span
+                >
+                <span
+                  class="split-mode-desc"
+                  data-i18n="tools:splitPdf.modeBookmarksDesc"
+                  >One file per bookmark</span
+                >
+              </label>
+              <label class="split-mode-card">
+                <input type="radio" name="split-mode-card" value="visual" />
+                <i class="ph ph-cursor-click"></i>
+                <span
+                  class="split-mode-title"
+                  data-i18n="tools:splitPdf.modeVisual"
+                  >Pick visually</span
+                >
+                <span
+                  class="split-mode-desc"
+                  data-i18n="tools:splitPdf.modeVisualDesc"
+                  >Click the pages you want</span
+                >
+              </label>
+            </div>
+          </section>
+
+          <section id="range-panel" class="ocr-section">
+            <label
+              for="page-range"
+              class="ocr-section-title"
+              data-i18n="tools:splitPdf.rangeLabel"
+              >Page ranges</label
+            >
+            <input
+              type="text"
+              id="page-range"
+              class="ocr-input"
+              placeholder="e.g. 1-3, 4-8, 9-end"
+              data-i18n-placeholder="tools:splitPdf.rangePlaceholder"
+            />
+            <p id="range-error" class="merge-row-error" hidden></p>
+            <div data-page-range-help="required"></div>
+          </section>
+
+          <section id="even-odd-panel" class="ocr-section hidden">
+            <div class="ocr-segment split-two">
+              <label>
+                <input
+                  id="split-odd"
+                  type="radio"
+                  value="odd"
+                  name="even-odd-choice"
+                  checked
+                />
+                <span data-i18n="tools:splitPdf.odd">Odd pages (1, 3, 5…)</span>
+              </label>
+              <label>
+                <input
+                  id="split-even"
+                  type="radio"
+                  value="even"
+                  name="even-odd-choice"
+                />
+                <span data-i18n="tools:splitPdf.even"
+                  >Even pages (2, 4, 6…)</span
+                >
+              </label>
+            </div>
+          </section>
+
+          <div id="all-pages-panel" class="hidden"></div>
+
+          <section id="visual-select-panel" class="ocr-section hidden">
+            <p class="ocr-section-hint" data-i18n="tools:splitPdf.visualHint">
+              Click a page to pick it or leave it out. Shift+click picks a run
+              of pages.
+            </p>
+            <div id="page-selector-grid" class="page-picker"></div>
+          </section>
+
+          <section id="bookmarks-panel" class="ocr-section hidden">
+            <label
+              for="bookmark-level"
+              class="ocr-section-title"
+              data-i18n="tools:splitPdf.bookmarkLevel"
+              >Bookmark level</label
+            >
+            <select id="bookmark-level" class="ocr-input">
+              <option value="all" selected data-i18n="tools:splitPdf.levelAll">
+                All levels
+              </option>
+              <option value="0" data-i18n="tools:splitPdf.level0">
+                Level 1 (outermost)
+              </option>
+              <option value="1" data-i18n="tools:splitPdf.level1">
+                Level 2
+              </option>
+              <option value="2" data-i18n="tools:splitPdf.level2">
+                Level 3
+              </option>
+              <option value="3" data-i18n="tools:splitPdf.level3">
+                Level 4
+              </option>
+            </select>
+            <p class="ocr-section-hint" data-i18n="tools:splitPdf.bookmarkHint">
+              Splits where each bookmark starts. A file without bookmarks cannot
+              be split this way.
+            </p>
+          </section>
+
+          <section id="n-times-panel" class="ocr-section hidden">
+            <label
+              for="split-n-value"
+              class="ocr-section-title"
+              data-i18n="tools:splitPdf.everyLabel"
+              >Pages per file</label
+            >
+            <input
+              type="number"
+              id="split-n-value"
+              min="1"
+              value="5"
+              class="ocr-input split-n"
+            />
+            <p id="n-times-warning" class="hidden">
+              <span id="n-times-warning-text"></span>
+            </p>
+          </section>
+
+          <section id="output-mode-wrapper" class="ocr-section">
+            <h3
+              class="ocr-section-title"
+              data-i18n="tools:splitPdf.outputTitle"
+            >
+              Result
+            </h3>
+            <label class="tool-toggle">
+              <input
+                id="output-separate"
+                type="radio"
+                value="separate"
+                name="split-output-mode"
+                checked
+              />
+              <span>
+                <span id="output-separate-label" class="tool-toggle-title"
+                  >One file per range</span
+                >
+                <span
+                  class="tool-toggle-hint"
+                  data-i18n="tools:splitPdf.outputZipHint"
+                  >Several files are downloaded together as a ZIP.</span
+                >
+              </span>
+            </label>
+            <label class="tool-toggle">
+              <input
+                id="output-combine"
+                type="radio"
+                value="combine"
+                name="split-output-mode"
+              />
+              <span>
+                <span
+                  class="tool-toggle-title"
+                  data-i18n="tools:splitPdf.outputCombine"
+                  >All in one PDF</span
+                >
+              </span>
+            </label>
+          </section>
+
+          <div id="split-plan" class="split-plan" aria-live="polite"></div>
+
+          <button id="process-btn" class="btn-gradient w-full mt-6">
+            Split PDF
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loader Modal -->
+    <div
+      id="loader-modal"
+      class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-gray-800 p-8 rounded-lg flex flex-col items-center gap-4 border border-gray-700 shadow-xl"
+      >
+        <div class="solid-spinner"></div>
+        <p id="loader-text" class="text-white text-lg font-medium">
+          Processing...
+        </p>
+      </div>
+    </div>
+
+    <!-- Alert Modal -->
+    <div
+      id="alert-modal"
+      class="fixed inset-0 bg-gray-900 bg-opacity-90 flex items-center justify-center z-50 hidden"
+    >
+      <div
+        class="bg-gray-800 rounded-lg shadow-xl p-6 max-w-sm w-full border border-gray-700"
+      >
+        <h3
+          id="alert-title"
+          class="text-xl font-bold text-white mb-2"
+          data-i18n="alert.title"
+          data-i18n="alert.title"
+        >
+          Alert
+        </h3>
+        <p id="alert-message" class="text-gray-300 mb-6"></p>
+        <button
+          id="alert-ok"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <section class="max-w-4xl mx-auto px-4 py-12">
+      <h2
+        class="text-2xl md:text-3xl font-bold text-white mb-8 text-center"
+        data-i18n="howItWorks.title"
+      >
+        How It Works
+      </h2>
+      <div class="space-y-6">
+        <div class="flex items-start gap-4">
+          <div
+            class="flex-shrink-0 w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold"
+          >
+            1
+          </div>
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-white mb-1">Upload PDF</h3>
+            <p class="text-gray-400">
+              Select the PDF file you want to split or extract pages from
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div
+            class="flex-shrink-0 w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold"
+          >
+            2
+          </div>
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-white mb-1">
+              Choose Split Method
+            </h3>
+            <p class="text-gray-400">
+              Select specific pages, page ranges, or split into individual pages
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div
+            class="flex-shrink-0 w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold"
+          >
+            3
+          </div>
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-white mb-1">
+              Preview & Select
+            </h3>
+            <p class="text-gray-400">
+              View page thumbnails and select exactly which pages you want
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div
+            class="flex-shrink-0 w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold"
+          >
+            4
+          </div>
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-white mb-1">
+              Split & Download
+            </h3>
+            <p class="text-gray-400">
+              Download extracted pages as separate PDFs or as a ZIP file
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Tools Section -->
+    <section class="max-w-6xl mx-auto px-4 py-12">
+      <h2
+        class="text-2xl md:text-3xl font-bold text-white mb-6 text-center"
+        data-i18n="relatedTools.title"
+      >
+        Related PDF Tools
+      </h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <a
+          href="merge-pdf.html"
+          class="block bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700"
+        >
+          <h3 class="text-white font-semibold mb-1">Merge PDF</h3>
+          <p class="text-gray-400 text-sm">Free online merge PDF tool</p>
+        </a>
+        <a
+          href="extract-pages.html"
+          class="block bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700"
+        >
+          <h3 class="text-white font-semibold mb-1">Extract Pages</h3>
+          <p class="text-gray-400 text-sm">Free online extract pages tool</p>
+        </a>
+        <a
+          href="organize-pdf.html"
+          class="block bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700"
+        >
+          <h3 class="text-white font-semibold mb-1">Organize PDF</h3>
+          <p class="text-gray-400 text-sm">Free online organize PDF tool</p>
+        </a>
+        <a
+          href="compress-pdf.html"
+          class="block bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700"
+        >
+          <h3 class="text-white font-semibold mb-1">Compress PDF</h3>
+          <p class="text-gray-400 text-sm">Free online compress PDF tool</p>
+        </a>
+        <a
+          href="delete-pages.html"
+          class="block bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700"
+        >
+          <h3 class="text-white font-semibold mb-1">Delete Pages</h3>
+          <p class="text-gray-400 text-sm">Free online delete pages tool</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="max-w-4xl mx-auto px-4 py-12">
+      <h2
+        class="text-2xl md:text-3xl font-bold text-white mb-6 text-center"
+        data-i18n="faq.sectionTitle"
+      >
+        Frequently Asked Questions
+      </h2>
+      <div class="faq-list">
+        <details class="faq-d">
+          <summary class="faq-d-q">
+            How do I extract a range of pages from a PDF?
+            <i data-lucide="plus" class="faq-d-icon"></i>
+          </summary>
+          <p class="faq-d-a">
+            Choose Extract by Page Range and type the pages you want, such as
+            1-5, 8, 11-13. By default the selected pages are combined into one
+            PDF; switch the output to One PDF per range and each comma-separated
+            range becomes its own file inside split-pages.zip.
+          </p>
+        </details>
+        <details class="faq-d">
+          <summary class="faq-d-q">
+            Can I split a PDF into one file per page?
+            <i data-lucide="plus" class="faq-d-icon"></i>
+          </summary>
+          <p class="faq-d-a">
+            Yes. Pick Split All Pages into Separate Files and every page is
+            written to its own PDF, named page-1.pdf, page-2.pdf, and so on,
+            bundled in split-pages.zip.
+          </p>
+        </details>
+        <details class="faq-d">
+          <summary class="faq-d-q">
+            How do I split a PDF every N pages?
+            <i data-lucide="plus" class="faq-d-icon"></i>
+          </summary>
+          <p class="faq-d-a">
+            Choose Split N Times and enter the chunk size. A 23-page file split
+            every 5 pages produces five PDFs, and the tool warns you beforehand
+            that the last one will hold only 3 pages. The files download as
+            split-n-times.zip.
+          </p>
+        </details>
+        <details class="faq-d">
+          <summary class="faq-d-q">
+            Can I split a PDF by chapters or bookmarks?
+            <i data-lucide="plus" class="faq-d-icon"></i>
+          </summary>
+          <p class="faq-d-a">
+            Yes, if the PDF has bookmarks. Choose Split by Bookmarks and a level
+            (All, or level 0 through 3), and a new file starts at each
+            bookmark's page, giving you split-1.pdf, split-2.pdf, and so on in
+            split-by-bookmarks.zip. A PDF with no bookmarks at the chosen level
+            shows an error instead.
+          </p>
+        </details>
+        <details class="faq-d">
+          <summary class="faq-d-q">
+            How do I separate odd and even pages?
+            <i data-lucide="plus" class="faq-d-icon"></i>
+          </summary>
+          <p class="faq-d-a">
+            Select Split by Even/Odd Pages and pick even or odd; the matching
+            pages are extracted into one PDF in their original order. This is a
+            common step for double-sided printing on a single-sided printer.
+          </p>
+        </details>
+        <details class="faq-d">
+          <summary class="faq-d-q">
+            Can I pick pages visually instead of typing numbers?
+            <i data-lucide="plus" class="faq-d-icon"></i>
+          </summary>
+          <p class="faq-d-a">
+            Yes. Select Pages Visually shows a thumbnail of every page; click
+            the ones you want and they're extracted in page order. Combined
+            output gives one PDF, and the separate option gives one file per
+            page in a ZIP.
+          </p>
+        </details>
+        <details class="faq-d">
+          <summary class="faq-d-q">
+            Does splitting reduce the quality of the pages?
+            <i data-lucide="plus" class="faq-d-icon"></i>
+          </summary>
+          <p class="faq-d-a">
+            No. Pages are copied by QPDF without re-rendering, so text, images,
+            fonts, and vector graphics stay exactly as they were in the
+            original.
+          </p>
+        </details>
+        <details class="faq-d">
+          <summary class="faq-d-q">
+            Is my PDF uploaded when I split it?
+            <i data-lucide="plus" class="faq-d-icon"></i>
+          </summary>
+          <p class="faq-d-a">
+            No. The page extraction and ZIP packaging run in your browser, and
+            the resulting files are saved directly from your device.
+          </p>
+        </details>
+      </div>
+    </section>
+    {{> footer }}
+    <script type="module" src="/src/js/utils/lucide-init.ts"></script>
+    <script type="module" src="/src/js/utils/full-width.ts"></script>
+    <script type="module" src="/src/js/utils/simple-mode-footer.ts"></script>
+    <script type="module" src="/src/js/logic/split-pdf-page.ts"></script>
+    <script type="module" src="/src/js/mobileMenu.ts"></script>
+    <script type="module" src="/src/js/main.ts"></script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Split PDF - BentoPDF",
+        "applicationCategory": "PDF Tool",
+        "operatingSystem": "Any - Web Browser",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to split online",
+        "description": "Learn how to split using BentoPDF",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "position": 1,
+            "name": "Upload File",
+            "text": "Click or drag and drop your file"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 2,
+            "name": "Process",
+            "text": "Click the process button"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 3,
+            "name": "Download",
+            "text": "Download your processed file"
+          }
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.bentopdf.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Split PDF",
+            "item": "https://www.bentopdf.com/split-pdf"
+          }
+        ]
+      }
+    </script>
+  </body>
+</html>

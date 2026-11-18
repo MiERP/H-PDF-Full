@@ -1,0 +1,18 @@
+{
+  "name": "h-pdf",
+  "version": "1.0.0",
+  "description": "H-PDF - privacy-first offline PDF toolbox by Phạm Văn Long - HAVS, based on BentoPDF",
+  "author": "Phạm Văn Long - HAVS",
+  "license": "AGPL-3.0-only",
+  "homepage": "https://github.com/Long-HAVS/H-PDF",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Long-HAVS/H-PDF.git"
+  },
+  "private": true,
+  "type": "module",
+  "main": "dist/main.js",
+  "dependencies": {
+    "tar": "^7.4.3"
+  }
+}

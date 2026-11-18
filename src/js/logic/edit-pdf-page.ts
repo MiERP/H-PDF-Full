@@ -1,0 +1,304 @@
+// Logic for PDF Editor Page
+import { createIcons, icons } from 'lucide';
+import { showAlert, showLoader, hideLoader } from '../ui.js';
+import { formatBytes, downloadFile } from '../utils/helpers.js';
+import { deduplicateFileName } from '../utils/deduplicate-filename.js';
+import { batchDecryptIfNeeded } from '../utils/password-prompt.js';
+import { exportEmbedEditorPdf, startEmbedEditor } from './embed-editor.js';
+
+import type { DocManagerPlugin } from '@/types';
+
+let docManagerPlugin: DocManagerPlugin | null = null;
+let isViewerInitialized = false;
+let currentFileName = 'document.pdf';
+const fileEntryMap = new Map<string, HTMLElement>();
+// Each open document's name in the viewer, which is also its tab label:
+// the file name, with " (1)" added when that name is already open.
+const openNames = new Set<string>();
+const nameById = new Map<string, string>();
+
+// The open documents' names, for the desktop app: it saves over the original
+// file only while the editor holds that one document.
+function listOpenDocuments(): void {
+  document.body.dataset.editorDocuments = JSON.stringify([
+    ...nameById.values(),
+  ]);
+}
+
+function resetViewer() {
+  const pdfWrapper = document.getElementById('embed-pdf-wrapper');
+  const pdfContainer = document.getElementById('embed-pdf-container');
+  const downloadBtn = document.getElementById('download-edited-pdf');
+  const fileDisplayArea = document.getElementById('file-display-area');
+  const fileInput = document.getElementById('file-input') as HTMLInputElement;
+  if (pdfContainer) pdfContainer.textContent = '';
+  if (pdfWrapper) pdfWrapper.classList.add('hidden');
+  if (downloadBtn) downloadBtn.classList.add('hidden');
+  if (fileDisplayArea) fileDisplayArea.innerHTML = '';
+  if (fileInput) fileInput.value = '';
+  docManagerPlugin = null;
+  isViewerInitialized = false;
+  fileEntryMap.clear();
+  openNames.clear();
+  nameById.clear();
+  listOpenDocuments();
+}
+
+function removeFileEntry(documentId: string) {
+  const entry = fileEntryMap.get(documentId);
+  if (entry) {
+    entry.remove();
+    fileEntryMap.delete(documentId);
+  }
+  if (fileEntryMap.size === 0) {
+    resetViewer();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializePage);
+} else {
+  initializePage();
+}
+
+function initializePage() {
+  createIcons({ icons });
+
+  const fileInput = document.getElementById('file-input') as HTMLInputElement;
+  const dropZone = document.getElementById('drop-zone');
+
+  if (fileInput) {
+    fileInput.addEventListener('change', handleFileUpload);
+  }
+
+  if (dropZone) {
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('border-indigo-500');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('border-indigo-500');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('border-indigo-500');
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) {
+        handleFiles(files);
+      }
+    });
+
+    fileInput?.addEventListener('click', () => {
+      if (fileInput) fileInput.value = '';
+    });
+  }
+
+  document.getElementById('back-to-tools')?.addEventListener('click', () => {
+    window.location.href = import.meta.env.BASE_URL;
+  });
+}
+
+async function handleFileUpload(e: Event) {
+  const input = e.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    await handleFiles(input.files);
+  }
+}
+
+async function handleFiles(files: FileList) {
+  const pdfFiles = Array.from(files).filter(
+    (f) => f.type === 'application/pdf'
+  );
+  if (pdfFiles.length === 0) {
+    showAlert('Invalid File', 'Please upload a valid PDF file.');
+    return;
+  }
+
+  showLoader('Loading PDF Editor...');
+
+  try {
+    const pdfWrapper = document.getElementById('embed-pdf-wrapper');
+    const pdfContainer = document.getElementById('embed-pdf-container');
+    const fileDisplayArea = document.getElementById('file-display-area');
+
+    if (!pdfWrapper || !pdfContainer || !fileDisplayArea) return;
+
+    hideLoader();
+    const decryptedFiles = await batchDecryptIfNeeded(pdfFiles);
+    showLoader('Loading PDF Editor...');
+
+    if (decryptedFiles.length === 0) {
+      hideLoader();
+      return;
+    }
+    const names = decryptedFiles.map((file) =>
+      deduplicateFileName(file.name, openNames)
+    );
+
+    if (!isViewerInitialized) {
+      const firstFile = decryptedFiles[0];
+      currentFileName = firstFile.name;
+      const firstBuffer = await firstFile.arrayBuffer();
+
+      pdfContainer.textContent = '';
+      pdfWrapper.classList.remove('hidden');
+
+      const started = await startEmbedEditor(pdfContainer, {
+        fileName: firstFile.name,
+        tabBar: 'always',
+      });
+
+      const registry = started.registry;
+      docManagerPlugin = registry
+        .getPlugin('document-manager')
+        .provides() as unknown as DocManagerPlugin;
+
+      // The viewer reports a closed document by its id alone.
+      docManagerPlugin.onDocumentClosed((data) => {
+        const docId = typeof data === 'string' ? data : data?.id || '';
+        openNames.delete(nameById.get(docId) ?? '');
+        nameById.delete(docId);
+        listOpenDocuments();
+        removeFileEntry(docId);
+      });
+
+      docManagerPlugin.onDocumentOpened(
+        (data: { id?: string; name?: string }) => {
+          const docId = data?.id;
+          const docKey = data?.name;
+          if (!docId) return;
+          if (docKey) nameById.set(docId, docKey);
+          listOpenDocuments();
+          const pendingEntry = fileDisplayArea.querySelector(
+            `[data-pending-name="${CSS.escape(docKey)}"]`
+          ) as HTMLElement;
+          if (pendingEntry) {
+            pendingEntry.removeAttribute('data-pending-name');
+            fileEntryMap.set(docId, pendingEntry);
+            const removeBtn = pendingEntry.querySelector(
+              '[data-remove-btn]'
+            ) as HTMLElement;
+            if (removeBtn) {
+              removeBtn.onclick = () => {
+                docManagerPlugin.closeDocument(docId);
+              };
+            }
+          }
+        }
+      );
+
+      addFileEntries(fileDisplayArea, decryptedFiles, names);
+
+      docManagerPlugin.openDocumentBuffer({
+        buffer: firstBuffer,
+        name: names[0],
+        autoActivate: true,
+      });
+
+      for (let i = 1; i < decryptedFiles.length; i++) {
+        const buffer = await decryptedFiles[i].arrayBuffer();
+        docManagerPlugin.openDocumentBuffer({
+          buffer,
+          name: names[i],
+          autoActivate: false,
+        });
+      }
+
+      isViewerInitialized = true;
+
+      let downloadBtn = document.getElementById('download-edited-pdf');
+      if (!downloadBtn) {
+        downloadBtn = document.createElement('button');
+        downloadBtn.id = 'download-edited-pdf';
+        downloadBtn.className = 'btn-gradient w-full mt-6';
+        downloadBtn.textContent = 'Download Edited PDF';
+        pdfWrapper.appendChild(downloadBtn);
+      }
+      downloadBtn.classList.remove('hidden');
+
+      downloadBtn.onclick = async () => {
+        try {
+          const outBytes = await exportEmbedEditorPdf(registry);
+          const blob = new Blob([new Uint8Array(outBytes)], {
+            type: 'application/pdf',
+          });
+          downloadFile(blob, currentFileName);
+        } catch (err) {
+          console.error('Error downloading PDF:', err);
+          showAlert('Error', 'Failed to download the edited PDF.');
+        }
+      };
+
+      const backBtn = document.getElementById('back-to-tools');
+      if (backBtn) {
+        const newBackBtn = backBtn.cloneNode(true);
+        backBtn.parentNode?.replaceChild(newBackBtn, backBtn);
+
+        newBackBtn.addEventListener('click', () => {
+          window.location.href = import.meta.env.BASE_URL;
+        });
+      }
+    } else {
+      addFileEntries(fileDisplayArea, decryptedFiles, names);
+
+      for (let i = 0; i < decryptedFiles.length; i++) {
+        const buffer = await decryptedFiles[i].arrayBuffer();
+        docManagerPlugin.openDocumentBuffer({
+          buffer,
+          name: names[i],
+          autoActivate: true,
+        });
+      }
+    }
+  } catch (error) {
+    console.error('Error loading PDF Editor:', error);
+    showAlert('Error', 'Failed to load the PDF Editor.');
+  } finally {
+    hideLoader();
+  }
+}
+
+function addFileEntries(
+  fileDisplayArea: HTMLElement,
+  files: File[],
+  names: string[]
+) {
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const fileDiv = document.createElement('div');
+    fileDiv.className =
+      'flex items-center justify-between bg-gray-700 p-3 rounded-lg';
+    fileDiv.setAttribute('data-pending-name', names[i]);
+
+    const infoContainer = document.createElement('div');
+    infoContainer.className = 'flex flex-col flex-1 min-w-0';
+
+    const nameSpan = document.createElement('div');
+    nameSpan.className = 'truncate font-medium text-gray-200 text-sm mb-1';
+    nameSpan.textContent = file.name;
+
+    const metaSpan = document.createElement('div');
+    metaSpan.className = 'text-xs text-gray-400';
+    metaSpan.textContent = formatBytes(file.size);
+
+    infoContainer.append(nameSpan, metaSpan);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'ml-4 text-red-400 hover:text-red-300 flex-shrink-0';
+    removeBtn.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4"></i>';
+    removeBtn.setAttribute('data-remove-btn', 'true');
+    removeBtn.onclick = () => {
+      fileDiv.remove();
+      if (fileDisplayArea.children.length === 0) {
+        resetViewer();
+      }
+    };
+
+    fileDiv.append(infoContainer, removeBtn);
+    fileDisplayArea.appendChild(fileDiv);
+  }
+
+  createIcons({ icons });
+}
