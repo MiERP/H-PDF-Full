@@ -8,9 +8,10 @@
  *   1. bump the version everywhere (scripts/version.mjs)
  *   2. typecheck and test
  *   3. build the Windows installer/portable
- *   4. commit the version files and tag the commit
+ *   4. commit the version files
  *   5. attach the installers, SHA-256 sums and a source archive to a GitHub
- *      release (the release tag is what the app's update check reads)
+ *      release. The release tag is created on GitHub at the pushed commit;
+ *      the app's update check reads that tag.
  *
  * Usage:
  *   npm run release                 # patch
@@ -20,7 +21,7 @@
  * Options (after `--`):
  *   --skip-tests   skip tsc + vitest
  *   --skip-build   reuse the files already in release/
- *   --no-push      commit and tag locally, do not touch GitHub
+ *   --no-push      commit locally, do not touch GitHub
  *   --no-github    push, but do not create the release
  *   --allow-dirty  do not require a clean working tree
  *
@@ -97,15 +98,6 @@ function assertCleanTree() {
   }
 }
 
-function tagExists(tag) {
-  try {
-    git(['rev-parse', '--verify', `refs/tags/${tag}`]);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 function readJson(file) {
   return JSON.parse(readFileSync(join(root, file), 'utf8'));
 }
@@ -160,7 +152,7 @@ function releaseArtifacts(productName, version) {
   return files.map((name) => join(dir, name));
 }
 
-function makeSourceArchive(productName, version, tag) {
+function makeSourceArchive(productName, version) {
   const target = join(root, 'release', `${productName}-${version}-Source.zip`);
   run('git', [
     'archive',
@@ -168,7 +160,7 @@ function makeSourceArchive(productName, version, tag) {
     `--prefix=${productName}-${version}/`,
     '-o',
     target,
-    tag,
+    'HEAD',
   ]);
   console.log(`📦 Source archive: ${target}`);
   return target;
@@ -272,6 +264,8 @@ function publishRelease({ tag, repo, productName, version, assets, notesPath }) 
       ...assets,
       '--repo',
       repo,
+      '--target',
+      'main',
       '--title',
       title,
       '--notes-file',
@@ -292,7 +286,6 @@ function main() {
   const current = readAppVersion();
   const version = nextVersion(current, type);
   const tag = `v${version}`;
-  if (tagExists(tag)) fail(`Tag ${tag} already exists.`);
 
   const pkg = readJson('package.json');
   const builder = readJson('electron-builder.json');
@@ -332,10 +325,7 @@ function main() {
     committed = true;
     console.log(`💾 Committed version ${version}`);
 
-    run('git', ['tag', '-a', tag, '-m', `${productName} ${version}`]);
-    console.log(`🏷️  Tagged ${tag}`);
-
-    const source = makeSourceArchive(productName, version, tag);
+    const source = makeSourceArchive(productName, version);
     const sums = makeChecksums(productName, version, [...installers, source]);
     const notesPath = join(root, 'release', `RELEASE_NOTES-${productName}-${version}.md`);
 
@@ -365,7 +355,6 @@ function main() {
 
     console.log(`📤 Pushing to ${repo}...`);
     run('git', ['push', remoteName, `HEAD:main`]);
-    run('git', ['push', remoteName, tag]);
 
     if (flags.has('--no-github')) {
       console.log('⏭️  --no-github: pushed without creating a release.');

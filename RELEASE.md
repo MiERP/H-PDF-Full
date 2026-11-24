@@ -54,19 +54,22 @@ npm run release:major    # thay đổi lớn
 1. Tăng phiên bản trong tất cả các tệp ở trên và kiểm tra lại.
 2. Chạy `npx tsc --noEmit` và `npm run test:run`.
 3. Chạy `npm run desktop:dist` để tạo bộ cài Windows trong `release/`.
-4. Commit riêng `Release vX.Y.Z` và tạo tag `vX.Y.Z`.
-5. Tạo `H-PDF-<edition>-<version>-Source.zip` từ đúng tag đó.
+4. Commit riêng `Release vX.Y.Z`.
+5. Tạo `H-PDF-<edition>-<version>-Source.zip` từ đúng commit đó.
 6. Tạo `SHA256SUMS-H-PDF-<edition>-<version>.txt`.
-7. Push commit + tag lên `origin` (nhánh `main`).
-8. Tạo GitHub Release, đính kèm Setup, Portable, Source.zip và SHA256SUMS;
-   đánh dấu là bản mới nhất.
+7. Push commit lên nhánh `main` của repo edition.
+8. Tạo GitHub Release; GitHub tạo tag `vX.Y.Z` tại commit trên `main`. Đính kèm
+   Setup, Portable, Source.zip và SHA256SUMS; đánh dấu là bản mới nhất.
+
+Tag được tạo trên GitHub, không tạo tag local: các worktree dùng chung danh sách
+tag, nên hai edition cùng phiên bản sẽ tranh nhau tag `vX.Y.Z`.
 
 Các cờ hữu ích (đặt sau `--`):
 
 ```bash
 npm run release -- --skip-tests
 npm run release -- --skip-build      # dùng lại tệp đã có trong release/
-npm run release -- --no-push         # chỉ commit + tag ở máy
+npm run release -- --no-push         # chỉ commit ở máy
 npm run release -- --no-github       # push nhưng chưa tạo Release
 npm run release -- --allow-dirty     # bỏ kiểm tra cây làm việc sạch
 ```
@@ -78,7 +81,8 @@ npm run release -- --allow-dirty     # bỏ kiểm tra cây làm việc sạch
   - Full: `https://github.com/MiERP/H-PDF-Full.git`
   - Lite: `https://github.com/MiERP/H-PDF-Lite.git`
 - Tag của release phải là **release mới nhất**. Nút *Kiểm tra cập nhật* trong
-  ứng dụng đọc `/releases/latest` và so tag đó với phiên bản đang chạy.
+  ứng dụng đọc `/releases/latest` và so tag đó với phiên bản đang chạy. Tag do
+  GitHub tạo khi release được tạo; không cần tạo tag local.
 
 Các worktree của cùng một repo Git dùng chung danh sách remote. Khi Full và Lite
 nằm trong hai worktree, đặt tên remote khác nhau và chọn khi phát hành:
