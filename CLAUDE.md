@@ -109,4 +109,4 @@ Most tool pages and their scripts still carry English text that never went throu
 - `innerHTML` with interpolated values trips `no-unsanitized` (warn in lint, error in `lint:security`); use `escapeHtml` from `utils/helpers.ts`, DOMPurify, or DOM APIs.
 - Use `utils/safe-storage.ts` rather than raw `localStorage`.
 - Tests live in `src/tests/*.test.ts` with fixtures/builders under `src/tests/helpers/`.
-- Releases go through `npm run release[:minor|:major]` (`scripts/release.js`, see `RELEASE.md`). Windows installers are built locally with `npm run desktop:dist`; macOS and Linux ones by the desktop-release workflow.
+- Releases go through `npm run release[:minor|:major]` (`scripts/release.mjs`, see `RELEASE.md`). One version lives in the root `package.json`; `scripts/version.mjs` writes it to the lockfiles, `desktop/package.json` and `chart/Chart.yaml`, and `npm run version:check` verifies them. Windows installers are built locally by the release script; macOS and Linux ones by the desktop-release workflow.

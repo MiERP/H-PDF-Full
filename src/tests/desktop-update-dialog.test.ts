@@ -5,7 +5,7 @@ const RESULT = {
   current: '1.0.5',
   latest: '1.0.6',
   newer: true,
-  url: 'https://github.com/Long-HAVS/H-PDF-Full/releases/tag/1.0.6',
+  url: 'https://github.com/MiERP/H-PDF-Full/releases/tag/1.0.6',
 };
 
 const dialog = () => document.getElementById('desktop-update-dialog');

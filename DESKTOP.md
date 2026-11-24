@@ -102,7 +102,7 @@ npm run desktop:dist:all   # build + đóng gói cho Windows, macOS, Linux
 
 Lưu ý khi làm việc:
 
-- **Phiên bản ứng dụng** lấy từ `version` trong [desktop/package.json](desktop/package.json), không phải `package.json` ở gốc.
+- **Phiên bản ứng dụng** lấy từ `version` trong [package.json](package.json) ở gốc; `scripts/version.mjs` ghi cùng số đó vào `desktop/package.json` và các lockfile (xem [RELEASE.md](RELEASE.md)).
 - **Trong terminal của VS Code** biến `ELECTRON_RUN_AS_NODE=1` được đặt sẵn, khiến Electron chạy như Node thường. Bỏ biến này trước khi chạy `electron` trực tiếp.
 - **Tải Electron chậm:** đặt `ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/` và `ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/` trước khi `npm install` hoặc đóng gói.
 - **Menu dành cho lập trình viên** (Tải lại, Tải lại hoàn toàn, Công cụ nhà phát triển) chỉ hiện khi chạy từ mã nguồn, không có trong bản cài.
@@ -141,7 +141,7 @@ Cần ba chỗ: một mục trong `modules-manifest.json`, đường dẫn mặc
 
 H-PDF là bản sửa đổi của BentoPDF và phát hành theo **GNU AGPL-3.0**. Mỗi bản phát hành cần giữ đủ các điểm sau:
 
-- Mã nguồn đầy đủ, gồm cả phần sửa đổi, công khai tại <https://github.com/Long-HAVS/H-PDF>, và trang Giới thiệu trong ứng dụng dẫn tới đó.
+- Mã nguồn đầy đủ, gồm cả phần sửa đổi, công khai tại <https://github.com/MiERP/H-PDF-Full>, và trang Giới thiệu trong ứng dụng dẫn tới đó.
 - Trang Giới thiệu ghi rõ đây là bản đã sửa đổi so với BentoPDF.
 - Bộ cài kèm `LICENSE.txt` (AGPL-3.0 của ứng dụng) và `licenses/coherentpdf-LICENSE.md` (giấy phép của cpdf, bộ xử lý duy nhất nằm sẵn trong bộ cài), cả hai trong thư mục `resources` của bản cài.
 - PyMuPDF, Ghostscript và LibreOffice không nằm trong bộ cài; chúng được tải từ nguồn gốc kèm giấy phép riêng.
@@ -150,8 +150,10 @@ H-PDF là bản sửa đổi của BentoPDF và phát hành theo **GNU AGPL-3.0*
 
 ## 5. Phát hành một phiên bản
 
-1. Sửa `version` trong `desktop/package.json`.
-2. Chạy `npx tsc --noEmit` và `npm run test:run`.
-3. Chạy `npm run desktop:dist`; bộ cài nằm trong `release/`.
+1. Commit mọi thay đổi; cây làm việc phải sạch.
+2. Chạy `npm run release` (bản vá), `npm run release:minor` hoặc `npm run release:major`.
+3. Script tự tăng version ở mọi tệp, kiểm tra lại, chạy `npx tsc --noEmit` và `npm run test:run`, build bộ cài Windows, commit `Release vX.Y.Z`, tạo tag `vX.Y.Z`, đóng gói mã nguồn + SHA-256, push và tạo GitHub Release (đánh dấu mới nhất).
 4. Cài thử trên một máy chưa từng cài H-PDF: mở tệp PDF từ Explorer, chạy một công cụ cần tải bộ xử lý, in thử một trang.
-5. Gắn thẻ phiên bản, đẩy mã nguồn lên GitHub và tạo Release kèm các tệp trong `release/`. Thẻ của Release phải là số phiên bản (`1.1.0` hoặc `v1.1.0`) và Release phải được đánh dấu là bản mới nhất: nút Kiểm tra cập nhật đọc đúng thẻ đó.
+5. macOS/Linux: sau khi Release có, chạy workflow `.github/workflows/desktop-release.yml` với đúng tag để đính kèm DMG/AppImage/deb.
+
+Chi tiết và các cờ (`--skip-tests`, `--skip-build`, `--no-push`): [RELEASE.md](RELEASE.md).

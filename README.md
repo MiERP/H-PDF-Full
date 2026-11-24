@@ -10,20 +10,20 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Long-HAVS/H-PDF/releases/latest"><img src="https://img.shields.io/github/v/release/Long-HAVS/H-PDF?label=Phi%C3%AAn%20b%E1%BA%A3n&color=047857" alt="Phiên bản"></a>
-  <a href="https://github.com/Long-HAVS/H-PDF/releases"><img src="https://img.shields.io/github/downloads/Long-HAVS/H-PDF/total?label=L%C6%B0%E1%BB%A3t%20t%E1%BA%A3i&color=047857" alt="Lượt tải"></a>
+  <a href="https://github.com/MiERP/H-PDF-Full/releases/latest"><img src="https://img.shields.io/github/v/release/MiERP/H-PDF-Full?label=Phi%C3%AAn%20b%E1%BA%A3n&color=047857" alt="Phiên bản"></a>
+  <a href="https://github.com/MiERP/H-PDF-Full/releases"><img src="https://img.shields.io/github/downloads/MiERP/H-PDF-Full/total?label=L%C6%B0%E1%BB%A3t%20t%E1%BA%A3i&color=047857" alt="Lượt tải"></a>
   <img src="https://img.shields.io/badge/Windows%20%7C%20macOS%20%7C%20Linux-047857" alt="Windows | macOS | Linux">
   <a href="LICENSE"><img src="https://img.shields.io/badge/Gi%E1%BA%A5y%20ph%C3%A9p-AGPL--3.0-047857" alt="AGPL-3.0"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/Long-HAVS/H-PDF/releases/latest"><b>⬇ Tải H-PDF</b></a>
+  <a href="https://github.com/MiERP/H-PDF-Full/releases/latest"><b>⬇ Tải H-PDF</b></a>
   &nbsp;·&nbsp;
   <a href="#tính-năng">Tính năng</a>
   &nbsp;·&nbsp;
   <a href="#cài-đặt">Cài đặt</a>
   &nbsp;·&nbsp;
-  <a href="https://github.com/Long-HAVS/H-PDF/issues">Báo lỗi</a>
+  <a href="https://github.com/MiERP/H-PDF-Full/issues">Báo lỗi</a>
   &nbsp;·&nbsp;
   <a href="#ủng-hộ-dự-án">☕ Ủng hộ</a>
 </p>
@@ -99,7 +99,7 @@ Thẻ **Tất cả công cụ** trong trình xem liệt kê mọi công cụ. C�
 
 ## Cài đặt
 
-Tải tại trang [**Releases**](https://github.com/Long-HAVS/H-PDF/releases/latest).
+Tải tại trang [**Releases**](https://github.com/MiERP/H-PDF-Full/releases/latest).
 
 | Hệ điều hành                  | Tệp                                                                | Ghi chú                                                                                              |
 | ----------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
@@ -187,7 +187,7 @@ Khi chính sách này thay đổi, nội dung mới được cập nhật tại 
 
 ### Liên hệ
 
-Câu hỏi về quyền riêng tư xin gửi tại [Issues](https://github.com/Long-HAVS/H-PDF/issues) của kho này.
+Câu hỏi về quyền riêng tư xin gửi tại [Issues](https://github.com/MiERP/H-PDF-Full/issues) của kho này.
 
 ## Ủng hộ dự án
 
@@ -199,7 +199,7 @@ H-PDF miễn phí và sẽ luôn miễn phí. Nếu ứng dụng giúp ích cho 
 | 💳 Thẻ Visa / PayPal                       | [Buy Me a Coffee](https://buymeacoffee.com/cuongit96)                    |
 | 💖 GitHub Sponsors                         | [github.com/sponsors/Cuongyd196](https://github.com/sponsors/Cuongyd196) |
 
-Không tiện ủng hộ? Bấm ⭐ **Star** cho kho này, chia sẻ H-PDF với đồng nghiệp, hoặc [báo lỗi và góp ý](https://github.com/Long-HAVS/H-PDF/issues) cũng là giúp dự án rất nhiều. Cảm ơn bạn!
+Không tiện ủng hộ? Bấm ⭐ **Star** cho kho này, chia sẻ H-PDF với đồng nghiệp, hoặc [báo lỗi và góp ý](https://github.com/MiERP/H-PDF-Full/issues) cũng là giúp dự án rất nhiều. Cảm ơn bạn!
 
 <p align="center">
   <a href="https://buymeacoffee.com/cuongit96"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-%E1%BB%A7ng%20h%E1%BB%99-FFDD00?logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee"></a>
@@ -211,7 +211,7 @@ Không tiện ủng hộ? Bấm ⭐ **Star** cho kho này, chia sẻ H-PDF với
 Cần Node.js 20 trở lên.
 
 ```bash
-git clone https://github.com/Long-HAVS/H-PDF.git
+git clone https://github.com/MiERP/H-PDF-Full.git
 cd H-PDF
 npm install
 
@@ -265,6 +265,6 @@ BentoPDF còn có giấy phép thương mại riêng cho ai muốn dùng trong s
 
 ## Ghi nhận
 
-Cảm ơn nhóm tác giả và cộng đồng BentoPDF đã xây dựng bộ công cụ gốc. Lỗi liên quan đến bản desktop H-PDF xin báo tại [Issues](https://github.com/Long-HAVS/H-PDF/issues) của kho này, không báo cho BentoPDF.
+Cảm ơn nhóm tác giả và cộng đồng BentoPDF đã xây dựng bộ công cụ gốc. Lỗi liên quan đến bản desktop H-PDF xin báo tại [Issues](https://github.com/MiERP/H-PDF-Full/issues) của kho này, không báo cho BentoPDF.
 
 <sub>Ảnh minh họa dùng một tài liệu mẫu hư cấu.</sub>

@@ -2,17 +2,18 @@
 # files to that tag's GitHub release. Windows installers are still built
 # locally with `npm run desktop:dist`.
 #
-# Run it from the Actions tab (Run workflow) with the tag, e.g. 1.0.0. The
+# Run it from the Actions tab (Run workflow) with the tag, e.g. v1.0.1. The
 # code is checked out at that tag, so the files match the published source.
+# Create the release first (npm run release), then run this to add the
+# macOS/Linux files to it.
 name: Desktop release (macOS, Linux)
 
 on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Release tag to build (e.g. 1.0.0)
+        description: Release tag to build (e.g. v1.0.1)
         required: true
-        default: '1.0.0'
       upload:
         description: Attach the files to the tag's GitHub release
         type: boolean
@@ -65,7 +66,7 @@ jobs:
           npx electron-builder ${{ matrix.targets }} --publish never
           '-c.mac.artifactName=${productName}-${version}-macOS-${arch}.${ext}'
           '-c.linux.artifactName=${productName}-${version}-Linux-${arch}.${ext}'
-          '-c.linux.maintainer=Long-HAVS'
+          '-c.linux.maintainer=HAVS'
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
 

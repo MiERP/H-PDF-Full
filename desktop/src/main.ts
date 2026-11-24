@@ -61,9 +61,9 @@ if (!gotTheLock) {
 
 const APP_NAME = 'H-PDF-Full';
 const APP_ORIGIN = 'app://bentopdf';
-const RELEASES_PAGE = 'https://github.com/Long-HAVS/H-PDF-Full/releases';
+const RELEASES_PAGE = 'https://github.com/MiERP/H-PDF-Full/releases';
 const LATEST_RELEASE_API =
-  'https://api.github.com/repos/Long-HAVS/H-PDF-Full/releases/latest';
+  'https://api.github.com/repos/MiERP/H-PDF-Full/releases/latest';
 const UPDATE_CHECK_TIMEOUT_MS = 10_000;
 
 // The window that last had focus: where menu actions and files from the OS go.
