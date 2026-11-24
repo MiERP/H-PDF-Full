@@ -83,8 +83,20 @@ npm run release -- --allow-dirty     # bỏ kiểm tra cây làm việc sạch
   ứng dụng đọc `/releases/latest` và so tag đó với phiên bản đang chạy. Tag do
   GitHub tạo khi release được tạo; không cần tạo tag local.
 
-Nhánh `lite` không có repo/release riêng. Nếu cần build Lite, chạy
-`npm run desktop:dist` trên nhánh đó; không chạy `npm run release`.
+Nhánh `lite` không có repo/release riêng. Bộ cài Lite được build từ nhánh đó
+và đính vào release chính cùng tag:
+
+```bash
+# trong worktree/bản checkout của nhánh lite
+npm run desktop:dist
+
+# từ main, sau khi release đã được tạo
+gh release upload vX.Y.Z .worktrees/lite/release/H-PDF-Lite-X.Y.Z-* \
+  --repo MiERP/H-PDF-Full --clobber
+```
+
+Sau khi thêm asset Lite, cập nhật lại checksums và ghi chú release để có hash
+của cả hai bản.
 
 ```bash
 # repo chính dùng remote tên origin (mặc định)

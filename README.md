@@ -83,6 +83,7 @@ Tải tại trang [**Releases**](https://github.com/MiERP/H-PDF-Full/releases/la
 | ----------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | Windows 10/11 (64-bit)        | `H-PDF-Full-<phiên bản>-Windows-x64-Setup.exe`                        | **Nên dùng.** Cài cho tài khoản đang đăng nhập, không cần quyền Administrator. Có cập nhật một bước. |
 | Windows 10/11 (64-bit)        | `H-PDF-Full-<phiên bản>-Windows-x64-Portable.exe`                     | Chạy thẳng không cần cài, chép được sang USB.                                                        |
+| Windows 10/11 (64-bit) — Lite | `H-PDF-Lite-<phiên bản>-Windows-x64-Setup.exe`                        | Bản gọn, không kèm bộ xử lý nặng; cùng release với bản đầy đủ.                                       |
 | Windows 10/11 (32-bit)        | `H-PDF-Full-<phiên bản>-Windows-x86-Setup.exe` / `…-x86-Portable.exe` | Cho máy Windows 32-bit. Máy 64-bit nên dùng bản x64.                                                 |
 | macOS (chip Apple M1 trở lên) | `H-PDF-Full-<phiên bản>-macOS-arm64.dmg`                              | Mở tệp, kéo H-PDF vào Applications.                                                                  |
 | macOS (chip Intel)            | `H-PDF-Full-<phiên bản>-macOS-x64.dmg`                                | Như trên.                                                                                            |
@@ -98,7 +99,7 @@ Mỗi bản phát hành ghi kèm mã **SHA-256** của từng tệp để bạn 
 >
 > Nút "Cập nhật và khởi động lại" hiện chỉ có trên bản cài Windows; trên macOS và Linux nút này mở trang tải.
 
-> **Bản Lite:** nhánh [`lite`](https://github.com/MiERP/H-PDF-Full/tree/lite) là bản gọn, không kèm các bộ xử lý nặng và một số công cụ cần Internet. Bản trong `main` là bản đầy đủ.
+> **Bản Lite:** nhánh [`lite`](https://github.com/MiERP/H-PDF-Full/tree/lite) là bản gọn, không kèm các bộ xử lý nặng và một số công cụ cần Internet. Bộ cài Lite nằm trong cùng release với bản đầy đủ (`H-PDF-Lite-<phiên bản>-Windows-x64-Setup.exe`).
 
 ### Bộ xử lý đi kèm
 
