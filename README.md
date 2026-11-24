@@ -103,13 +103,13 @@ Tải tại trang [**Releases**](https://github.com/MiERP/H-PDF-Full/releases/la
 
 | Hệ điều hành                  | Tệp                                                                | Ghi chú                                                                                              |
 | ----------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| Windows 10/11 (64-bit)        | `H-PDF-<phiên bản>-Windows-x64-Setup.exe`                        | **Nên dùng.** Cài cho tài khoản đang đăng nhập, không cần quyền Administrator. Có cập nhật một bước. |
-| Windows 10/11 (64-bit)        | `H-PDF-<phiên bản>-Windows-x64-Portable.exe`                     | Chạy thẳng không cần cài, chép được sang USB.                                                        |
-| Windows 10/11 (32-bit)        | `H-PDF-<phiên bản>-Windows-x86-Setup.exe` / `…-x86-Portable.exe` | Cho máy Windows 32-bit. Máy 64-bit nên dùng bản x64.                                                 |
-| macOS (chip Apple M1 trở lên) | `H-PDF-<phiên bản>-macOS-arm64.dmg`                              | Mở tệp, kéo H-PDF vào Applications.                                                                |
-| macOS (chip Intel)            | `H-PDF-<phiên bản>-macOS-x64.dmg`                                | Như trên.                                                                                            |
-| Ubuntu / Debian               | `H-PDF-<phiên bản>-Linux-amd64.deb`                              | `sudo apt install ./H-PDF-<phiên bản>-Linux-amd64.deb`                                             |
-| Linux khác                    | `H-PDF-<phiên bản>-Linux-x86_64.AppImage`                        | `chmod +x` rồi chạy, không cần cài.                                                                  |
+| Windows 10/11 (64-bit)        | `H-PDF-Full-<phiên bản>-Windows-x64-Setup.exe`                        | **Nên dùng.** Cài cho tài khoản đang đăng nhập, không cần quyền Administrator. Có cập nhật một bước. |
+| Windows 10/11 (64-bit)        | `H-PDF-Full-<phiên bản>-Windows-x64-Portable.exe`                     | Chạy thẳng không cần cài, chép được sang USB.                                                        |
+| Windows 10/11 (32-bit)        | `H-PDF-Full-<phiên bản>-Windows-x86-Setup.exe` / `…-x86-Portable.exe` | Cho máy Windows 32-bit. Máy 64-bit nên dùng bản x64.                                                 |
+| macOS (chip Apple M1 trở lên) | `H-PDF-Full-<phiên bản>-macOS-arm64.dmg`                              | Mở tệp, kéo H-PDF vào Applications.                                                                |
+| macOS (chip Intel)            | `H-PDF-Full-<phiên bản>-macOS-x64.dmg`                                | Như trên.                                                                                            |
+| Ubuntu / Debian               | `H-PDF-Full-<phiên bản>-Linux-amd64.deb`                              | `sudo apt install ./H-PDF-Full-<phiên bản>-Linux-amd64.deb`                                             |
+| Linux khác                    | `H-PDF-Full-<phiên bản>-Linux-x86_64.AppImage`                        | `chmod +x` rồi chạy, không cần cài.                                                                  |
 
 Mỗi bản phát hành ghi kèm mã **SHA-256** của từng tệp để bạn đối chiếu.
 
