@@ -6,7 +6,7 @@ Simple Mode is what powers the **Self-Hosted build** of BentoPDF (`bentopdf-simp
 
 > **Simple Mode is not a feature-reduced "lite" version.** Every PDF tool — merge, split, edit, sign, OCR, Office conversion, every other tool — works identically in both builds. The only difference is the marketing UI around the tools.
 
-The Commercial build (`ghcr.io/alam00000/bentopdf:latest`) is used by bentopdf.com itself and by commercial license holders running public-facing PDF deployments where the full marketing site makes sense.
+The Commercial build (`ghcr.io/alam00000/bentopdf:latest`) is used by bentopdf.com itself and by public-facing PDF deployments where the full marketing site makes sense.
 
 ## What Simple Mode Hides
 
@@ -183,7 +183,7 @@ When Simple Mode is working correctly, you should see:
 - `bentopdfteam/bentopdf-simple:latest`
 - `bentopdfteam/bentopdf-simple:v1.0.0` (versioned)
 
-### Commercial build — used by bentopdf.com and commercial license holders
+### Commercial build — used by bentopdf.com and public deployments
 
 The full marketing site, including hero/FAQ/testimonials/footer. Pull this only if you specifically want the bentopdf.com look — for example, you're running a public-facing PDF deployment under a commercial license.
 

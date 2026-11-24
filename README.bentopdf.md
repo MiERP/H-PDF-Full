@@ -330,7 +330,7 @@ Open your browser at: http://localhost:3000
 > BentoPDF ships in two builds:
 >
 > - **Self-Hosted build** — `ghcr.io/alam00000/bentopdf-simple:latest`. Every PDF tool the public site has, **without** the BentoPDF marketing (no hero, FAQ, testimonials, footer). Use this for internal/team/organization deployments. It is **not** a feature-reduced lite version.
-> - **Commercial build** — `ghcr.io/alam00000/bentopdf:latest`. The full marketing site, used by bentopdf.com itself and by commercial license holders running public-facing deployments. Includes hero, FAQ, testimonials, and footer.
+> - **Commercial build** — `ghcr.io/alam00000/bentopdf:latest`. The full marketing site, used by bentopdf.com itself and by public-facing deployments. Includes hero, FAQ, testimonials, and footer.
 >
 > If in doubt: pull the Self-Hosted build.
 
@@ -752,7 +752,7 @@ services:
   bentopdf:
     image: ghcr.io/alam00000/bentopdf-simple:latest # Self-Hosted build (recommended)
     # image: bentopdfteam/bentopdf-simple:latest     # Self-Hosted build (Docker Hub)
-    # image: ghcr.io/alam00000/bentopdf:latest       # Commercial build (bentopdf.com / commercial license holders)
+    # image: ghcr.io/alam00000/bentopdf:latest       # Commercial build (bentopdf.com / public deployments)
     container_name: bentopdf
     ports:
       - '3000:8080'
@@ -818,7 +818,7 @@ The Self-Hosted build (the `bentopdf-simple` image, also called Simple Mode) is 
 - All PDF tools (merge, split, edit, sign, OCR, Office conversion, every other tool)
 - Custom branding support, all build-time and runtime config
 
-The Commercial build (`ghcr.io/alam00000/bentopdf:latest`) is what powers bentopdf.com itself and is used by commercial license holders running public-facing deployments. It adds the hero, FAQ, testimonials, and footer that wouldn't make sense on an internal tool.
+The Commercial build (`ghcr.io/alam00000/bentopdf:latest`) is what powers bentopdf.com itself and is used by public-facing deployments. It adds the hero, FAQ, testimonials, and footer that wouldn't make sense on an internal tool.
 
 If you're self-hosting BentoPDF for your team, organization, or as an internal tool, pull `ghcr.io/alam00000/bentopdf-simple:latest`. For more details, see [SIMPLE_MODE.md](SIMPLE_MODE.md).
 
@@ -1128,7 +1128,7 @@ BentoPDF publishes two image variants. Both ship the same PDF tools. The differe
 - **Specific Version**: `ghcr.io/alam00000/bentopdf-simple:1.0.0`
 - **Docker Hub**: `bentopdfteam/bentopdf-simple:latest`
 
-**Commercial build** — used by bentopdf.com itself and by commercial license holders running public-facing deployments:
+**Commercial build** — used by bentopdf.com itself and by public-facing deployments:
 
 - **Latest**: `ghcr.io/alam00000/bentopdf:latest`
 - **Specific Version**: `ghcr.io/alam00000/bentopdf:1.0.0`
