@@ -1,8 +1,8 @@
 # Phát hành H-PDF
 
-> **Nhánh Lite:** nhánh này **không có repo/release riêng**. Chỉ build cục bộ
-> bằng `npm run desktop:dist`; không chạy `npm run release` trên nhánh này vì
-> sẽ tạo tag/release trong repo chính. Bản phát hành chính thức nằm ở `main`.
+> **Nhánh Lite:** nhánh này **không có repo/release riêng**. Bộ cài Lite được
+> build bằng `npm run desktop:dist` và đính vào release chính cùng tag. Không
+> chạy `npm run release` trên nhánh này vì sẽ tạo tag/release trong repo chính.
 
 Tài liệu này là quy trình phát hành của bản chính (`main`). Số phiên bản vẫn
 dùng chung cho cả hai nhánh.
@@ -13,13 +13,13 @@ dùng chung cho cả hai nhánh.
 `desktop/package.json` hay lockfile: `scripts/version.mjs` ghi số đó vào tất cả
 các nơi cần thiết.
 
-| Tệp                            | Được ghi gì                                      |
-| ------------------------------ | ------------------------------------------------ |
-| `package.json`                 | `version` (nguồn)                                |
-| `package-lock.json`            | `version` và `packages[""].version`              |
-| `desktop/package.json`         | `version` — electron-builder đọc tệp này          |
-| `desktop/package-lock.json`    | `version` và `packages[""].version`              |
-| `chart/Chart.yaml`             | `appVersion`; `version` của chart tăng riêng     |
+| Tệp                         | Được ghi gì                                  |
+| --------------------------- | -------------------------------------------- |
+| `package.json`              | `version` (nguồn)                            |
+| `package-lock.json`         | `version` và `packages[""].version`          |
+| `desktop/package.json`      | `version` — electron-builder đọc tệp này     |
+| `desktop/package-lock.json` | `version` và `packages[""].version`          |
+| `chart/Chart.yaml`          | `appVersion`; `version` của chart tăng riêng |
 
 `chart/Chart.yaml` có hai số khác nhau: `appVersion` luôn bằng phiên bản ứng
 dụng, còn `version` là phiên bản của chart Helm và chỉ tăng khi phát hành.
@@ -82,12 +82,21 @@ npm run release -- --allow-dirty     # bỏ kiểm tra cây làm việc sạch
 
 - `gh` đã đăng nhập (`gh auth login`) hoặc đặt biến `GH_TOKEN`.
 - Remote trỏ tới repo chính: `https://github.com/MiERP/H-PDF-Full.git`.
-- Tag của release phải là **release mới nhất**. Nút *Kiểm tra cập nhật* trong
+- Tag của release phải là **release mới nhất**. Nút _Kiểm tra cập nhật_ trong
   ứng dụng đọc `/releases/latest` và so tag đó với phiên bản đang chạy. Tag do
   GitHub tạo khi release được tạo; không cần tạo tag local.
 
-Nhánh `lite` chỉ dùng để build cục bộ. Không tạo release/tag cho nhánh này;
-bản phát hành chính thức nằm ở `main`.
+Nhánh `lite` chỉ dùng để build cục bộ. Bộ cài Lite được đính vào release chính
+cùng tag; không tạo release riêng.
+
+```bash
+# trong worktree/bản checkout của nhánh lite
+npm run desktop:dist
+
+# từ main, sau khi release đã được tạo
+gh release upload vX.Y.Z .worktrees/lite/release/H-PDF-Lite-X.Y.Z-* \
+  --repo MiERP/H-PDF-Full --clobber
+```
 
 ```bash
 # trong worktree/bản checkout của main
@@ -109,6 +118,6 @@ workflow `.github/workflows/desktop-release.yml` (Actions → Run workflow) vớ
 - Bộ cài chưa ký số. Windows SmartScreen có thể cảnh báo; macOS cần chuột phải →
   Open ở lần mở đầu.
 - Release phải kèm mã nguồn đúng phiên bản (AGPL-3.0). `Source.zip` và tab
-  *Source code* của GitHub đáp ứng yêu cầu này.
+  _Source code_ của GitHub đáp ứng yêu cầu này.
 - Không sửa số phiên bản trực tiếp trong `desktop/package.json`,
   `package-lock.json` hay `chart/Chart.yaml`; `npm run version:check` sẽ báo lệch.

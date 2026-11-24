@@ -9,9 +9,9 @@
   Không tải bộ xử lý nặng, không dùng dịch vụ Internet.
 </p>
 
-> **Đây là nhánh `lite`, không phải bản phát hành chính thức.**
-> Bản đầy đủ và các bản cài chính thức nằm ở nhánh `main`:
-> <https://github.com/MiERP/H-PDF-Full>.
+> **Đây là nhánh `lite` của H-PDF.**
+> Bản đầy đủ và bộ cài của cả hai edition nằm trong release chính:
+> <https://github.com/MiERP/H-PDF-Full/releases/latest>.
 
 ## Bản Lite là gì?
 
@@ -37,8 +37,9 @@ Bộ cài nằm trong `release/`:
 - `H-PDF-Lite-<phiên bản>-Windows-x64-Setup.exe`
 - `H-PDF-Lite-<phiên bản>-Windows-x64-Portable.exe`
 
-Bản Lite không có GitHub Release riêng. Tải bản đầy đủ tại
-<https://github.com/MiERP/H-PDF-Full/releases/latest>.
+Bộ cài Lite nằm trong release chính:
+<https://github.com/MiERP/H-PDF-Full/releases/latest>
+(`H-PDF-Lite-<phiên bản>-Windows-x64-Setup.exe` và `…-Portable.exe`).
 
 ## Giấy phép
 
