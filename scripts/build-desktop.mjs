@@ -17,10 +17,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const root = resolve(__dirname, '..');
 
-// H-PDF has its own version (desktop/package.json), independent of the
-// upstream BentoPDF version in the root package.json.
-const desktopVersion = JSON.parse(
-  readFileSync(resolve(root, 'desktop', 'package.json'), 'utf8')
+// One version for the whole app. The root package.json is the source of
+// truth; scripts/version.mjs keeps desktop/package.json (which electron-builder
+// stamps into the installer) in sync with it.
+const appVersion = JSON.parse(
+  readFileSync(resolve(root, 'package.json'), 'utf8')
 ).version;
 
 console.log('=== Building H-PDF-Lite Desktop Application ===');
@@ -38,7 +39,7 @@ const desktopEnv = {
   VITE_OFFLINE_ONLY: 'true',
   VITE_DESKTOP: 'true',
   SIMPLE_MODE: 'true',
-  APP_VERSION: desktopVersion,
+  APP_VERSION: appVersion,
 };
 
 // 1. Build web assets for desktop (tools only, no compression duplicates, no SW precache)

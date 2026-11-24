@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { findInstaller } from '../../desktop/src/release-installer';
 
-const PREFIX = 'https://github.com/Long-HAVS/H-PDF-Lite/releases/download/';
+const PREFIX = 'https://github.com/MiERP/H-PDF-Lite/releases/download/';
 const HASH = 'a'.repeat(64);
 const setup = (extra: Record<string, unknown> = {}) => ({
   name: 'H-PDF-Lite-1.0.6-Windows-x64-Setup.exe',
