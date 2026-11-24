@@ -28,16 +28,12 @@
   <a href="#ủng-hộ-dự-án">☕ Ủng hộ</a>
 </p>
 
-<p align="center">
-  <img src="screenshots/viewer.png" alt="Trình xem PDF của H-PDF với các thẻ Đọc, Trang, Sửa, Chuyển đổi" width="900">
-</p>
-
 ## Vì sao chọn H-PDF
 
 - 🔒 **Riêng tư tuyệt đối.** Mọi xử lý diễn ra ngay trên máy. Không tải tệp lên máy chủ, không cần tài khoản, dùng được cả khi không có mạng.
 - 🇻🇳 **Thuần Việt.** Giao diện, tên công cụ và hướng dẫn bằng tiếng Việt dễ hiểu. Nhận dạng chữ (OCR) hỗ trợ tiếng Việt có dấu.
 - 🧰 **Đủ việc văn phòng.** Hơn 100 công cụ: gộp, tách, nén, chuyển Word/Excel/PowerPoint, OCR bản scan, ký số, đặt mật khẩu…
-- 🆓 **Miễn phí, mã nguồn mở.** Phát hành theo giấy phép AGPL-3.0.
+- 🆓 **Miễn phí, mã nguồn mở.** Phát hành theo giấy phép GNU AGPL-3.0, không có bản thương mại đóng nguồn.
 
 ## Tính năng
 
@@ -47,17 +43,9 @@ Mở một tệp PDF là có thể đọc, tìm kiếm, in, và xử lý luôn b
 
 Thẻ **Trang** hiện toàn bộ trang dạng lưới: chọn bằng chuột (giữ Ctrl hoặc Shift để chọn nhiều), rồi xoay, xóa, trích ra tệp mới, chèn PDF hoặc trang trống, cuối cùng bấm **Lưu**.
 
-<p align="center">
-  <img src="screenshots/pages.png" alt="Thẻ Trang: lưới trang, chọn nhiều trang để xoay, xóa, trích" width="900">
-</p>
-
 ### Hơn 100 công cụ, tìm trong một giây
 
 Trang chủ gom toàn bộ công cụ theo nhóm, có ô tìm kiếm (gõ không dấu cũng được, phím tắt **Ctrl+K**), hàng **Hay dùng** để ghim công cụ quen tay, và danh sách tệp mở gần đây.
-
-<p align="center">
-  <img src="screenshots/home.png" alt="Trang chủ H-PDF: tìm công cụ, mở tệp, công cụ hay dùng, tất cả công cụ" width="900">
-</p>
 
 | Nhóm                    | Một số công cụ                                                                                             |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -72,43 +60,33 @@ Trang chủ gom toàn bộ công cụ theo nhóm, có ô tìm kiếm (gõ không
 
 Chọn tệp xong, trang chia hai cột: bên trái là tệp và ảnh trang đầu, bên phải là tùy chọn kèm nút chạy. Việc nặng chạy ở nền nên cửa sổ không bị đơ, kèm thời gian đã chạy.
 
-<p align="center">
-  <img src="screenshots/compress.png" alt="Trang Nén PDF: tệp và ảnh xem trước bên trái, tùy chọn bên phải" width="900">
-</p>
-
 ### Tất cả công cụ ngay bên cạnh tài liệu
 
 Thẻ **Tất cả công cụ** trong trình xem liệt kê mọi công cụ. Công cụ làm được tại chỗ thì chạy ngay trên tài liệu đang mở; công cụ có trang riêng thì mang theo tài liệu sang đó.
 
-<p align="center">
-  <img src="screenshots/all-tools.png" alt="Bảng Tất cả công cụ bên trái tài liệu đang mở" width="900">
-</p>
-
 ### Giao diện sáng và tối
 
-<p align="center">
-  <img src="screenshots/home-light.png" alt="Trang chủ H-PDF ở giao diện sáng" width="900">
-</p>
+Đổi giao diện sáng/tối trong **Cài đặt**.
 
 ### Và hơn nữa
 
 - **Mở tệp từ Windows:** chuột phải một tệp `.pdf`, chọn **Open with › H-PDF** (hoặc đặt H-PDF làm ứng dụng mặc định). Nhiều tệp vẫn chỉ dùng một cửa sổ.
 - **Cập nhật một bước:** khi có bản mới, ứng dụng hiện hộp thoại với nút **Cập nhật và khởi động lại**. Ứng dụng tự tải bản cài đặt, kiểm tra mã SHA-256 rồi cài đè.
-- **Dùng được ở mạng bị chặn:** cài bộ xử lý từ một thư mục chép từ máy khác (Cài đặt › Bộ xử lý › _Cài từ thư mục…_).
+- **Chạy hoàn toàn ngoại tuyến:** bộ cài đã gồm sẵn PyMuPDF, Ghostscript, LibreOffice, Tesseract OCR (vi/en) và CoherentPDF; không cần tải thêm khi dùng.
 - **Tiếng Việt hoặc English,** đổi trong Cài đặt.
 
 ## Cài đặt
 
 Tải tại trang [**Releases**](https://github.com/MiERP/H-PDF-Full/releases/latest).
 
-| Hệ điều hành                  | Tệp                                                                | Ghi chú                                                                                              |
-| ----------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| Hệ điều hành                  | Tệp                                                                   | Ghi chú                                                                                              |
+| ----------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | Windows 10/11 (64-bit)        | `H-PDF-Full-<phiên bản>-Windows-x64-Setup.exe`                        | **Nên dùng.** Cài cho tài khoản đang đăng nhập, không cần quyền Administrator. Có cập nhật một bước. |
 | Windows 10/11 (64-bit)        | `H-PDF-Full-<phiên bản>-Windows-x64-Portable.exe`                     | Chạy thẳng không cần cài, chép được sang USB.                                                        |
 | Windows 10/11 (32-bit)        | `H-PDF-Full-<phiên bản>-Windows-x86-Setup.exe` / `…-x86-Portable.exe` | Cho máy Windows 32-bit. Máy 64-bit nên dùng bản x64.                                                 |
-| macOS (chip Apple M1 trở lên) | `H-PDF-Full-<phiên bản>-macOS-arm64.dmg`                              | Mở tệp, kéo H-PDF vào Applications.                                                                |
+| macOS (chip Apple M1 trở lên) | `H-PDF-Full-<phiên bản>-macOS-arm64.dmg`                              | Mở tệp, kéo H-PDF vào Applications.                                                                  |
 | macOS (chip Intel)            | `H-PDF-Full-<phiên bản>-macOS-x64.dmg`                                | Như trên.                                                                                            |
-| Ubuntu / Debian               | `H-PDF-Full-<phiên bản>-Linux-amd64.deb`                              | `sudo apt install ./H-PDF-Full-<phiên bản>-Linux-amd64.deb`                                             |
+| Ubuntu / Debian               | `H-PDF-Full-<phiên bản>-Linux-amd64.deb`                              | `sudo apt install ./H-PDF-Full-<phiên bản>-Linux-amd64.deb`                                          |
 | Linux khác                    | `H-PDF-Full-<phiên bản>-Linux-x86_64.AppImage`                        | `chmod +x` rồi chạy, không cần cài.                                                                  |
 
 Mỗi bản phát hành ghi kèm mã **SHA-256** của từng tệp để bạn đối chiếu.
@@ -120,19 +98,21 @@ Mỗi bản phát hành ghi kèm mã **SHA-256** của từng tệp để bạn 
 >
 > Nút "Cập nhật và khởi động lại" hiện chỉ có trên bản cài Windows; trên macOS và Linux nút này mở trang tải.
 
-### Bộ xử lý tải khi dùng lần đầu
+> **Bản Lite:** nhánh [`lite`](https://github.com/MiERP/H-PDF-Full/tree/lite) là bản gọn, không kèm các bộ xử lý nặng và một số công cụ cần Internet. Bản trong `main` là bản đầy đủ.
 
-Bộ cài chỉ chứa phần lõi (khoảng 145 MB). Các bộ xử lý nặng được tải một lần khi bạn dùng công cụ cần đến chúng, kiểm tra mã băm, rồi lưu trên máy để dùng cả khi không có mạng. Khi tải, ứng dụng hiện dung lượng, phần trăm và cho phép hủy.
+### Bộ xử lý đi kèm
 
-| Bộ xử lý           | Dùng cho                                             | Nguồn                  | Kiểm tra         |
-| ------------------ | ---------------------------------------------------- | ---------------------- | ---------------- |
-| PyMuPDF            | PDF sang Word, Excel, văn bản                        | npm registry           | SHA-512          |
-| Ghostscript        | Nén mạnh, PDF/A                                      | npm registry           | SHA-512          |
-| LibreOffice        | Word, Excel, PowerPoint sang PDF                     | kho mã nguồn của dự án | SHA-256 từng tệp |
-| Tesseract OCR      | Nhận dạng chữ trong bản scan (tiếng Việt, tiếng Anh) | có sẵn trong bộ cài    | không cần tải    |
-| CoherentPDF (cpdf) | Xử lý trang                                          | có sẵn trong bộ cài    | không cần tải    |
+Bộ cài đầy đủ khoảng **270 MB** đã gồm sẵn mọi bộ xử lý, nên tất cả công cụ chạy được ngay cả khi không có mạng:
 
-Có thể tải trước toàn bộ hoặc xóa bớt cho nhẹ ổ đĩa trong **Cài đặt › Bộ xử lý**.
+| Bộ xử lý               | Dùng cho                                       | Trạng thái |
+| ---------------------- | ---------------------------------------------- | ---------- |
+| PyMuPDF                | PDF sang Word, Excel, văn bản; trích ảnh, bảng | có sẵn     |
+| Ghostscript            | Nén mạnh, PDF/A, chuyển font sang outline      | có sẵn     |
+| LibreOffice            | Word, Excel, PowerPoint sang PDF               | có sẵn     |
+| Tesseract OCR (vi, en) | Nhận dạng chữ trong bản scan                   | có sẵn     |
+| CoherentPDF (cpdf)     | Xử lý trang, ghép, tách, chèn                  | có sẵn     |
+
+Có thể xem hoặc gỡ bớt bộ xử lý trong **Cài đặt › Bộ xử lý**. Nếu đã gỡ và cần dùng lại, ứng dụng tải lại khi có mạng hoặc cài từ thư mục ngoại tuyến.
 
 ## Chính sách quyền riêng tư
 
@@ -154,7 +134,7 @@ Các thông tin sau chỉ nằm trong thư mục dữ liệu của ứng dụng 
 
 - cài đặt (ngôn ngữ, máy in, tùy chọn in…);
 - danh sách tệp mở gần đây và công cụ yêu thích;
-- các bộ xử lý đã tải về.
+- trạng thái các bộ xử lý đi kèm hoặc đã tải thêm.
 
 Gỡ ứng dụng hoặc xóa thư mục dữ liệu của ứng dụng là xóa hết những thông tin này.
 
@@ -164,7 +144,7 @@ Gỡ ứng dụng hoặc xóa thư mục dữ liệu của ứng dụng là xóa
 
 | Khi nào                                           | Kết nối tới                                                           | Gửi đi những gì                                                                                             |
 | ------------------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Dùng lần đầu công cụ cần bộ xử lý nặng            | `registry.npmjs.org`, `raw.githubusercontent.com`, `cdn.jsdelivr.net` | Chỉ là yêu cầu tải tệp về. Có thể tránh hoàn toàn bằng cách cài bộ xử lý từ thư mục (xem phần trên).        |
+| Cài lại bộ xử lý đã gỡ (nếu có)                   | `registry.npmjs.org`, `raw.githubusercontent.com`, `cdn.jsdelivr.net` | Chỉ là yêu cầu tải tệp về. Có thể tránh hoàn toàn bằng cách cài từ thư mục ngoại tuyến.                     |
 | Kiểm tra bản mới (tối đa một lần mỗi ngày)        | `api.github.com`                                                      | Chỉ là yêu cầu xem số phiên bản mới nhất.                                                                   |
 | Bấm "Cập nhật và khởi động lại"                   | `github.com`                                                          | Chỉ là yêu cầu tải bản cài đặt về.                                                                          |
 | Ký số **có** đóng dấu thời gian (tùy chọn)        | Máy chủ đóng dấu thời gian bạn chọn (ví dụ FreeTSA)                   | Mã băm (dấu vân tay) của tài liệu, không phải tài liệu. Ký số không đóng dấu thời gian thì không dùng mạng. |
@@ -175,7 +155,7 @@ Như mọi lượt truy cập mạng, các máy chủ trên nhìn thấy địa 
 
 ### Bảo mật
 
-Vì tài liệu không được gửi lên máy chủ nào, không có nguy cơ lộ tài liệu trên đường truyền hay trên máy chủ. Bộ xử lý tải về được kiểm tra mã băm trước khi dùng, bản cài đặt mới cũng được kiểm tra SHA-256 trước khi cài. Độ an toàn của tài liệu vì vậy phụ thuộc vào chính máy tính của bạn: hãy giữ hệ điều hành và phần mềm diệt virus luôn cập nhật.
+Vì tài liệu không được gửi lên máy chủ nào, không có nguy cơ lộ tài liệu trên đường truyền hay trên máy chủ. Bộ xử lý đi kèm được kiểm tra mã băm trong quá trình build; bộ xử lý tải thêm (nếu có) cũng được kiểm tra trước khi dùng. Bản cài đặt mới được kiểm tra SHA-256 trước khi cài. Độ an toàn của tài liệu vì vậy phụ thuộc vào chính máy tính của bạn: hãy giữ hệ điều hành và phần mềm diệt virus luôn cập nhật.
 
 ### Mã nguồn mở
 
@@ -212,7 +192,7 @@ Cần Node.js 20 trở lên.
 
 ```bash
 git clone https://github.com/MiERP/H-PDF-Full.git
-cd H-PDF
+cd H-PDF-Full
 npm install
 
 npm run desktop              # build và chạy ứng dụng
@@ -242,13 +222,19 @@ Phần xử lý PDF của BentoPDF được giữ nguyên, kể cả dòng produ
 
 ## Giấy phép
 
-H-PDF được phát hành theo [GNU AGPL-3.0](LICENSE). Bạn được dùng, sửa đổi và phân phối lại, với điều kiện bản phân phối của bạn cũng công khai mã nguồn theo AGPL-3.0.
+H-PDF chỉ phát hành theo [GNU Affero General Public License v3.0 (AGPL-3.0)](LICENSE). Không có giấy phép thương mại hay giấy phép đóng nguồn nào khác.
+
+Bạn được dùng, nghiên cứu, sửa đổi và phân phối lại phần mềm, với điều kiện:
+
+- bản phân phối — kể cả khi chạy như một dịch vụ mạng — công khai mã nguồn đầy đủ, gồm mọi sửa đổi, theo AGPL-3.0;
+- giữ nguyên thông báo bản quyền và giấy phép;
+- không áp đặt thêm hạn chế lên quyền của người nhận.
 
 - Bản quyền phần mã gốc: © BentoPDF Contributors.
 - Bản quyền phần sửa đổi: © 2026 Phạm Văn Long - HAVS.
 - Mã nguồn tương ứng với từng bản phát hành nằm tại tag cùng số phiên bản trong kho này.
 
-BentoPDF còn có giấy phép thương mại riêng cho ai muốn dùng trong sản phẩm đóng nguồn; xem [bentopdf.com/licensing.html](https://bentopdf.com/licensing.html). H-PDF không cấp giấy phép đó.
+Nếu bạn muốn dùng H-PDF trong sản phẩm đóng nguồn, AGPL-3.0 không cho phép điều đó trừ khi bạn công khai mã nguồn theo cùng giấy phép.
 
 ### Thành phần bên thứ ba
 
