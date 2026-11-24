@@ -10,7 +10,7 @@ The fastest way to self-host BentoPDF:
 > BentoPDF ships in two builds:
 >
 > - **Self-Hosted build** — `ghcr.io/alam00000/bentopdf-simple:latest`. Every PDF tool, **without** the marketing chrome (no hero, FAQ, testimonials, footer). Use this for internal/team/organization deployments. It is **not** a feature-reduced "lite" version.
-> - **Commercial build** — `ghcr.io/alam00000/bentopdf:latest`. The full marketing site, used by bentopdf.com itself and by commercial license holders running public-facing deployments.
+> - **Commercial build** — `ghcr.io/alam00000/bentopdf:latest`. The full marketing site, used by bentopdf.com itself and by public-facing deployments.
 >
 > If in doubt: pull the Self-Hosted build.
 
@@ -100,7 +100,7 @@ The Self-Hosted build (the `bentopdf-simple` image, also called Simple Mode) is 
 - Every PDF tool (merge, split, edit, sign, OCR, Office conversion, etc.)
 - Custom branding support, all build-time and runtime config
 
-The Commercial build (`ghcr.io/alam00000/bentopdf:latest`) is what powers bentopdf.com itself and is used by commercial license holders running public-facing deployments — it adds the hero, FAQ, testimonials, and footer that wouldn't make sense on an internal tool.
+The Commercial build (`ghcr.io/alam00000/bentopdf:latest`) is what powers bentopdf.com itself and is used by public-facing deployments — it adds the hero, FAQ, testimonials, and footer that wouldn't make sense on an internal tool.
 
 If you're self-hosting BentoPDF for your team, organization, or as an internal tool, pull the Self-Hosted build:
 

@@ -33,7 +33,7 @@ docker compose up -d
 ```
 
 > [!TIP]
-> BentoPDF ships in two builds: the **Self-Hosted build** (`bentopdf-simple`, used above) for internal/team/organization deployments, and the **Commercial build** (`bentopdf:latest`) used by bentopdf.com itself and by commercial license holders running public-facing deployments. Both ship the same PDF tools — the Commercial build adds the bentopdf.com hero, FAQ, testimonials, and footer. If in doubt, use the Self-Hosted build.
+> BentoPDF ships in two builds: the **Self-Hosted build** (`bentopdf-simple`, used above) for internal/team/organization deployments, and the **Commercial build** (`bentopdf:latest`) used by bentopdf.com itself and by public-facing deployments. Both ship the same PDF tools — the Commercial build adds the bentopdf.com hero, FAQ, testimonials, and footer. If in doubt, use the Self-Hosted build.
 
 Then open `http://localhost:3000` in your browser.
 
