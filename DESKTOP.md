@@ -152,8 +152,8 @@ H-PDF là bản sửa đổi của BentoPDF và phát hành theo **GNU AGPL-3.0*
 
 1. Commit mọi thay đổi; cây làm việc phải sạch.
 2. Chạy `npm run release` (bản vá), `npm run release:minor` hoặc `npm run release:major`.
-3. Script tự tăng version ở mọi tệp, kiểm tra lại, chạy `npx tsc --noEmit` và `npm run test:run`, build bộ cài Windows, commit `Release vX.Y.Z`, tạo tag `vX.Y.Z`, đóng gói mã nguồn + SHA-256, push và tạo GitHub Release (đánh dấu mới nhất).
-4. Cài thử trên một máy chưa từng cài H-PDF: mở tệp PDF từ Explorer, chạy một công cụ cần tải bộ xử lý, in thử một trang.
+3. Script tự tăng version ở mọi tệp, kiểm tra lại, chạy `npx tsc --noEmit` và `npm run test:run`, build bộ cài Windows, commit `Release vX.Y.Z`, đóng gói mã nguồn + SHA-256, push `main`; GitHub tạo tag `vX.Y.Z` khi tạo Release.
+4. Cài thử trên một máy chưa từng cài H-PDF: mở tệp PDF từ Explorer, chạy một công cụ, in thử một trang.
 5. macOS/Linux: sau khi Release có, chạy workflow `.github/workflows/desktop-release.yml` với đúng tag để đính kèm DMG/AppImage/deb.
 
 Chi tiết và các cờ (`--skip-tests`, `--skip-build`, `--no-push`): [RELEASE.md](RELEASE.md).
