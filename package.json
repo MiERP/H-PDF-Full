@@ -6,7 +6,7 @@
   "author": "BentoPDF Contributors",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MiERP/H-PDF-Lite.git"
+    "url": "https://github.com/MiERP/H-PDF-Full.git"
   },
   "main": "desktop/dist/main.js",
   "license": "AGPL-3.0-only",

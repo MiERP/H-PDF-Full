@@ -4,10 +4,10 @@
   "description": "H-PDF-Lite - offline-only privacy-first PDF toolbox by Phạm Văn Long - HAVS, based on BentoPDF",
   "author": "Phạm Văn Long - HAVS",
   "license": "AGPL-3.0-only",
-  "homepage": "https://github.com/MiERP/H-PDF-Lite",
+  "homepage": "https://github.com/MiERP/H-PDF-Full",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MiERP/H-PDF-Lite.git"
+    "url": "https://github.com/MiERP/H-PDF-Full.git"
   },
   "private": true,
   "type": "module",

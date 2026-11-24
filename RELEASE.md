@@ -1,7 +1,11 @@
 # Phát hành H-PDF
 
-Tài liệu này là quy trình duy nhất để tạo và nâng phiên bản. Mọi edition
-(H-PDF-Full, H-PDF-Lite) dùng cùng một cách.
+> **Nhánh Lite:** nhánh này **không có repo/release riêng**. Chỉ build cục bộ
+> bằng `npm run desktop:dist`; không chạy `npm run release` trên nhánh này vì
+> sẽ tạo tag/release trong repo chính. Bản phát hành chính thức nằm ở `main`.
+
+Tài liệu này là quy trình phát hành của bản chính (`main`). Số phiên bản vẫn
+dùng chung cho cả hai nhánh.
 
 ## 1. Một phiên bản, một nguồn
 
@@ -77,24 +81,17 @@ npm run release -- --allow-dirty     # bỏ kiểm tra cây làm việc sạch
 ## 3. Điều kiện để tạo Release
 
 - `gh` đã đăng nhập (`gh auth login`) hoặc đặt biến `GH_TOKEN`.
-- Remote trỏ tới repo GitHub của edition:
-  - Full: `https://github.com/MiERP/H-PDF-Full.git`
-  - Lite: `https://github.com/MiERP/H-PDF-Lite.git`
+- Remote trỏ tới repo chính: `https://github.com/MiERP/H-PDF-Full.git`.
 - Tag của release phải là **release mới nhất**. Nút *Kiểm tra cập nhật* trong
   ứng dụng đọc `/releases/latest` và so tag đó với phiên bản đang chạy. Tag do
   GitHub tạo khi release được tạo; không cần tạo tag local.
 
-Các worktree của cùng một repo Git dùng chung danh sách remote. Khi Full và Lite
-nằm trong hai worktree, đặt tên remote khác nhau và chọn khi phát hành:
+Nhánh `lite` chỉ dùng để build cục bộ. Không tạo release/tag cho nhánh này;
+bản phát hành chính thức nằm ở `main`.
 
 ```bash
-git remote add full https://github.com/MiERP/H-PDF-Full.git
-git remote add lite https://github.com/MiERP/H-PDF-Lite.git
-
-# trong worktree Full
-RELEASE_REMOTE=full npm run release
-# trong worktree Lite
-RELEASE_REMOTE=lite npm run release
+# trong worktree/bản checkout của main
+RELEASE_REMOTE=origin npm run release
 
 # hoặc chỉ định thẳng repo, không cần remote
 RELEASE_REPO=MiERP/H-PDF-Full npm run release
