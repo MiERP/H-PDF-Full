@@ -128,9 +128,4 @@ Before your PR can be merged, you'll need to sign our CLA:
 
 ## License
 
-BentoPDF is dual-licensed:
-
-- **AGPL-3.0** for open-source projects where you share your full source code publicly
-- **Commercial License** for proprietary/closed-source applications - [Get Lifetime License for $79](https://ko-fi.com/s/f32ca4cb75)
-
-By contributing, you agree that your contributions will be licensed under these terms.
+H-PDF is released under the **GNU AGPL-3.0 only**. It is not dual-licensed and no commercial license is offered. By contributing, you agree that your contributions will be licensed under AGPL-3.0.

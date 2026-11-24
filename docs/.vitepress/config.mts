@@ -25,7 +25,7 @@ export default defineConfig({
             { text: 'Tools', link: '/tools/' },
             { text: 'Self-Hosting', link: '/self-hosting/' },
             { text: 'Contributing', link: '/contributing' },
-            { text: 'Commercial License', link: '/licensing' }
+            { text: 'License', link: '/licensing' }
         ],
 
         sidebar: {
@@ -211,7 +211,7 @@ export default defineConfig({
                         { text: 'Tools Reference', link: '/tools/' },
                         { text: 'Self-Hosting', link: '/self-hosting/' },
                         { text: 'Contributing', link: '/contributing' },
-                        { text: 'Commercial License', link: '/licensing' }
+                        { text: 'License', link: '/licensing' }
                     ]
                 }
             ]
@@ -223,8 +223,8 @@ export default defineConfig({
         ],
 
         footer: {
-            message: 'Dual-licensed under AGPL-3.0 and Commercial License.',
-            copyright: 'Copyright © 2026 BentoPDF'
+            message: 'Released under the GNU AGPL-3.0 only.',
+            copyright: 'Copyright © 2026 Phạm Văn Long - HAVS. Based on BentoPDF.'
         },
 
         search: {

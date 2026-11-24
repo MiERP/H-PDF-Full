@@ -306,7 +306,7 @@
       },
       "free": {
         "title": "Free to Use",
-        "description": "Every tool is free, with no trials, no subscriptions and no watermarks. Development is funded by commercial licenses."
+        "description": "Every tool is free, with no trials, no subscriptions and no watermarks. H-PDF is released under the GNU AGPL-3.0."
       },
       "noAccount": {
         "title": "No Account Required",
@@ -329,8 +329,8 @@
     "email": "You can reach us directly by email at:"
   },
   "licensing": {
-    "title": "Licensing for",
-    "subtitle": "Choose the license that fits your needs."
+    "title": "License",
+    "subtitle": "H-PDF is released under the GNU AGPL-3.0."
   },
   "multiTool": {
     "uploadPdfs": "Upload PDFs",

@@ -1,6 +1,6 @@
-# Contributing to BentoPDF
+# Contributing to H-PDF
 
-First off, thank you for considering contributing to **BentoPDF**! Your help makes this project better for everyone.
+First off, thank you for considering contributing to **H-PDF**! Your help makes this project better for everyone.
 
 This document outlines how to contribute, report issues, and get involved in the project.
 
@@ -8,12 +8,7 @@ This document outlines how to contribute, report issues, and get involved in the
 
 ## Contributor License Agreement (CLA)
 
-Before we can accept your contributions, you must sign our Contributor License Agreement (CLA). This is required because BentoPDF uses a dual licensing model:
-
-- **AGPL-3.0** for open source use
-- **Commercial license** for proprietary use
-
-The CLA ensures we can include your contributions in both versions of the project.
+Before we can accept your contributions, you must sign our Contributor License Agreement (CLA). H-PDF is released under the **GNU AGPL-3.0 only** and does not offer a commercial license. The CLA lets us include your contributions in the project under AGPL-3.0.
 
 ### For Individual Contributors
 
@@ -21,13 +16,13 @@ Sign our [Individual Contributor License Agreement (ICLA)](ICLA.md). When you su
 
 ### For Corporate Contributors
 
-If you are contributing on behalf of your employer, your organization needs to sign our [Corporate Contributor License Agreement (CCLA)](CCLA.md). Please contact us at [contact@bentopdf.com](mailto:contact@bentopdf.com) to arrange corporate CLA signing.
+If you are contributing on behalf of your employer, your organization needs to sign our [Corporate Contributor License Agreement (CCLA)](CCLA.md). Open an issue at <https://github.com/MiERP/H-PDF-Full/issues> to arrange corporate CLA signing.
 
 ### What the CLA Grants
 
 By signing the CLA, you:
 
-- Grant us a broad copyright license to use, modify, and relicense your contributions (including for commercial use)
+- Grant us a broad copyright license to use, modify, and distribute your contributions under AGPL-3.0
 - Grant a patent license for any patents covering your contribution
 - Represent that you have the authority to make the contribution
 - Retain full copyright ownership of your contributions
@@ -140,7 +135,7 @@ When submitting code contributions, please use our [pull request template](.gith
 
 If you discover a security vulnerability, please **do not** open a public issue. Instead, contact the project maintainer directly at:
 
-**Email:** [contact@bentopdf.com](mailto:contact@bentopdf.com)
+**Email:** mở issue tại <https://github.com/MiERP/H-PDF-Full/issues>
 
 ---
 
@@ -150,4 +145,4 @@ All contributors are expected to follow the Code of Conduct. Be respectful and c
 
 ---
 
-Thank you for helping make **BentoPDF** a better library for everyone!
+Thank you for helping make **H-PDF** a better library for everyone!

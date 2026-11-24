@@ -1,92 +1,46 @@
-# Commercial License
+# License
 
-BentoPDF is dual-licensed under **AGPL-3.0** (for open-source projects) and a **Commercial License** (for proprietary/closed-source applications).
+H-PDF is free software released under the **GNU Affero General Public License v3.0 (AGPL-3.0)** only. It is **not** dual-licensed and no commercial license is offered.
 
-::: tip Full Details
-For complete licensing information, delivery details, AGPL component notices, and invoicing, visit our [Licensing Page](https://bentopdf.com/licensing.html).
-:::
+The full license text is in the [LICENSE](https://github.com/MiERP/H-PDF-Full/blob/main/LICENSE) file at the root of the repository.
 
-## Get a Commercial License
+## What you may do
 
-**[Get Lifetime License for $79](https://ko-fi.com/s/f32ca4cb75)** — A one-time purchase that includes all future updates forever.
+- Run H-PDF for any purpose, personal or commercial.
+- Study the source code and check how documents are processed.
+- Modify the source code to fit your needs.
+- Redistribute the original or a modified version.
 
-## When Do You Need a Commercial License?
+## What you must do
 
-| Use Case                                    | License Required       |
-| ------------------------------------------- | ---------------------- |
-| Open-source project with public source code | AGPL-3.0 (Free)        |
-| Internal company tool (not distributed)     | AGPL-3.0 (Free)        |
-| Proprietary/closed-source application       | **Commercial License** |
-| SaaS product without source code disclosure | **Commercial License** |
-| Redistributing without AGPL compliance      | **Commercial License** |
+- Publish the complete corresponding source code, including your modifications, under AGPL-3.0.
+- Keep the copyright, license and third-party notices.
+- Do not add restrictions that limit the rights AGPL-3.0 grants to recipients.
+- If you run a modified version as a network service, offer its complete source code to the users of that service.
 
-## Delivery & Licensing Model
+## No commercial license
 
-- **No license key is required or provided.** BentoPDF intentionally does not use license keys to streamline deployment and reduce operational friction for users.
-- Upon purchase, users receive a ZIP archive containing the complete BentoPDF source code and binaries.
-- The source code provided is identical to the code published in our public open-source repository.
+H-PDF does not sell a commercial license and does not offer a closed-source option. If your product cannot comply with AGPL-3.0, you cannot use H-PDF in that product.
 
-**GitHub Repository:** [github.com/alam00000/bentopdf](https://github.com/alam00000/bentopdf)
+The upstream BentoPDF project has its own dual-licensing policy. That policy belongs to upstream and does not apply to H-PDF.
 
-## Important Notice on Third-Party Components
+## Third-party components
 
-::: info AGPL Components — Pre-configured via CDN
-BentoPDF **does not bundle** AGPL-licensed processing libraries in its source code. These components are loaded at runtime from CDN URLs that are **pre-configured by default** — all features work out of the box with zero setup.
+| Component                   | License    | Source                                                                                                           |
+| --------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------- |
+| BentoPDF                    | AGPL-3.0   | [alam00000/bentopdf](https://github.com/alam00000/bentopdf)                                                      |
+| PyMuPDF                     | AGPL-3.0   | [pymupdf/PyMuPDF](https://github.com/pymupdf/PyMuPDF)                                                            |
+| Ghostscript                 | AGPL-3.0   | [ArtifexSoftware/ghostpdl](https://github.com/ArtifexSoftware/ghostpdl)                                          |
+| CoherentPDF (cpdf)          | AGPL-3.0   | [coherentgraphics/coherentpdf.js](https://github.com/coherentgraphics/coherentpdf.js)                            |
+| LibreOffice                 | MPL-2.0    | [libreoffice.org](https://www.libreoffice.org/about-us/source-code/)                                             |
+| Tesseract OCR, tesseract.js | Apache-2.0 | [tesseract-ocr](https://github.com/tesseract-ocr), [naptha/tesseract.js](https://github.com/naptha/tesseract.js) |
+| Noto Sans, Inter            | OFL-1.1    | [googlefonts/noto-fonts](https://github.com/googlefonts/noto-fonts), [rsms/inter](https://github.com/rsms/inter) |
 
-| Component       | License  | Status                 |
-| --------------- | -------- | ---------------------- |
-| **PyMuPDF**     | AGPL-3.0 | Pre-configured via CDN |
-| **Ghostscript** | AGPL-3.0 | Pre-configured via CDN |
-| **CoherentPDF** | AGPL-3.0 | Pre-configured via CDN |
+These components keep their own licenses. H-PDF's AGPL-3.0 license does not replace or relax their obligations.
 
-WASM module URLs are configured via environment variables at build time (`.env.production`). The defaults point to jsDelivr CDN. For custom deployments (air-gapped, self-hosted), you can override via environment variables, Docker build args, or per-user via **Advanced Settings** in the UI.
+## Source code
 
-See [Self-Hosting > WASM Configuration](/self-hosting/#wasm-configuration-agpl-components) for details.
+Every release includes a source archive and the repository tag it was built from:
 
-This approach ensures:
-
-- BentoPDF's core code remains under its dual-license (AGPL-3.0 / Commercial)
-- WASM binaries are loaded at runtime, not included in the source
-- Clear compliance boundaries for commercial users
-  :::
-
-::: tip Commercial License & AGPL Features
-The commercial license covers BentoPDF's own code. If you configure and use AGPL components (PyMuPDF, Ghostscript, CoherentPDF), you must still comply with their respective AGPL-3.0 license terms, which may require source code disclosure if you distribute modified versions.
-:::
-
-## Invoicing
-
-- Ko-fi does not automatically issue invoices.
-- An official invoice will be provided immediately upon request.
-
-**Contact us:** [contact@bentopdf.com](mailto:contact@bentopdf.com) with your purchase details.
-
-## What's Included
-
-| Feature                       | Included       |
-| ----------------------------- | -------------- |
-| Full source code              | ✅             |
-| All 50+ PDF tools             | ✅             |
-| Self-hosting rights           | ✅             |
-| Lifetime updates              | ✅             |
-| Remove branding (Simple Mode) | ✅             |
-| Commercial support            | ✅ (via email) |
-| Priority feature requests     | ✅             |
-
-## FAQ
-
-### Do I need a license key to use BentoPDF?
-
-No. BentoPDF does not use license keys. The commercial license grants you legal rights to use the software in proprietary applications.
-
-### Can I use BentoPDF in my SaaS product?
-
-Yes, with a commercial license. Without it, you must comply with AGPL-3.0, which requires you to make your full source code available to users.
-
-### What about the AGPL components?
-
-Components like CoherentPDF are licensed under AGPL v3 and remain under that license. The commercial license covers BentoPDF's own code but does not override third-party AGPL obligations.
-
-### How do I get an invoice?
-
-Email [contact@bentopdf.com](mailto:contact@bentopdf.com) with your Ko-fi purchase confirmation, and we'll send an official invoice.
+- Repository: <https://github.com/MiERP/H-PDF-Full>
+- Releases: <https://github.com/MiERP/H-PDF-Full/releases>

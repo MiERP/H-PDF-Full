@@ -1,5 +1,7 @@
 # Simple Mode for BentoPDF (the Self-Hosted build)
 
+> **H-PDF note:** H-PDF is released under the **GNU AGPL-3.0 only**. "Commercial build" below is the upstream BentoPDF build name, not a license option offered by H-PDF.
+
 Simple Mode is what powers the **Self-Hosted build** of BentoPDF (`bentopdf-simple`). It is **functionally identical** to the Commercial build that powers bentopdf.com — every PDF tool is present and behaves the same. It just hides the marketing chrome (hero, FAQ, testimonials, footer) that only makes sense on the public bentopdf.com site or on a commercial public-facing deployment.
 
 > **Simple Mode is not a feature-reduced "lite" version.** Every PDF tool — merge, split, edit, sign, OCR, Office conversion, every other tool — works identically in both builds. The only difference is the marketing UI around the tools.
