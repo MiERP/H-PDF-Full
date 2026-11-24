@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 BentoPDF is a client-side PDF toolkit: every tool runs in the browser, no server processing. It is a **multi-page Vite app in vanilla TypeScript** (no UI framework; Tailwind v4, Handlebars partials), not an SPA. This fork additionally carries an **Electron desktop wrapper** (`desktop/`, `src/js/desktop/`, `scripts/build-desktop.mjs`, `electron-builder.json`, `DESKTOP.md`), released as H-PDF.
 
-Licence is AGPL-3.0 with a commercial dual licence; contributions require a signed CLA (`ICLA.md` / `CCLA.md`).
+Licence is GNU AGPL-3.0 only (no commercial licence); contributions require a signed CLA (`ICLA.md` / `CCLA.md`).
 
 ## Commands
 

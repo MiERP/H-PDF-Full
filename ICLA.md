@@ -1,6 +1,6 @@
-# BentoPDF Individual Contributor License Agreement (ICLA)
+# H-PDF Individual Contributor License Agreement (ICLA)
 
-Thank you for your interest in contributing to BentoPDF. This Individual Contributor License Agreement ("Agreement") documents the rights granted by contributors to the Project.
+Thank you for your interest in contributing to H-PDF. This Individual Contributor License Agreement ("Agreement") documents the rights granted by contributors to the Project.
 
 By signing this Agreement, you accept and agree to the following terms and conditions for your present and future Contributions submitted to the Project.
 
@@ -10,7 +10,7 @@ By signing this Agreement, you accept and agree to the following terms and condi
 
 **"Contribution"** means any original work of authorship, including any modifications or additions to an existing work, that is intentionally submitted by You to the Project for inclusion in, or documentation of, the Project. For the purposes of this definition, "submitted" means any form of electronic, verbal, or written communication sent to the Project or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, the Project for the purpose of discussing and improving the Project.
 
-**"Project"** means the BentoPDF software project and all associated repositories, documentation, and related materials maintained at https://github.com/alam00000/bentopdf.
+**"Project"** means the H-PDF software project and all associated repositories, documentation, and related materials maintained at https://github.com/MiERP/H-PDF-Full.
 
 **"Project Owner"** means the owners and maintainers of the Project.
 
@@ -20,9 +20,9 @@ Subject to the terms and conditions of this Agreement, You hereby grant to the P
 
 - Reproduce, prepare derivative works of, publicly display, publicly perform, and distribute Your Contributions and such derivative works
 - Sublicense any or all of the foregoing rights to third parties
-- **Relicense Your Contributions under any license**, including but not limited to proprietary licenses, commercial licenses, or any other open source license
+- **Relicense Your Contributions under the GNU AGPL-3.0**, the license of the Project
 
-This grant specifically enables the Project Owner to offer commercial licenses of the Project incorporating Your Contributions, consistent with the Project's dual licensing model (AGPL-3.0 for open source use, and a separate commercial license for proprietary use).
+This grant enables the Project Owner to distribute Your Contributions as part of H-PDF under the GNU AGPL-3.0. H-PDF does not offer a commercial or proprietary license.
 
 ## 3. Grant of Patent License
 
@@ -97,4 +97,4 @@ By submitting a pull request or other Contribution to the Project, and by typing
 
 ---
 
-*This CLA is based on the Apache Individual Contributor License Agreement and has been adapted for BentoPDF's dual licensing model.*
+*This CLA is based on the Apache Individual Contributor License Agreement and has been adapted for H-PDF. H-PDF is released under the GNU AGPL-3.0 only.*

@@ -143,12 +143,9 @@ docker run -p 3000:8080 acmepdf
 Every other build-time option (`BASE_URL`, `VITE_DEFAULT_LANGUAGE`, `DISABLE_TOOLS`, WASM URL overrides, etc.) works the same way it does on the Self-Hosted build.
 
 ::: warning Licensing
-Running the Commercial build is allowed under either of BentoPDF's two license options:
+H-PDF is released under the **GNU AGPL-3.0 only**. Running a modified version as a network service requires you to offer the complete source code of that version to its users. There is no commercial license option for H-PDF.
 
-- **AGPL-3.0** (free) — allowed if your deployment publishes its full source code under AGPL, including any branding modifications and surrounding business logic.
-- **Commercial license** ($79 lifetime) — required for closed-source / proprietary deployments where you don't open-source your branding fork or business code.
-
-See the [Licensing page](https://bentopdf.com/licensing.html) for the full comparison. AGPL-licensed WASM modules (PyMuPDF, Ghostscript, CoherentPDF) load from a CDN at runtime, so they don't enter your image and don't change your licensing posture.
+AGPL-licensed WASM modules (PyMuPDF, Ghostscript, CoherentPDF) keep their own licenses and must be used in compliance with them.
 :::
 
 ### Base URL

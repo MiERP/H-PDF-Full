@@ -1,5 +1,8 @@
 <p align="center"><img src="public/images/favicon-no-bg.svg" width="80"></p>
 <h1 align="center">BentoPDF</h1>
+
+> **H-PDF note:** This file is the upstream BentoPDF README, kept for reference. H-PDF is released under the GNU AGPL-3.0 only and does not offer a commercial license.
+
 <p align="center"><sub>Supported by</sub></p>
 <p align="center">
   <a href="https://vercel.com/open-source-program">
@@ -79,28 +82,17 @@ Visit our [Documentation](https://bentopdf.com/docs/) for:
 - **Tools Reference** (50+ tools)
 - **Self-Hosting** guides (Docker, Vercel, Netlify, Cloudflare, AWS, Hostinger, Nginx, Apache)
 - **Contributing** guide
-- **Commercial License** details
+- **License** details
 
 ---
 
 ## 📜 Licensing
 
-BentoPDF is **dual-licensed** to fit your needs:
+H-PDF is released under the **GNU AGPL-3.0 only**. It does **not** offer a commercial license, and the AGPL obligations cannot be bought out.
 
-| License        | Best For                                     | Price              |
-| -------------- | -------------------------------------------- | ------------------ |
-| **AGPL-3.0**   | Open-source projects with public source code | **Free**           |
-| **Commercial** | Proprietary / closed-source applications     | **$79** (lifetime) |
+The upstream BentoPDF project is dual-licensed (AGPL-3.0 + commercial). That policy belongs to upstream and does not apply to H-PDF. This file is kept as upstream reference documentation.
 
-<p align="center">
-  <a href="https://buy.polar.sh/polar_cl_ThDfffbl733x7oAodcIryCzhlO57ZtcWPq6HJ1qMChd">
-    <img src="https://img.shields.io/badge/🚀_Get_Commercial_License-$79_Lifetime-6366f1?style=for-the-badge&labelColor=1f2937" alt="Get Commercial License">
-  </a>
-</p>
-
-> **One-time purchase** · **Unlimited devices & users** · **Lifetime updates** · **No AGPL obligations**
-
-📖 For more details, see our [Licensing Page](https://bentopdf.com/licensing.html)
+For H-PDF, see the [LICENSE](LICENSE) file and the [license documentation](docs/licensing.md).
 
 ### AGPL Components (Pre-configured via CDN)
 

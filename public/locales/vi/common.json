@@ -329,8 +329,8 @@
     "email": "Bạn có thể liên hệ trực tiếp với chúng tôi qua email tại:"
   },
   "licensing": {
-    "title": "Giấy phép cho",
-    "subtitle": "Chọn giấy phép phù hợp với nhu cầu của bạn."
+    "title": "Giấy phép",
+    "subtitle": "H-PDF được phát hành theo GNU AGPL-3.0."
   },
   "multiTool": {
     "uploadPdfs": "Tải lên PDF",
