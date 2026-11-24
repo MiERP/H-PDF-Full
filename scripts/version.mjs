@@ -207,4 +207,10 @@ function main() {
   }
 }
 
-process.exitCode = main();
+const invokedDirectly =
+  process.argv[1] !== undefined &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (invokedDirectly) {
+  process.exitCode = main();
+}
