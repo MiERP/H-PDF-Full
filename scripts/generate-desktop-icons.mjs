@@ -22,6 +22,38 @@ const outputs = [
   { path: 'public/images/favicon.png', size: 64 },
 ];
 
+// A PNG-compressed multi-size ICO, for browsers and shortcuts that ignore
+// the SVG/PNG favicons. 256 is written as 0 in the directory entry.
+function icoBuffer(image, sizes) {
+  const pngs = sizes.map((size) =>
+    image.resize({ width: size, height: size, quality: 'best' }).toPNG()
+  );
+  const header = Buffer.alloc(6);
+  header.writeUInt16LE(0, 0);
+  header.writeUInt16LE(1, 2);
+  header.writeUInt16LE(sizes.length, 4);
+
+  const entries = [];
+  let offset = 6 + 16 * sizes.length;
+  sizes.forEach((size, index) => {
+    const png = pngs[index];
+    const entry = Buffer.alloc(16);
+    entry[0] = size === 256 ? 0 : size;
+    entry[1] = size === 256 ? 0 : size;
+    entry[2] = 0;
+    entry[3] = 0;
+    entry.writeUInt16LE(1, 4);
+    entry.writeUInt16LE(32, 6);
+    entry.writeUInt32LE(png.length, 8);
+    entry.writeUInt32LE(offset, 12);
+    entries.push(entry);
+    offset += png.length;
+  });
+
+  return Buffer.concat([header, ...entries, ...pngs]);
+}
+
+
 app.disableHardwareAcceleration();
 
 app.whenReady().then(async () => {
@@ -55,5 +87,11 @@ app.whenReady().then(async () => {
     );
     console.log(`wrote ${path} (${size}x${size})`);
   }
+
+  writeFileSync(
+    resolve(root, 'public/favicon.ico'),
+    icoBuffer(image, [16, 32, 48, 64, 128, 256])
+  );
+  console.log('wrote public/favicon.ico (16, 32, 48, 64, 128, 256)');
   app.quit();
 });
