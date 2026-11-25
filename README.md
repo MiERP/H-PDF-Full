@@ -18,7 +18,7 @@
 - Chỉ giữ các công cụ xử lý PDF chạy được ngay trên máy, không cần tải thêm bộ xử lý.
 - Bỏ các công cụ cần PyMuPDF, Ghostscript, LibreOffice hoặc kết nối Internet.
 - Bộ cài nhỏ hơn bản đầy đủ, phù hợp máy yếu hoặc môi trường mạng bị chặn.
-- Dùng chung phiên bản với `main` (hiện là **1.0.2**).
+- Dùng chung phiên bản với `main` (hiện là **1.0.3**).
 
 Bản đầy đủ có đủ hơn 100 công cụ, OCR tiếng Việt và các bộ xử lý đi kèm. Xem
 [README của `main`](https://github.com/MiERP/H-PDF-Full#readme).
