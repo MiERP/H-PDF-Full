@@ -709,6 +709,7 @@ export default defineConfig(() => {
           // though the introduction page is no longer part of the app.
           ...(IS_DESKTOP
             ? {
+                'cit-about': resolve(__dirname, 'cit-about.html'),
                 'cit-settings': resolve(__dirname, 'cit-settings.html'),
               }
             : {}),
