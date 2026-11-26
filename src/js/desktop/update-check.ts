@@ -12,9 +12,13 @@ import { ds } from './strings.js';
 
 const AUTO_KEY = 'cit:auto-update-check';
 const RESULT_KEY = 'cit:update-check';
+/** Time of the last automatic attempt, successful or not. */
+const ATTEMPT_KEY = 'cit:update-check-attempt';
 /** When the dialog may show again after "Later" or closing it. */
 const SNOOZE_KEY = 'cit:update-snoozed-until';
 const CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000;
+/** Do not retry a failed automatic check on every page load. */
+const FAILURE_BACKOFF_MS = 60 * 60 * 1000;
 const SNOOZE_MS = 24 * 60 * 60 * 1000;
 const DIALOG_ID = 'desktop-update-dialog';
 
@@ -75,10 +79,18 @@ async function latestResult(): Promise<StoredResult | null> {
     Date.now() - stored.time < CHECK_INTERVAL_MS;
   if (fresh) return stored;
 
+  // An offline machine would otherwise hit GitHub on every page load.
+  const lastAttempt = Number(getStoredItem(ATTEMPT_KEY)) || 0;
+  if (Date.now() - lastAttempt < FAILURE_BACKOFF_MS) return null;
+  setStoredItem(ATTEMPT_KEY, String(Date.now()));
+
   const bridge = getBridge();
   if (!bridge) return null;
   try {
-    rememberUpdateResult(await bridge.checkForUpdate());
+    const result = await bridge.checkForUpdate();
+    // A failed check must not fall back to a result older than a day.
+    if (result.ok === false) return null;
+    rememberUpdateResult(result);
   } catch (e) {
     console.warn('[Desktop] Update check failed:', e);
     return null;
@@ -175,10 +187,7 @@ export function showUpdateDialog(result: ShownResult): void {
   const titleRow = el('div', 'flex flex-wrap items-center gap-2');
   const title = el('h2', 'desktop-update-title', 'H-PDF-Full');
   title.id = 'desktop-update-title';
-  titleRow.append(
-    title,
-    el('span', 'desktop-update-badge', ds('updateBadge'))
-  );
+  titleRow.append(title, el('span', 'desktop-update-badge', ds('updateBadge')));
   titles.append(
     titleRow,
     el(

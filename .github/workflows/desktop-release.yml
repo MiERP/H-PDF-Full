@@ -56,6 +56,18 @@ jobs:
         env:
           HUSKY: '0'
 
+      - name: Verify the tag matches the checked-out version
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          tag_version="v$(node -p "require('./package.json').version")"
+          if [ "$tag_version" != "$RELEASE_TAG" ]; then
+            echo "Tag $RELEASE_TAG does not match package version $tag_version"
+            exit 1
+          fi
+          npm run version:check
+
       - name: Build the desktop bundle
         run: node scripts/build-desktop.mjs
 

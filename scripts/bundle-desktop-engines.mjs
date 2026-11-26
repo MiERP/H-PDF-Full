@@ -40,7 +40,16 @@ for (const [name, item] of Object.entries(manifest.modules)) {
   if (!item.bundled) continue;
   const target = resolve(bundledDir, name);
   const probe = resolve(target, item.probe);
-  if (existsSync(probe)) {
+  // A probe alone cannot tell an old engine from the one the manifest now
+  // pins. The stamp makes a version bump re-fetch instead of shipping the old
+  // engine under the new version's label.
+  const stampFile = resolve(target, '.manifest-version');
+  const stamp = existsSync(stampFile)
+    ? readFileSync(stampFile, 'utf8').trim()
+    : null;
+  const version = String(item.version ?? '');
+  if (existsSync(probe) && (stamp === null || stamp === version)) {
+    if (stamp === null) writeFileSync(stampFile, `${version}\n`);
     console.log(`   ${name}: already bundled`);
     continue;
   }
@@ -93,6 +102,7 @@ for (const [name, item] of Object.entries(manifest.modules)) {
   if (!existsSync(probe)) {
     throw new Error(`${name}: ${item.probe} missing after bundling`);
   }
+  writeFileSync(stampFile, `${version}\n`);
   console.log(`   ${name}: bundled`);
 }
 

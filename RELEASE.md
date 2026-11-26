@@ -54,7 +54,7 @@ npm run release:major    # thay đổi lớn
 
 1. Tăng phiên bản trong tất cả các tệp ở trên và kiểm tra lại.
 2. Chạy `npx tsc --noEmit` và `npm run test:run`.
-3. Chạy `npm run desktop:dist` để tạo bộ cài Windows trong `release/`.
+3. Chạy `npm run desktop:dist` để tạo bộ cài Windows trong `release/` (bước này tải và kiểm tra mã băm mọi bộ xử lý đi kèm trước khi build).
 4. Commit riêng `Release vX.Y.Z`.
 5. Tạo `H-PDF-<edition>-<version>-Source.zip` từ đúng commit đó.
 6. Tạo `SHA256SUMS-H-PDF-<edition>-<version>.txt`.
@@ -79,6 +79,7 @@ npm run release -- --allow-dirty     # bỏ kiểm tra cây làm việc sạch
 
 - `gh` đã đăng nhập (`gh auth login`) hoặc đặt biến `GH_TOKEN`.
 - Remote trỏ tới repo chính: `https://github.com/MiERP/H-PDF-Full.git`.
+- Phải đang ở nhánh `main`; script từ chối push từ nhánh khác (dùng `--no-push` nếu chỉ muốn commit cục bộ).
 - Tag của release phải là **release mới nhất**. Nút _Kiểm tra cập nhật_ trong
   ứng dụng đọc `/releases/latest` và so tag đó với phiên bản đang chạy. Tag do
   GitHub tạo khi release được tạo; không cần tạo tag local.

@@ -15,10 +15,12 @@ const STRINGS = {
     removeFavorite: 'Bỏ khỏi Yêu thích',
     modulesMissing: 'Công cụ này còn thiếu: {names}. Tải trong Cài đặt',
     moduleDownloading: 'Đang tải {label}',
-    moduleDownloadNote: 'Chỉ tải lần đầu, sau đó dùng được cả khi không có mạng.',
+    moduleDownloadNote:
+      'Chỉ tải lần đầu, sau đó dùng được cả khi không có mạng.',
     moduleDownloadCancel: 'Hủy tải',
     loaderElapsed: 'Đã chạy {time}',
-    moduleCancelled: 'Đã hủy tải bộ xử lý nên công cụ chưa chạy. Bấm chạy lại khi muốn tải.',
+    moduleCancelled:
+      'Đã hủy tải bộ xử lý nên công cụ chưa chạy. Bấm chạy lại khi muốn tải.',
     moduleFailed: 'Không cài được bộ xử lý: {error}',
     loaderSlow: 'Tệp lớn có thể mất vài phút. Đừng đóng cửa sổ.',
     openFileTitle: 'Bạn muốn làm gì với tệp này?',
@@ -67,7 +69,7 @@ const STRINGS = {
     language: 'Ngôn ngữ',
     modulesTitle: 'Bộ xử lý',
     modulesIntro:
-      'Các bộ xử lý nặng được tải về khi cần và lưu trên máy để dùng offline. Bạn có thể tải trước hoặc xóa để giải phóng ổ đĩa.',
+      'Bộ xử lý nặng đi kèm bộ cài hoặc được tải về khi cần, rồi lưu trên máy để dùng offline. Bạn có thể tải trước hoặc xóa để giải phóng ổ đĩa.',
     bundled: 'Có sẵn trong bộ cài',
     installed: 'Đã tải',
     notInstalled: 'Chưa tải',
@@ -341,7 +343,8 @@ const STRINGS = {
     moduleDownloadNote: 'Downloaded once, then it works offline too.',
     moduleDownloadCancel: 'Cancel download',
     loaderElapsed: 'Running for {time}',
-    moduleCancelled: 'The engine download was cancelled, so the tool did not run. Run it again when you want to download it.',
+    moduleCancelled:
+      'The engine download was cancelled, so the tool did not run. Run it again when you want to download it.',
     moduleFailed: 'Could not install the engine: {error}',
     loaderSlow: 'Large files can take a few minutes. Keep this window open.',
     openFileTitle: 'What do you want to do with this file?',
@@ -390,7 +393,7 @@ const STRINGS = {
     language: 'Language',
     modulesTitle: 'Engines',
     modulesIntro:
-      'Heavy engines are downloaded on demand and kept on this computer for offline use. You can download them ahead of time or remove them to free up disk space.',
+      'Heavy engines are included in the installer or downloaded on demand, then kept on this computer for offline use. You can download them ahead of time or remove them to free up disk space.',
     bundled: 'Included in the installer',
     installed: 'Downloaded',
     notInstalled: 'Not downloaded',

@@ -139,8 +139,9 @@
               Đóng gói bản desktop
             </h3>
             <p class="text-sm text-gray-400">
-              Bộ cài cho Windows, macOS và Linux. Cài đặt không cần quyền quản
-              trị, bộ cài gọn nhẹ, các bộ xử lý nặng chỉ tải khi cần.
+              Bộ cài Windows, cấu hình sẵn cho macOS và Linux. Cài đặt không cần
+              quyền quản trị; bộ cài đã kèm sẵn các bộ xử lý nặng để dùng ngoại
+              tuyến.
             </p>
           </div>
           <div class="bg-gray-800 border border-gray-700 rounded-xl p-5">
@@ -150,8 +151,8 @@
             </h3>
             <p class="text-sm text-gray-400">
               Giao diện riêng cho desktop: thanh bên với tìm kiếm, Yêu thích và
-              Gần đây, mở tệp trực tiếp từ Windows, logo H-PDF và mặc định
-              Tiếng Việt.
+              Gần đây, mở tệp trực tiếp từ Windows, logo H-PDF và mặc định Tiếng
+              Việt.
             </p>
           </div>
         </div>
@@ -203,17 +204,17 @@
         </div>
       </section>
 
-      <!-- Cần tải thêm -->
+      <!-- Bộ xử lý đi kèm -->
       <section class="mb-14">
         <h2 class="text-2xl font-bold text-white mb-2">
-          <i class="ph ph-download-simple text-amber-400 align-middle"></i>
-          Chức năng cần tải thêm bộ xử lý
+          <i class="ph ph-check-circle text-green-400 align-middle"></i>
+          Bộ xử lý đi kèm
         </h2>
         <p class="text-gray-400 mb-5">
-          Ba bộ xử lý nặng không nằm trong bộ cài. Lần đầu bạn chạy một công cụ
-          cần đến chúng, H-PDF hiện hộp thoại xác nhận kèm dung lượng, tải về
-          từ nguồn chính thức và kiểm tra mã băm. Sau đó chúng được lưu trên máy
-          và dùng offline vĩnh viễn.
+          Bộ cài Full đã gồm sẵn mọi bộ xử lý nặng, nên lần đầu chạy công cụ
+          không cần tải gì và mọi thứ dùng được ngoại tuyến. Nếu đã xóa bớt
+          trong Cài đặt, ứng dụng tải lại khi có mạng hoặc cài từ gói ngoại
+          tuyến.
         </p>
 
         <div class="overflow-x-auto rounded-xl border border-gray-700">
@@ -222,7 +223,7 @@
               <tr>
                 <th class="px-4 py-3 font-semibold">Bộ xử lý</th>
                 <th class="px-4 py-3 font-semibold whitespace-nowrap">
-                  Dung lượng tải
+                  Dung lượng
                 </th>
                 <th class="px-4 py-3 font-semibold">Công cụ sử dụng</th>
               </tr>
@@ -230,11 +231,9 @@
             <tbody class="divide-y divide-gray-700 text-gray-400">
               <tr>
                 <td class="px-4 py-3 text-white font-medium align-top">
-                  PyMuPDF<br /><span class="text-xs text-gray-500"
-                    >tải kèm Ghostscript</span
-                  >
+                  PyMuPDF
                 </td>
-                <td class="px-4 py-3 align-top whitespace-nowrap">~49 MB</td>
+                <td class="px-4 py-3 align-top whitespace-nowrap">~54 MB</td>
                 <td class="px-4 py-3">
                   PDF sang Word, Excel, CSV, Text, Markdown, SVG; trích xuất ảnh
                   và bảng; EPUB, MOBI, FB2, XPS, CBZ, PSD, JPG, ảnh, TXT, email
@@ -246,7 +245,7 @@
                 <td class="px-4 py-3 text-white font-medium align-top">
                   Ghostscript
                 </td>
-                <td class="px-4 py-3 align-top whitespace-nowrap">~11 MB</td>
+                <td class="px-4 py-3 align-top whitespace-nowrap">~15 MB</td>
                 <td class="px-4 py-3">
                   Chuyển PDF sang PDF/A; chuyển phông chữ thành đường nét (font
                   to outline).
@@ -262,15 +261,35 @@
                   Publisher, Visio, WPD, WPS sang PDF.
                 </td>
               </tr>
+              <tr>
+                <td class="px-4 py-3 text-white font-medium align-top">
+                  Tesseract OCR<br /><span class="text-xs text-gray-500"
+                    >kèm gói tiếng Việt và tiếng Anh</span
+                  >
+                </td>
+                <td class="px-4 py-3 align-top whitespace-nowrap">~12 MB</td>
+                <td class="px-4 py-3">
+                  Nhận dạng chữ trong bản scan, kể cả tiếng Việt có dấu; tạo lớp
+                  chữ tìm kiếm được cho PDF.
+                </td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-white font-medium align-top">
+                  CoherentPDF
+                </td>
+                <td class="px-4 py-3 align-top whitespace-nowrap">~1 MB</td>
+                <td class="px-4 py-3">
+                  Xử lý trang, ghép, tách, chèn và các thao tác PDF khác.
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
 
         <p class="text-sm text-gray-500 mt-4">
           <i class="ph ph-wifi-high align-middle"></i>
-          Một số công cụ cần kết nối mạng mỗi khi sử dụng: OCR (tải dữ liệu nhận
-          dạng ngôn ngữ) và đóng dấu thời gian (kết nối máy chủ cấp dấu thời
-          gian).
+          OCR cho ngôn ngữ khác tiếng Việt và tiếng Anh tải dữ liệu nhận dạng
+          khi dùng; đóng dấu thời gian cần kết nối máy chủ cấp dấu thời gian.
         </p>
       </section>
 
@@ -299,9 +318,9 @@
           về tác giả tương ứng và tuân theo giấy phép riêng của chúng.
         </p>
         <p class="text-sm text-gray-400 leading-relaxed mt-3">
-          Bản này đã được Phạm Văn Long - HAVS sửa đổi so với BentoPDF gốc (năm 2026): bổ
-          sung giao diện máy tính, đóng gói bản cài và đổi tên thành H-PDF.
-          Toàn bộ mã nguồn, bao gồm các phần sửa đổi, được công khai tại
+          Bản này đã được Phạm Văn Long - HAVS sửa đổi so với BentoPDF gốc (năm
+          2026): bổ sung giao diện máy tính, đóng gói bản cài và đổi tên thành
+          H-PDF. Toàn bộ mã nguồn, bao gồm các phần sửa đổi, được công khai tại
           <a
             href="https://github.com/MiERP/H-PDF-Full"
             target="_blank"

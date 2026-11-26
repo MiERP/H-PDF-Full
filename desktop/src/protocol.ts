@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { protocol } from 'electron';
 import type { ModulesManager } from './modules-manager.js';
+import { APP_HOST } from './app-url.js';
+import { resolveInside, resolveUrlPath } from './safe-path.js';
 
 const MIME_MAP: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
@@ -46,6 +48,11 @@ export function setupAppProtocol(
   protocol.handle('app', async (request) => {
     try {
       const parsedUrl = new URL(request.url);
+      // Only the real application origin: another host would be a separate
+      // origin with the same preload bridge attached.
+      if (parsedUrl.host !== APP_HOST) {
+        return new Response('Not Found', { status: 404 });
+      }
       let pathname = decodeURIComponent(parsedUrl.pathname);
 
       // Normalize root
@@ -59,15 +66,24 @@ export function setupAppProtocol(
         return serveFile(mountedFile);
       }
 
-      // 2. Check dist directory
-      const directPath = path.join(distDir, pathname);
-      if (fs.existsSync(directPath) && fs.statSync(directPath).isFile()) {
+      // 2. Check dist directory. The path came from the URL, so it must stay
+      // inside distDir even after percent-decoding (`..`, absolute paths).
+      const directPath = resolveUrlPath(distDir, pathname);
+      if (
+        directPath &&
+        fs.existsSync(directPath) &&
+        fs.statSync(directPath).isFile()
+      ) {
         return serveFile(directPath);
       }
 
       // 3. Try clean URLs: /merge-pdf -> /merge-pdf.html
-      const htmlCandidate = path.join(distDir, `${pathname}.html`);
-      if (fs.existsSync(htmlCandidate) && fs.statSync(htmlCandidate).isFile()) {
+      const htmlCandidate = resolveUrlPath(distDir, `${pathname}.html`);
+      if (
+        htmlCandidate &&
+        fs.existsSync(htmlCandidate) &&
+        fs.statSync(htmlCandidate).isFile()
+      ) {
         return serveFile(htmlCandidate);
       }
 
@@ -78,12 +94,20 @@ export function setupAppProtocol(
       if (langMatch) {
         const [, lang, tool] = langMatch;
         const toolName = tool.endsWith('.html') ? tool : `${tool}.html`;
-        const langPath = path.join(distDir, lang, toolName);
-        if (fs.existsSync(langPath) && fs.statSync(langPath).isFile()) {
+        const langPath = resolveInside(distDir, path.join(lang, toolName));
+        if (
+          langPath &&
+          fs.existsSync(langPath) &&
+          fs.statSync(langPath).isFile()
+        ) {
           return serveFile(langPath);
         }
-        const fallbackPath = path.join(distDir, toolName);
-        if (fs.existsSync(fallbackPath) && fs.statSync(fallbackPath).isFile()) {
+        const fallbackPath = resolveInside(distDir, toolName);
+        if (
+          fallbackPath &&
+          fs.existsSync(fallbackPath) &&
+          fs.statSync(fallbackPath).isFile()
+        ) {
           return serveFile(fallbackPath);
         }
       }

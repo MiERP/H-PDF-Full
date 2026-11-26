@@ -14,6 +14,7 @@ export default [
       'desktop/dist/**',
       'desktop/dist-web/**',
       'release/**',
+      '.worktrees/**',
       'desktop/bundled-modules/**',
       'coverage/**',
       'node_modules/**',

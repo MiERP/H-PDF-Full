@@ -79,31 +79,31 @@ Thẻ **Tất cả công cụ** trong trình xem liệt kê mọi công cụ. C�
 
 Tải tại trang [**Releases**](https://github.com/MiERP/H-PDF-Full/releases/latest).
 
-| Hệ điều hành                  | Tệp                                                                   | Ghi chú                                                                                              |
-| ----------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| Windows 10/11 (64-bit)        | `H-PDF-Full-<phiên bản>-Windows-x64-Setup.exe`                        | **Nên dùng.** Cài cho tài khoản đang đăng nhập, không cần quyền Administrator. Có cập nhật một bước. |
-| Windows 10/11 (64-bit)        | `H-PDF-Full-<phiên bản>-Windows-x64-Portable.exe`                     | Chạy thẳng không cần cài, chép được sang USB.                                                        |
-| Windows 10/11 (64-bit) — Lite | `H-PDF-Lite-<phiên bản>-Windows-x64-Setup.exe`                        | Bản gọn, không kèm bộ xử lý nặng; cùng release với bản đầy đủ.                                       |
-| Windows 10/11 (32-bit)        | `H-PDF-Full-<phiên bản>-Windows-x86-Setup.exe` / `…-x86-Portable.exe` | Cho máy Windows 32-bit. Máy 64-bit nên dùng bản x64.                                                 |
-| macOS (chip Apple M1 trở lên) | `H-PDF-Full-<phiên bản>-macOS-arm64.dmg`                              | Mở tệp, kéo H-PDF vào Applications.                                                                  |
-| macOS (chip Intel)            | `H-PDF-Full-<phiên bản>-macOS-x64.dmg`                                | Như trên.                                                                                            |
-| Ubuntu / Debian               | `H-PDF-Full-<phiên bản>-Linux-amd64.deb`                              | `sudo apt install ./H-PDF-Full-<phiên bản>-Linux-amd64.deb`                                          |
-| Linux khác                    | `H-PDF-Full-<phiên bản>-Linux-x86_64.AppImage`                        | `chmod +x` rồi chạy, không cần cài.                                                                  |
+Bản phát hành chính thức hiện có bộ cài **Windows 64-bit** cho cả hai bản Full và Lite. macOS, Linux và Windows 32-bit dựng từ mã nguồn; xem [RELEASE.md](RELEASE.md).
+
+| Hệ điều hành                  | Tệp                                               | Ghi chú                                                                                              |
+| ----------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Windows 10/11 (64-bit)        | `H-PDF-Full-<phiên bản>-Windows-x64-Setup.exe`    | **Nên dùng.** Cài cho tài khoản đang đăng nhập, không cần quyền Administrator. Có cập nhật một bước. |
+| Windows 10/11 (64-bit)        | `H-PDF-Full-<phiên bản>-Windows-x64-Portable.exe` | Chạy thẳng không cần cài, chép được sang USB.                                                        |
+| Windows 10/11 (64-bit) — Lite | `H-PDF-Lite-<phiên bản>-Windows-x64-Setup.exe`    | Bản gọn, không kèm bộ xử lý nặng; cùng release với bản đầy đủ.                                       |
+| Windows 10/11 (64-bit) — Lite | `H-PDF-Lite-<phiên bản>-Windows-x64-Portable.exe` | Bản Portable của Lite.                                                                               |
 
 Mỗi bản phát hành ghi kèm mã **SHA-256** của từng tệp để bạn đối chiếu.
 
 > Các bộ cài chưa có chữ ký số của nhà phát hành.
 >
 > - **Windows** có thể hiện cảnh báo SmartScreen: bấm **More info › Run anyway**.
-> - **macOS** chặn lần mở đầu: chuột phải vào H-PDF › **Open** › **Open**, hoặc chạy `xattr -cr /Applications/H-PDF.app` trong Terminal.
+> - **macOS** (nếu tự build) chặn lần mở đầu: chuột phải vào H-PDF › **Open** › **Open**, hoặc chạy `xattr -cr /Applications/H-PDF.app` trong Terminal.
 >
-> Nút "Cập nhật và khởi động lại" hiện chỉ có trên bản cài Windows; trên macOS và Linux nút này mở trang tải.
+> Nút "Cập nhật và khởi động lại" hiện chỉ có trên bản cài Windows; bản Portable, macOS và Linux mở trang tải.
+
+> **Tự build cho macOS, Linux hoặc Windows 32-bit:** macOS/Linux dùng workflow `.github/workflows/desktop-release.yml` sau khi có release; Windows 32-bit dùng `npm run desktop:dist:x86`. Cả hai chưa được đính kèm trong release chính thức.
 
 > **Bản Lite:** nhánh [`lite`](https://github.com/MiERP/H-PDF-Full/tree/lite) là bản gọn, không kèm các bộ xử lý nặng và một số công cụ cần Internet. Bộ cài Lite nằm trong cùng release với bản đầy đủ (`H-PDF-Lite-<phiên bản>-Windows-x64-Setup.exe`).
 
 ### Bộ xử lý đi kèm
 
-Bộ cài đầy đủ khoảng **270 MB** đã gồm sẵn mọi bộ xử lý, nên tất cả công cụ chạy được ngay cả khi không có mạng:
+Bộ cài đầy đủ khoảng **260 MB** đã gồm sẵn mọi bộ xử lý, nên tất cả công cụ chạy được ngay cả khi không có mạng:
 
 | Bộ xử lý               | Dùng cho                                       | Trạng thái |
 | ---------------------- | ---------------------------------------------- | ---------- |
@@ -117,7 +117,7 @@ Có thể xem hoặc gỡ bớt bộ xử lý trong **Cài đặt › Bộ xử 
 
 ## Chính sách quyền riêng tư
 
-_Cập nhật lần cuối: 05/11/2026_
+_Cập nhật lần cuối: 26/11/2026_
 
 ### Tệp của bạn không rời khỏi máy
 
@@ -189,7 +189,7 @@ Không tiện ủng hộ? Bấm ⭐ **Star** cho kho này, chia sẻ H-PDF với
 
 ## Build từ mã nguồn
 
-Cần Node.js 20 trở lên.
+Cần Node.js 20.19 trở lên (hoặc 22.12+) vì Vite 8.
 
 ```bash
 git clone https://github.com/MiERP/H-PDF-Full.git
@@ -201,7 +201,7 @@ npm run desktop:build        # chỉ build
 npm run desktop:dist         # đóng gói bộ cài Windows 64-bit vào release/
 npm run desktop:dist:x86     # bộ cài Windows 32-bit (Electron 43)
 # macOS và Linux: workflow .github/workflows/desktop-release.yml (chạy tay với tag)
-npm run desktop:modules-pack # gói bộ xử lý ngoại tuyến cho mạng bị chặn
+npm run desktop:modules-pack # gói bộ xử lý ngoại tuyến (chủ yếu cho bản Lite)
 ```
 
 Trong terminal của VS Code, biến `ELECTRON_RUN_AS_NODE=1` được đặt sẵn và làm Electron chạy như Node thường. Hãy bỏ biến này trước khi chạy `npm run desktop`.

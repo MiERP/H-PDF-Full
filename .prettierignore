@@ -2,3 +2,6 @@
 src/partials/footer.html
 
 blog/posts/
+
+# Isolated git worktrees
+.worktrees/

@@ -11,7 +11,7 @@ Tài liệu này dành cho người phát triển và người đóng gói bản
 ### Bộ cài
 
 - **Windows:** bộ cài NSIS theo từng người dùng (`.exe`), không cần quyền Administrator, cho chọn thư mục cài. Có kèm bản **Portable** chạy không cần cài.
-- **macOS** (`.dmg`) và **Linux** (`.AppImage`, `.deb`) đã có cấu hình trong [electron-builder.json](electron-builder.json) nhưng chưa được build và thử trong fork này.
+- **macOS** (`.dmg`) và **Linux** (`.AppImage`, `.deb`) có cấu hình trong [electron-builder.json](electron-builder.json) và workflow `.github/workflows/desktop-release.yml`, nhưng chưa được đính kèm trong release chính thức; chạy workflow với tag để build và tải lên.
 - Tệp `.pdf` được đăng ký "Mở bằng H-PDF".
 - Mở thêm tệp khi app đang chạy: tệp vào trình xem thành một tab mới cạnh các tệp đang mở. Riêng khi cửa sổ đang ở một công cụ có sẵn tài liệu thì giữ nguyên, tệp mới mở ở cửa sổ riêng. **Tệp → Cửa sổ mới** (`Ctrl+Shift+N`) mở thêm cửa sổ trống.
 
@@ -61,24 +61,24 @@ Hộp thoại in này hiện chỉ có ở trình xem. Các trang khác (Điền
 - **Tiếng Việt và tiếng Anh** là hai ngôn ngữ được rà soát đầy đủ. Các ngôn ngữ khác thừa hưởng bản dịch của BentoPDF: phần chưa dịch sẽ hiện tiếng Anh.
 - Thanh menu và các hộp thoại hệ thống đổi theo ngôn ngữ của ứng dụng (tiếng Việt, còn lại dùng tiếng Anh) và được ghi nhớ cho lần mở sau.
 
-### Bộ xử lý nặng tải khi cần
+### Bộ xử lý nặng
 
-Bộ cài chỉ chứa phần lõi. Các bộ xử lý nặng và gói OCR được tải về **lần đầu người dùng mở công cụ cần đến chúng**, sau khi họ đồng ý trong hộp thoại xác nhận. Tải xong thì dùng offline.
+Bộ cài **Full** chứa sẵn mọi bộ xử lý nặng và gói OCR tiếng Việt/tiếng Anh, nên dùng được ngay cả khi không có mạng. Người dùng vẫn có thể xóa từng bộ xử lý trong **Cài đặt › Bộ xử lý** để giải phóng ổ đĩa; ứng dụng tải lại từ nguồn chính thức khi cần, sau khi xác nhận và kiểm tra mã băm. Bản **Lite** (nhánh `lite`) không kèm các bộ xử lý này và tải chúng trong lần dùng đầu.
 
-| Bộ xử lý                                | Dùng cho                                                                         | Nguồn                                                                             | Kiểm tra toàn vẹn |
-| --------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ----------------- |
-| CoherentPDF (cpdf) 2.5.5                | Gộp, và một số thao tác trang                                                    | Có sẵn trong bộ cài                                                               | Không cần tải     |
-| PyMuPDF 0.11.16                         | PDF sang Word/Excel/Markdown, trích bảng, sách điện tử                           | npm registry, `@bentopdf/pymupdf-wasm`                                            | SHA-512           |
-| Ghostscript 0.1.1                       | PDF/A, chuyển phông thành nét                                                    | npm registry, `@bentopdf/gs-wasm`                                                 | SHA-512           |
-| LibreOffice                             | Word, Excel, PowerPoint… sang PDF                                                | Kho mã nguồn BentoPDF                                                             | SHA-256 từng tệp  |
-| OCR Tesseract 7.0.0                     | Nhận dạng chữ trong tài liệu quét (khoảng 8 MB, gồm phông Noto Sans cho lớp chữ) | jsDelivr, `tesseract.js` và `tesseract.js-core`; GitHub, `googlefonts/noto-fonts` | SHA-256 từng tệp  |
-| Gói ngôn ngữ OCR: tiếng Việt, tiếng Anh | Dữ liệu nhận dạng cho từng ngôn ngữ (1,4 MB và 3 MB), mỗi gói tải riêng          | jsDelivr, `@tesseract.js-data`                                                    | SHA-256 từng tệp  |
+| Bộ xử lý                                | Dùng cho                                                                         | Nguồn                                                                             | Ở bản Full |
+| --------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ---------- |
+| CoherentPDF (cpdf) 2.5.5                | Gộp, và một số thao tác trang                                                    | npm registry, `coherentpdf`                                                       | Có sẵn     |
+| PyMuPDF 0.11.16                         | PDF sang Word/Excel/Markdown, trích bảng, sách điện tử                           | npm registry, `@bentopdf/pymupdf-wasm`                                            | Có sẵn     |
+| Ghostscript 0.1.1                       | PDF/A, chuyển phông thành nét                                                    | npm registry, `@bentopdf/gs-wasm`                                                 | Có sẵn     |
+| LibreOffice                             | Word, Excel, PowerPoint… sang PDF                                                | Kho mã nguồn BentoPDF                                                             | Có sẵn     |
+| OCR Tesseract 7.0.0                     | Nhận dạng chữ trong tài liệu quét (khoảng 8 MB, gồm phông Noto Sans cho lớp chữ) | jsDelivr, `tesseract.js` và `tesseract.js-core`; GitHub, `googlefonts/noto-fonts` | Có sẵn     |
+| Gói ngôn ngữ OCR: tiếng Việt, tiếng Anh | Dữ liệu nhận dạng cho từng ngôn ngữ (1,4 MB và 3 MB)                             | jsDelivr, `@tesseract.js-data`                                                    | Có sẵn     |
 
-Danh sách, phiên bản và mã băm khai báo trong [desktop/app/modules-manifest.json](desktop/app/modules-manifest.json). Bộ xử lý đã tải nằm trong thư mục `modules` thuộc thư mục dữ liệu người dùng của ứng dụng.
+Danh sách, phiên bản và mã băm khai báo trong [desktop/app/modules-manifest.json](desktop/app/modules-manifest.json). Bộ xử lý đi kèm nằm trong thư mục cài đặt; bộ xử lý tải thêm (nếu người dùng đã xóa bản đi kèm) nằm trong thư mục `modules` thuộc thư mục dữ liệu người dùng của ứng dụng.
 
 Một lần tải không nhận thêm dữ liệu trong 60 giây thì dừng và báo lỗi. Bộ xử lý được giải nén vào thư mục tạm rồi mới chuyển vào chỗ, nên lần cài dở không bao giờ bị coi là đã cài.
 
-**Mạng chặn nguồn tải (gói offline).** `npm run desktop:modules-pack` tải mọi bộ xử lý không có trong bộ cài vào `release/h-pdf-modules/` (khoảng 125 MB, kèm `DOC-TOI.txt`), kiểm tra mã băm. Chép thư mục đó sang máy khách rồi chọn **Cài đặt › Bộ xử lý › Cài từ thư mục…**. Khi một lần tải thất bại, hộp thoại lỗi cũng đưa ra lựa chọn này. Tệp trong gói được kiểm tra bằng đúng mã băm như khi tải.
+**Mạng chặn nguồn tải (gói offline).** `npm run desktop:modules-pack` đóng gói các bộ xử lý _không_ có trong bộ cài (chủ yếu dùng cho bản Lite) vào `release/h-pdf-modules/`, kèm `DOC-TOI.txt`, và kiểm tra mã băm. Chép thư mục đó sang máy khách rồi chọn **Cài đặt › Bộ xử lý › Cài từ thư mục…**. Khi một lần tải thất bại, hộp thoại lỗi cũng đưa ra lựa chọn này. Tệp trong gói được kiểm tra bằng đúng mã băm như khi tải.
 
 PyMuPDF chạy trong một worker ([src/js/utils/pymupdf.worker.ts](src/js/utils/pymupdf.worker.ts)) nên chuyển đổi dài không làm đứng cửa sổ. Riêng `open()` (trả về đối tượng tài liệu có phương thức đồng bộ) chạy trên trang qua `loadPyMuPDFMainThread()`.
 
@@ -95,10 +95,11 @@ npm run desktop:dist:all   # build + đóng gói cho Windows, macOS, Linux
 
 `npm run desktop:build` làm các bước sau ([scripts/build-desktop.mjs](scripts/build-desktop.mjs)):
 
-1. Build phần web ở chế độ desktop (`VITE_DESKTOP=true`, `SIMPLE_MODE=true`, thương hiệu H-PDF, ngôn ngữ mặc định `vi`).
-2. Biên dịch `desktop/src/` sang `desktop/dist/`.
-3. Chép cpdf vào `desktop/bundled-modules/cpdf/dist/`.
-4. Chép phần web sang `desktop/dist-web/`, bỏ các tệp WASM nặng.
+1. Tải và kiểm tra mã băm các bộ xử lý đi kèm vào `desktop/bundled-modules/` ([scripts/bundle-desktop-engines.mjs](scripts/bundle-desktop-engines.mjs)).
+2. Build phần web ở chế độ desktop (`VITE_DESKTOP=true`, `SIMPLE_MODE=true`, thương hiệu H-PDF, ngôn ngữ mặc định `vi`).
+3. Biên dịch `desktop/src/` sang `desktop/dist/`.
+4. Chép cpdf vào `desktop/bundled-modules/cpdf/dist/` (nếu chưa có).
+5. Chép phần web sang `desktop/dist-web/`, bỏ các bản sao WASM nặng.
 
 Lưu ý khi làm việc:
 
@@ -143,8 +144,8 @@ H-PDF là bản sửa đổi của BentoPDF và phát hành theo **GNU AGPL-3.0*
 
 - Mã nguồn đầy đủ, gồm cả phần sửa đổi, công khai tại <https://github.com/MiERP/H-PDF-Full>, và trang Giới thiệu trong ứng dụng dẫn tới đó.
 - Trang Giới thiệu ghi rõ đây là bản đã sửa đổi so với BentoPDF.
-- Bộ cài kèm `LICENSE.txt` (AGPL-3.0 của ứng dụng) và `licenses/coherentpdf-LICENSE.md` (giấy phép của cpdf, bộ xử lý duy nhất nằm sẵn trong bộ cài), cả hai trong thư mục `resources` của bản cài.
-- PyMuPDF, Ghostscript và LibreOffice không nằm trong bộ cài; chúng được tải từ nguồn gốc kèm giấy phép riêng.
+- Bộ cài Full kèm `LICENSE.txt` (AGPL-3.0 của ứng dụng), giấy phép cpdf và OCR trong thư mục `resources/licenses`, cùng giấy phép AGPL-3.0 đi kèm gói PyMuPDF và Ghostscript trong `bundled-modules/`.
+- LibreOffice (MPL-2.0) được phân phối dưới dạng WASM; liên kết mã nguồn và giấy phép nằm trong [README.md](README.md#thành-phần-bên-thứ-ba). Bản Lite tải PyMuPDF, Ghostscript và LibreOffice từ nguồn gốc kèm giấy phép riêng.
 
 ---
 

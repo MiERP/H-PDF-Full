@@ -45,7 +45,12 @@ import {
 } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { checkVersions, nextVersion, readAppVersion, setAppVersion } from './version.mjs';
+import {
+  checkVersions,
+  nextVersion,
+  readAppVersion,
+  setAppVersion,
+} from './version.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -113,11 +118,16 @@ function githubRepo() {
   }
   if (!url) {
     const pkg = readJson('package.json');
-    url = pkg.repository?.url || readJson('desktop/package.json').repository?.url || '';
+    url =
+      pkg.repository?.url ||
+      readJson('desktop/package.json').repository?.url ||
+      '';
   }
   const match = /github\.com[/:]([^/]+)\/([^/.]+?)(?:\.git)?$/.exec(url);
   if (!match) {
-    fail('Set an origin remote (or package.json repository) pointing at GitHub.');
+    fail(
+      'Set an origin remote (or package.json repository) pointing at GitHub.'
+    );
   }
   return `${match[1]}/${match[2]}`;
 }
@@ -140,7 +150,10 @@ function releaseArtifacts(productName, version) {
   const prefix = `${productName}-${version}-`;
   const extensions = ['.exe', '.dmg', '.AppImage', '.deb'];
   const files = readdirSync(dir)
-    .filter((name) => name.startsWith(prefix) && extensions.some((ext) => name.endsWith(ext)))
+    .filter(
+      (name) =>
+        name.startsWith(prefix) && extensions.some((ext) => name.endsWith(ext))
+    )
     .filter((name) => statSync(join(dir, name)).isFile())
     .sort();
   const setup = `${productName}-${version}-Windows-x64-Setup.exe`;
@@ -167,16 +180,23 @@ function makeSourceArchive(productName, version) {
 }
 
 function makeChecksums(productName, version, files) {
-  const lines = files.map((file) => `${sha256(file)}  ${file.split(/[\\/]/).pop()}`);
-  const target = join(root, 'release', `SHA256SUMS-${productName}-${version}.txt`);
+  const lines = files.map(
+    (file) => `${sha256(file)}  ${file.split(/[\\/]/).pop()}`
+  );
+  const target = join(
+    root,
+    'release',
+    `SHA256SUMS-${productName}-${version}.txt`
+  );
   writeFileSync(target, lines.join('\n') + '\n');
   console.log(`🔐 Checksums: ${target}`);
   return target;
 }
 
 function releaseNotes({ productName, version, tag, repo, files, checksums }) {
-  const displayName = productName.replace(/-/g, ' ');
+  const displayName = productName.replace(/-([^-]+)$/, ' $1');
   const downloads = files
+    .filter((file) => !file.endsWith('-Source.zip'))
     .map((file) => {
       const name = file.split(/[\\/]/).pop();
       const url = `https://github.com/${repo}/releases/download/${tag}/${name}`;
@@ -229,7 +249,14 @@ function ghAvailable() {
   }
 }
 
-function publishRelease({ tag, repo, productName, version, assets, notesPath }) {
+function publishRelease({
+  tag,
+  repo,
+  productName,
+  version,
+  assets,
+  notesPath,
+}) {
   if (!ghAvailable()) {
     fail('gh is not authenticated. Run `gh auth login` or set GH_TOKEN.');
   }
@@ -239,11 +266,19 @@ function publishRelease({ tag, repo, productName, version, assets, notesPath }) 
     capture('gh', ['release', 'view', tag, '--repo', repo]);
     exists = true;
   } catch {
-    exists = false;
+    // No release for this tag yet.
   }
 
   if (exists) {
-    run('gh', ['release', 'upload', tag, ...assets, '--repo', repo, '--clobber']);
+    run('gh', [
+      'release',
+      'upload',
+      tag,
+      ...assets,
+      '--repo',
+      repo,
+      '--clobber',
+    ]);
     run('gh', [
       'release',
       'edit',
@@ -282,6 +317,22 @@ function main() {
   }
 
   assertCleanTree();
+
+  // The release script pushes HEAD to main. Running it from the lite branch
+  // (which shares this remote) would publish that branch's code as main.
+  if (!flags.has('--no-push')) {
+    const branch = git(['rev-parse', '--abbrev-ref', 'HEAD']);
+    if (branch !== 'main') {
+      fail(
+        `Refusing to publish a release from "${branch}". Switch to main, or use --no-push to only commit locally.`
+      );
+    }
+    if (!flags.has('--no-github') && !ghAvailable()) {
+      fail(
+        'gh is not authenticated. Run `gh auth login` or set GH_TOKEN before bumping the version.'
+      );
+    }
+  }
 
   const current = readAppVersion();
   const version = nextVersion(current, type);
@@ -327,7 +378,11 @@ function main() {
 
     const source = makeSourceArchive(productName, version);
     const sums = makeChecksums(productName, version, [...installers, source]);
-    const notesPath = join(root, 'release', `RELEASE_NOTES-${productName}-${version}.md`);
+    const notesPath = join(
+      root,
+      'release',
+      `RELEASE_NOTES-${productName}-${version}.md`
+    );
 
     let repo = 'OWNER/REPO';
     try {
@@ -336,14 +391,17 @@ function main() {
       // --no-push can still package the source archive without a remote.
     }
 
-    writeFileSync(notesPath, releaseNotes({
-      productName,
-      version,
-      tag,
-      repo,
-      files: [...installers, source],
-      checksums: readFileSync(sums, 'utf8'),
-    }));
+    writeFileSync(
+      notesPath,
+      releaseNotes({
+        productName,
+        version,
+        tag,
+        repo,
+        files: [...installers, source],
+        checksums: readFileSync(sums, 'utf8'),
+      })
+    );
 
     if (flags.has('--no-push')) {
       console.log('⏭️  --no-push: stopped before pushing.');

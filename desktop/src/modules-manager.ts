@@ -13,6 +13,11 @@ import type {
   EnsureResult,
 } from './types.js';
 import { getUiLanguage, ui } from './ui-strings.js';
+import {
+  isSafeArchiveEntry,
+  resolveFileInside,
+  resolveInside,
+} from './safe-path.js';
 
 const DOWNLOAD_STALL_MS = 60_000;
 
@@ -139,10 +144,10 @@ export class ModulesManager {
         const subPath = urlPath.slice(mount.length);
         const moduleDir = this.getModuleDir(name as DesktopModuleName);
         if (moduleDir) {
-          const candidate = path.join(moduleDir, subPath);
-          if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
-            return candidate;
-          }
+          // The URL is untrusted: never let `..`, an absolute path, or a
+          // symlink/junction reach files outside this module's directory.
+          const candidate = resolveFileInside(moduleDir, subPath);
+          if (candidate) return candidate;
         }
       }
     }
@@ -296,12 +301,15 @@ export class ModulesManager {
 
     const label = item.label?.vi || item.label?.en || name;
     const destDir = path.join(this.userModulesDir, name);
-    const tmpDir = path.join(this.userModulesDir, '.tmp', name);
+    // A unique staging directory: a folder install and a download of the
+    // same module must not delete each other's files.
+    const tmpRoot = path.join(this.userModulesDir, '.tmp');
+    fs.mkdirSync(tmpRoot, { recursive: true });
+    const tmpDir = fs.mkdtempSync(path.join(tmpRoot, `${name}-`));
     // Built here and moved into place whole, so an install cut short (app
     // closed, download failed) never leaves a module that passes the probe
     // but lacks files.
     const stageDir = path.join(tmpDir, 'module');
-    fs.rmSync(tmpDir, { recursive: true, force: true });
     fs.mkdirSync(stageDir, { recursive: true });
 
     try {
@@ -318,33 +326,45 @@ export class ModulesManager {
           });
         });
 
-        // Verify integrity if provided
-        if (item.integrity && item.integrity.startsWith('sha512-')) {
-          const expectedBase64 = item.integrity.replace('sha512-', '');
-          const fileBuf = fs.readFileSync(tarPath);
-          const actualBase64 = crypto
-            .createHash('sha512')
-            .update(fileBuf)
-            .digest('base64');
-          if (actualBase64 !== expectedBase64) {
-            throw new Error(
-              `Integrity check failed for ${name}. Expected ${expectedBase64}, got ${actualBase64}`
-            );
-          }
+        // Every npm tarball must carry its pinned SHA-512: installing an
+        // unverified engine is worse than refusing the download.
+        if (!item.integrity?.startsWith('sha512-')) {
+          throw new Error(`Missing SHA-512 integrity for ${name}`);
+        }
+        const expectedBase64 = item.integrity.replace('sha512-', '');
+        const fileBuf = fs.readFileSync(tarPath);
+        const actualBase64 = crypto
+          .createHash('sha512')
+          .update(fileBuf)
+          .digest('base64');
+        if (actualBase64 !== expectedBase64) {
+          throw new Error(
+            `Integrity check failed for ${name}. Expected ${expectedBase64}, got ${actualBase64}`
+          );
         }
 
-        // Extract tarball (npm packages are wrapped inside a "package/" root directory)
+        // Extract tarball (npm packages are wrapped inside a "package/" root directory).
+        // Only regular files and directories: symlinks or hard links could
+        // point outside the module directory.
         await tar.x({
           file: tarPath,
           cwd: stageDir,
           strip: 1,
+          preservePaths: false,
+          filter: (entryPath, entry) => {
+            const type = 'type' in entry ? entry.type : undefined;
+            return isSafeArchiveEntry(entryPath, type);
+          },
         });
       } else if (item.kind === 'files' && item.files) {
         let totalReceivedSoFar = 0;
         const totalSize = item.size || 0;
 
         for (const f of item.files) {
-          const filePath = path.join(stageDir, f.path);
+          const filePath = resolveInside(stageDir, f.path);
+          if (!filePath) {
+            throw new Error(`Invalid file path for ${name}: ${f.path}`);
+          }
           fs.mkdirSync(path.dirname(filePath), { recursive: true });
 
           let currentFileReceived = 0;
@@ -359,23 +379,25 @@ export class ModulesManager {
           });
           totalReceivedSoFar += currentFileReceived;
 
-          if (f.sha256) {
-            const fileBuf = fs.readFileSync(filePath);
-            const actualHex = crypto
-              .createHash('sha256')
-              .update(fileBuf)
-              .digest('hex');
-            if (actualHex.toLowerCase() !== f.sha256.toLowerCase()) {
-              throw new Error(
-                `SHA-256 check failed for ${f.path}. Expected ${f.sha256}, got ${actualHex}`
-              );
-            }
+          if (!f.sha256) {
+            throw new Error(`Missing SHA-256 for ${name}/${f.path}`);
+          }
+          const fileBuf = fs.readFileSync(filePath);
+          const actualHex = crypto
+            .createHash('sha256')
+            .update(fileBuf)
+            .digest('hex');
+          if (actualHex.toLowerCase() !== f.sha256.toLowerCase()) {
+            throw new Error(
+              `SHA-256 check failed for ${f.path}. Expected ${f.sha256}, got ${actualHex}`
+            );
           }
         }
       }
 
       // Verify probe exists
-      if (!fs.existsSync(path.join(stageDir, item.probe))) {
+      const probePath = resolveInside(stageDir, item.probe);
+      if (!probePath || !fs.existsSync(probePath)) {
         throw new Error(
           `Installation verification failed: probe file "${item.probe}" not found after extracting ${name}`
         );
@@ -412,6 +434,12 @@ export class ModulesManager {
     };
 
     const fileStream = fs.createWriteStream(destPath);
+    // Without a listener a disk error (ENOSPC, lock, AV) would crash the
+    // main process through EventEmitter's unhandled 'error'.
+    let streamError: Error | null = null;
+    fileStream.on('error', (err) => {
+      streamError = err;
+    });
     try {
       armStallTimer();
       const response = await fetch(url, { signal: controller.signal });
@@ -426,6 +454,7 @@ export class ModulesManager {
       const reader = response.body.getReader();
 
       while (true) {
+        if (streamError !== null) throw streamError;
         const { done, value } = await reader.read();
         if (done) break;
         if (value) {
@@ -434,6 +463,7 @@ export class ModulesManager {
           if (!fileStream.write(Buffer.from(value))) {
             await once(fileStream, 'drain');
           }
+          if (streamError !== null) throw streamError;
           onProgress(received, contentLength);
         }
       }
@@ -460,5 +490,6 @@ export class ModulesManager {
         else resolve();
       });
     });
+    if (streamError !== null) throw streamError;
   }
 }

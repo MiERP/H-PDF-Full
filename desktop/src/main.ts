@@ -4,6 +4,8 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { execFile, spawn } from 'node:child_process';
+import { Readable, Transform } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 import {
   app,
   BrowserWindow,
@@ -15,6 +17,8 @@ import {
   session,
 } from 'electron';
 import { registerAppScheme, setupAppProtocol } from './protocol.js';
+import { isAppUrl } from './app-url.js';
+import { looksLikePdf } from './pdf-bytes.js';
 import { ModulesManager } from './modules-manager.js';
 import { fill, setUiLanguage, ui } from './ui-strings.js';
 import { isNewerVersion } from './version.js';
@@ -76,6 +80,9 @@ let iconPath = '';
 const allowedOpenPaths = new Set<string>();
 // One file waiting to be picked up, per window (keyed by webContents id).
 const pendingOpenFiles = new Map<number, string>();
+// The installer found by each window's last update check. Keyed by webContents
+// id so two windows cannot install each other's version.
+const pendingInstallers = new Map<number, ReleaseInstaller>();
 // A file macOS hands over before the app is ready to open a window.
 let startupFile: string | null = null;
 
@@ -241,7 +248,7 @@ function watchDownloads() {
         // interrupted save never leaves the original half written.
         const temp = path.join(
           path.dirname(target.path),
-          `.${path.basename(target.path)}.cit-saving`
+          `.${path.basename(target.path)}.${crypto.randomUUID()}.cit-saving`
         );
         replace = { temp, original: target.path };
         item.setSavePath(temp);
@@ -262,9 +269,10 @@ function watchDownloads() {
           filters: [{ name: 'PDF', extensions: ['pdf'] }],
         });
       }
-    } else if (target && target.mode === 'saveAs') {
+    } else if (target) {
       // Another format made from the document (Word, text): offered under
-      // its own name in the document's folder.
+      // its own name in the document's folder. An overwrite target is used
+      // up here too, so it cannot affect a later download.
       saveTargets.delete(contents.id);
       if (target.until > Date.now()) {
         const ext = path.extname(item.getFilename()).slice(1).toLowerCase();
@@ -281,6 +289,35 @@ function watchDownloads() {
       let overwriteFailed = false;
       if (replace) {
         if (state !== 'completed') {
+          await fs.promises.rm(replace.temp, { force: true }).catch(() => {});
+          return;
+        }
+        // Never replace the user's document with a failed/empty result. A
+        // PDF header must appear in the first KiB (some writers add a BOM).
+        try {
+          const handle = await fs.promises.open(replace.temp, 'r');
+          let valid = false;
+          try {
+            const stat = await handle.stat();
+            if (stat.size > 0) {
+              const head = Buffer.alloc(Math.min(1024, stat.size));
+              const { bytesRead } = await handle.read(head, 0, head.length, 0);
+              valid = looksLikePdf(head.subarray(0, bytesRead));
+            }
+          } finally {
+            await handle.close();
+          }
+          if (!valid) {
+            console.error(
+              '[Save] Refusing to overwrite',
+              replace.original,
+              'with an invalid PDF'
+            );
+            await fs.promises.rm(replace.temp, { force: true }).catch(() => {});
+            return;
+          }
+        } catch (e) {
+          console.warn('[Save] Could not validate', replace.temp, e);
           await fs.promises.rm(replace.temp, { force: true }).catch(() => {});
           return;
         }
@@ -394,7 +431,7 @@ function createWindow(filePath?: string): BrowserWindow {
   });
 
   win.webContents.on('will-navigate', (event, url) => {
-    if (!url.startsWith('app://')) {
+    if (!isAppUrl(url)) {
       event.preventDefault();
       if (url.startsWith('http:') || url.startsWith('https:')) {
         shell.openExternal(url);
@@ -429,6 +466,7 @@ function createWindow(filePath?: string): BrowserWindow {
 
   win.on('closed', () => {
     pendingOpenFiles.delete(contentsId);
+    pendingInstallers.delete(contentsId);
     if (activeWindow === win) {
       activeWindow = BrowserWindow.getAllWindows()[0] ?? null;
     }
@@ -718,8 +756,11 @@ function appVersion(): string {
 // latest published GitHub release. Nothing is downloaded or installed.
 ipcMain.handle(
   IPC_CHANNELS.CHECK_UPDATE,
-  async (): Promise<UpdateCheckResult> => {
+  async (event): Promise<UpdateCheckResult> => {
     const current = appVersion();
+    const senderID = event.sender.id;
+    // A failed check must not leave an earlier installer behind.
+    pendingInstallers.delete(senderID);
     try {
       const response = await net.fetch(LATEST_RELEASE_API, {
         headers: { Accept: 'application/vnd.github+json' },
@@ -748,17 +789,19 @@ ipcMain.handle(
           : RELEASES_PAGE;
       const latest = release.tag_name.replace(/^v/i, '');
       const newer = isNewerVersion(latest, current);
-      pendingInstaller =
+      const installer =
         newer && canSelfUpdate()
           ? findInstaller(release, `${RELEASES_PAGE}/download/`, process.arch)
           : null;
+      if (installer) pendingInstallers.set(senderID, installer);
+      else pendingInstallers.delete(senderID);
       return {
         ok: true,
         current,
         latest,
         newer,
         url,
-        canInstall: pendingInstaller !== null,
+        canInstall: installer !== null,
       };
     } catch (e) {
       console.warn('[Main] Update check failed:', e);
@@ -777,10 +820,6 @@ function canSelfUpdate(): boolean {
   );
 }
 
-// The installer of the release the last check found newer. Kept here, so
-// the page only asks to install and never hands over a URL to run.
-let pendingInstaller: ReleaseInstaller | null = null;
-
 async function downloadInstaller(
   installer: ReleaseInstaller,
   dest: string,
@@ -793,22 +832,26 @@ async function downloadInstaller(
   const total =
     Number(response.headers.get('content-length')) || installer.size || 0;
   const hash = crypto.createHash('sha256');
-  const out = fs.createWriteStream(dest);
   let received = 0;
-  try {
-    const reader = response.body.getReader();
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      hash.update(value);
-      received += value.length;
-      if (!out.write(Buffer.from(value))) {
-        await new Promise((resolve) => out.once('drain', resolve));
-      }
+  const meter = new Transform({
+    transform(chunk: Buffer, _encoding, callback) {
+      hash.update(chunk);
+      received += chunk.length;
       onProgress({ received, total });
-    }
-  } finally {
-    await new Promise<void>((resolve) => out.end(resolve));
+      callback(null, chunk);
+    },
+  });
+  try {
+    // `pipeline` destroys both streams on failure and surfaces disk errors
+    // (ENOSPC, a locked file) instead of crashing the main process.
+    await pipeline(
+      Readable.fromWeb(response.body as never),
+      meter,
+      fs.createWriteStream(dest)
+    );
+  } catch (e) {
+    await fs.promises.rm(dest, { force: true }).catch(() => {});
+    throw e;
   }
   return hash.digest('hex');
 }
@@ -816,12 +859,12 @@ async function downloadInstaller(
 ipcMain.handle(
   IPC_CHANNELS.INSTALL_UPDATE,
   async (event): Promise<InstallUpdateResult> => {
-    const installer = pendingInstaller;
+    const installer = pendingInstallers.get(event.sender.id);
     if (!installer || !canSelfUpdate()) return { ok: false, error: 'manual' };
 
-    const dir = path.join(os.tmpdir(), 'H-PDF-Full-update');
-    fs.rmSync(dir, { recursive: true, force: true });
-    fs.mkdirSync(dir, { recursive: true });
+    // A unique directory, not a predictable name another local process could
+    // pre-create as a junction.
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'H-PDF-Full-update-'));
     const file = path.join(dir, installer.name);
     let sha256: string;
     try {
@@ -832,6 +875,7 @@ ipcMain.handle(
       });
     } catch (e) {
       console.warn('[Main] Update download failed:', e);
+      fs.rmSync(dir, { recursive: true, force: true });
       return { ok: false, error: 'download' };
     }
     if (sha256 !== installer.sha256) {
@@ -842,14 +886,33 @@ ipcMain.handle(
 
     // Silent install over the current one, then the installer starts the
     // app again (--force-run). The app quits so its files can be replaced.
+    // `spawn` reports a missing/blocked exe through its async 'error' event,
+    // not through a throw: only quit once the process really started.
+    let launched = false;
     try {
       const child = spawn(file, ['/S', '--force-run'], {
         detached: true,
         stdio: 'ignore',
       });
       child.unref();
+      launched = await new Promise<boolean>((resolve) => {
+        let settled = false;
+        const finish = (ok: boolean) => {
+          if (settled) return;
+          settled = true;
+          resolve(ok);
+        };
+        child.once('spawn', () => finish(true));
+        child.once('error', (e) => {
+          console.warn('[Main] Could not start the installer:', e);
+          finish(false);
+        });
+      });
     } catch (e) {
       console.warn('[Main] Could not start the installer:', e);
+    }
+    if (!launched) {
+      fs.rmSync(dir, { recursive: true, force: true });
       return { ok: false, error: 'launch' };
     }
     setTimeout(() => app.quit(), 500);
