@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { showUpdateDialog } from '../js/desktop/update-check';
+import { initUpdateBanner, showUpdateDialog } from '../js/desktop/update-check';
 
 const RESULT = {
   current: '1.0.5',
@@ -43,6 +43,45 @@ describe('desktop update dialog', () => {
     showUpdateDialog({ ...RESULT, canInstall: false });
     dialog()!.querySelector<HTMLElement>('.desktop-update-primary')!.click();
     expect(open).toHaveBeenCalledWith(RESULT.url, '_blank', 'noopener');
+  });
+
+  it('does not resurrect a stale result when the check fails', async () => {
+    document.body.innerHTML = '<span id="app-version">1.0.5</span>';
+    localStorage.setItem(
+      'cit:update-check',
+      JSON.stringify({
+        time: Date.now() - 2 * 24 * 60 * 60 * 1000,
+        current: '1.0.5',
+        latest: '1.0.6',
+        newer: true,
+        url: RESULT.url,
+      })
+    );
+    window.bentoDesktop = {
+      checkForUpdate: vi.fn(async () => ({
+        ok: false,
+        current: '1.0.5',
+        error: 'network',
+      })),
+    } as unknown as NonNullable<typeof window.bentoDesktop>;
+
+    await initUpdateBanner();
+
+    expect(dialog()).toBeNull();
+    expect(document.getElementById('desktop-update-status')).toBeNull();
+  });
+
+  it('backs off after an automatic attempt when offline', async () => {
+    document.body.innerHTML = '<span id="app-version">1.0.5</span>';
+    localStorage.setItem('cit:update-check-attempt', String(Date.now()));
+    const checkForUpdate = vi.fn(async () => ({ ok: true, ...RESULT }));
+    window.bentoDesktop = {
+      checkForUpdate,
+    } as unknown as NonNullable<typeof window.bentoDesktop>;
+
+    await initUpdateBanner();
+
+    expect(checkForUpdate).not.toHaveBeenCalled();
   });
 
   it('installs when it can, and says so', async () => {

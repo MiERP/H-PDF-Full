@@ -67,7 +67,7 @@ const STRINGS = {
     language: 'Ngôn ngữ',
     modulesTitle: 'Bộ xử lý',
     modulesIntro:
-      'Các bộ xử lý nặng được tải về khi cần và lưu trên máy để dùng offline. Bạn có thể tải trước hoặc xóa để giải phóng ổ đĩa.',
+      'Các bộ xử lý nặng đi kèm bộ cài và dùng được offline, không cần tải thêm.',
     bundled: 'Có sẵn trong bộ cài',
     installed: 'Đã tải',
     notInstalled: 'Chưa tải',
@@ -390,7 +390,7 @@ const STRINGS = {
     language: 'Language',
     modulesTitle: 'Engines',
     modulesIntro:
-      'Heavy engines are downloaded on demand and kept on this computer for offline use. You can download them ahead of time or remove them to free up disk space.',
+      'Heavy engines are included in the installer and work offline; nothing is downloaded.',
     bundled: 'Included in the installer',
     installed: 'Downloaded',
     notInstalled: 'Not downloaded',
