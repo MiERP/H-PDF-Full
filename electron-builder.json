@@ -41,7 +41,7 @@
         "arch": ["x64"]
       }
     ],
-    "icon": "build-resources/icon.png",
+    "icon": "build-resources/icon.ico",
     "fileAssociations": [
       {
         "ext": "pdf",
@@ -59,7 +59,10 @@
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
     "shortcutName": "H-PDF-Lite",
-    "uninstallDisplayName": "H-PDF-Lite"
+    "uninstallDisplayName": "H-PDF-Lite",
+    "installerIcon": "icon.ico",
+    "uninstallerIcon": "icon.ico",
+    "installerHeaderIcon": "icon.ico"
   },
   "portable": {
     "artifactName": "${productName}-${version}-Windows-x64-Portable.${ext}"

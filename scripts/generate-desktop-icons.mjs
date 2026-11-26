@@ -88,6 +88,15 @@ app.whenReady().then(async () => {
     console.log(`wrote ${path} (${size}x${size})`);
   }
 
+  // Windows app/installer icon: a real multi-size ICO, so electron-builder
+  // does not have to derive one from the PNG (and NSIS uses it for the
+  // installer and uninstaller too).
+  writeFileSync(
+    resolve(root, 'build-resources/icon.ico'),
+    icoBuffer(image, [16, 24, 32, 48, 64, 128, 256])
+  );
+  console.log('wrote build-resources/icon.ico (16, 24, 32, 48, 64, 128, 256)');
+
   writeFileSync(
     resolve(root, 'public/favicon.ico'),
     icoBuffer(image, [16, 32, 48, 64, 128, 256])
